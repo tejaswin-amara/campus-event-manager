@@ -36,9 +36,9 @@ USER appuser
 # Expose the configurable port (default 9090)
 EXPOSE ${PORT:-9090}
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-9090}/ || exit 1
+# Health check (Fix: Use wget on the actual port the app is running on)
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-9090}/admin/login || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
