@@ -1,0 +1,19 @@
+# Maven
+target/
+*.class
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# App Specific
+uploads/
+test_results.txt
+.qodo/

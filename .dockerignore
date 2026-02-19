@@ -1,0 +1,11 @@
+.git
+.gitignore
+.mvn
+.vscode
+.qodo
+target
+uploads
+*.md
+*.txt
+*.ps1
+test_results.txt
