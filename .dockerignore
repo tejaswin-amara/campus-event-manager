@@ -1,6 +1,5 @@
 .git
 .gitignore
-.mvn
 .vscode
 .qodo
 target
