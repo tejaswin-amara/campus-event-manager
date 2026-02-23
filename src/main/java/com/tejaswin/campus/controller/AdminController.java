@@ -176,9 +176,14 @@ public class AdminController {
                     if (oldUrl != null && oldUrl.startsWith("/uploads/")) {
                         try {
                             String oldFile = oldUrl.substring("/uploads/".length());
-                            Path oldPath = uploadBaseDir.resolve(oldFile);
-                            Files.deleteIfExists(oldPath);
-                            logger.info("AUDIT: Deleted old image file: {}", oldPath);
+                            Path oldPath = uploadBaseDir.resolve(oldFile).normalize();
+                            if (oldPath.startsWith(uploadBaseDir)) {
+                                Files.deleteIfExists(oldPath);
+                                logger.info("AUDIT: Deleted old image file: {}", oldPath);
+                            } else {
+                                logger.warn("Security: Path traversal attempt prevented during edit deletion: {}",
+                                        oldUrl);
+                            }
                         } catch (Exception e) {
                             logger.warn("Failed to delete old image file: {}", oldUrl, e);
                         }
@@ -235,6 +240,12 @@ public class AdminController {
     private String saveUploadedImage(MultipartFile imageFile) {
         String originalFilename = imageFile.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
+            return null;
+        }
+
+        originalFilename = org.springframework.util.StringUtils.cleanPath(originalFilename);
+        if (originalFilename.contains("..")) {
+            logger.warn("Security: Path traversal attempt detected in filename: {}", originalFilename);
             return null;
         }
 
