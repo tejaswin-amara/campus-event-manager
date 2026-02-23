@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,16 +22,18 @@ public class UserServiceTest {
 
     private UserService userService;
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, encoder);
     }
 
     @Test
     void testAuthenticateSuccess() {
         User user = new User();
         user.setUsername("admin");
-        user.setPassword("admin123");
+        user.setPassword(encoder.encode("admin123"));
         user.setRole("ADMIN");
 
         when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
@@ -47,7 +50,7 @@ public class UserServiceTest {
     void testAuthenticateWrongPassword() {
         User user = new User();
         user.setUsername("admin");
-        user.setPassword("admin123");
+        user.setPassword(encoder.encode("admin123"));
 
         when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
 

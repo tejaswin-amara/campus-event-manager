@@ -65,7 +65,8 @@ public class EventController {
             return "redirect:/";
         }
 
-        // Track interest (analytics) - Optional, keeping for Admin stats
+        // Track interest for analytics
+        eventService.registerStudent(eventId, user.getId());
 
         Event event = eventService.findEventById(eventId);
         if (event != null && event.getRegistrationLink() != null && !event.getRegistrationLink().isEmpty()) {

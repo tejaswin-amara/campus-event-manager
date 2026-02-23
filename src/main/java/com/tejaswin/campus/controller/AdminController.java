@@ -168,28 +168,32 @@ public class AdminController {
             event.setEndDateTime(endDateTime);
 
             if (imageFile != null && !imageFile.isEmpty()) {
-                String oldUrl = event.getImageUrl();
-                String savedUrl = saveUploadedImage(imageFile);
-                if (savedUrl != null) {
-                    event.setImageUrl(savedUrl);
-                    // Best-effort delete of old image to prevent orphaned files
-                    if (oldUrl != null && oldUrl.startsWith("/uploads/")) {
-                        try {
-                            String oldFile = oldUrl.substring("/uploads/".length());
-                            Path oldPath = uploadBaseDir.resolve(oldFile).normalize();
-                            if (oldPath.startsWith(uploadBaseDir)) {
-                                Files.deleteIfExists(oldPath);
-                                logger.info("AUDIT: Deleted old image file: {}", oldPath);
-                            } else {
-                                logger.warn("Security: Path traversal attempt prevented during edit deletion: {}",
-                                        oldUrl);
+                    String oldUrl = event.getImageUrl();
+                    String savedUrl = saveUploadedImage(imageFile);
+                    if (savedUrl != null) {
+                        event.setImageUrl(savedUrl);
+                        // Best-effort delete of old image to prevent orphaned files
+                        if (oldUrl != null && oldUrl.startsWith("/uploads/")) {
+                            try {
+                                String oldFile = oldUrl.substring("/uploads/".length());
+                                Path oldPath = uploadBaseDir.resolve(oldFile).normalize();
+                                if (oldPath.startsWith(uploadBaseDir)) {
+                                    Files.deleteIfExists(oldPath);
+                                    logger.info("AUDIT: Deleted old image file: {}", oldPath);
+                                } else {
+                                    logger.warn("Security: Path traversal attempt prevented during edit deletion: {}",
+                                            oldUrl);
+                                }
+                            } catch (Exception e) {
+                                logger.warn("Failed to delete old image file: {}", oldUrl, e);
                             }
-                        } catch (Exception e) {
-                            logger.warn("Failed to delete old image file: {}", oldUrl, e);
                         }
+                    } else {
+                        redirectAttributes.addFlashAttribute("error",
+                                "Invalid image file. Allowed: JPG, PNG, WebP, GIF.");
+                        return "redirect:/admin/dashboard";
                     }
                 }
-            }
 
             eventService.saveEvent(event);
             redirectAttributes.addFlashAttribute("success", "Event updated successfully!");

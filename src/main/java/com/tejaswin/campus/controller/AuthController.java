@@ -2,6 +2,7 @@ package com.tejaswin.campus.controller;
 
 import com.tejaswin.campus.model.User;
 import com.tejaswin.campus.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class AuthController {
     @PostMapping("/admin/login")
     public String adminLogin(@RequestParam String username,
             @RequestParam String password,
-            HttpSession session,
+            HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
         User user = userService.authenticate(username, password);
@@ -54,7 +55,13 @@ public class AuthController {
             return "redirect:/admin/login";
         }
 
-        session.setAttribute("loggedInUser", user);
+        // Prevent session fixation: invalidate old session and start a fresh one
+        HttpSession oldSession = request.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("loggedInUser", user);
         return "redirect:/admin/dashboard";
     }
 
