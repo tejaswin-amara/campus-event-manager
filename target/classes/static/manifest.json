@@ -1,0 +1,16 @@
+{
+  "name": "CampusConnect",
+  "short_name": "CampusConnect",
+  "start_url": "/student/dashboard",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#6366f1",
+  "description": "Discover and register for campus events.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

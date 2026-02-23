@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css?v=3}">
+    <script th:src="@{/js/main.js}" defer></script>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="manifest" href="/manifest.json">
+    <!-- SEO & Social Meta Tags -->
+    <meta property="og:title" content="CampusConnect - Discover Events">
+    <meta property="og:description"
+        content="Stay updated with the latest workshops, seminars, and cultural events on campus.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body>
+    <!-- Hidden inputs for Premium Toast Notifications -->
+    <input type="hidden" id="flashSuccessMsg" th:value="${success}">
+    <input type="hidden" id="flashErrorMsg" th:value="${error}">
+
+    <!-- 📱 Mobile Header (Visible < 992px) -->
+    <header class="mobile-header d-lg-none glass">
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-link text-white p-0" onclick="toggleSidebar()" aria-label="Open Navigation Menu">
+                <i class="bi bi-list fs-1" aria-hidden="true"></i>
+            </button>
+            <span class="fs-5 fw-bold text-white tracking-wide ms-2">CampusConnect</span>
+        </div>
+        <!-- Optional: Profile Icon or simple placeholder -->
+        <div class="rounded-circle bg-gradient d-flex align-items-center justify-content-center"
+            style="width: 32px; height: 32px; background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
+            <i class="bi bi-person-fill"></i>
+        </div>
+    </header>
+
+    <!-- 🌑 Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()" id="sidebarOverlay"></div>
+
+    <div class="app-container">
+        <!-- 🧊 Sidebar (Fixed Desktop / Offcanvas Mobile) -->
+        <nav class="sidebar" id="sidebar">
+            <!-- Brand (Desktop) -->
+            <div class="mb-5 d-none d-lg-block px-2 text-center text-lg-start">
+                <img th:src="@{/images/logo.png}" alt="CampusConnect" class="brand-logo d-block">
+            </div>
+
+            <!-- Nav Links (Student Filters) -->
+            <ul class="nav flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="filterCategory('all', this)">
+                        <i class="bi bi-grid-fill"></i> All Events
+                    </a>
+                </li>
+
+                <!-- Time Filters -->
+                <li class="nav-item">
+                    <span class="text-muted small text-uppercase px-3 fw-bold mt-4 mb-2 d-block"
+                        style="font-size: 0.7rem;">Time</span>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterStatus('Upcoming', this)">
+                        <i class="bi bi-calendar-check text-green"></i> Upcoming
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterStatus('Ongoing', this)">
+                        <i class="bi bi-broadcast text-blue"></i> Ongoing
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterStatus('Past', this)">
+                        <i class="bi bi-clock-history text-muted"></i> Past
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <span class="text-muted small text-uppercase px-3 fw-bold mt-4 mb-2 d-block"
+                        style="font-size: 0.7rem;">Categories</span>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterCategory('Technical', this)">
+                        <i class="bi bi-cpu text-blue"></i> Technical
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterCategory('Cultural', this)">
+                        <i class="bi bi-palette text-pink"></i> Cultural
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterCategory('Sports', this)">
+                        <i class="bi bi-trophy text-orange"></i> Sports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterCategory('Workshop', this)">
+                        <i class="bi bi-tools text-green"></i> Workshop
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="filterCategory('Seminar', this)">
+                        <i class="bi bi-mic text-purple"></i> Seminar
+                    </a>
+                </li>
+            </ul>
+
+
+        </nav>
+
+        <!-- 🚀 Main Content -->
+        <main class="main-content">
+            <!-- Header Area -->
+            <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 gap-3 animate-in">
+                <div>
+                    <h2 class="fw-bold mb-1">Discover Events</h2>
+                    <p class="text-muted small mb-0">What's happening on campus today</p>
+                </div>
+
+                <!-- Search (Responsive) -->
+                <div class="position-relative w-100" style="max-width: 350px;">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <input type="text" id="searchInput" class="form-control ps-5 rounded-pill"
+                        placeholder="Search events..." aria-label="Search campus events">
+                </div>
+            </div>
+
+            <!-- Server-Side Empty State -->
+            <div th:if="${#lists.isEmpty(events)}" class="text-center py-5">
+                <div class="glass p-5 rounded-4 d-inline-block">
+                    <i class="bi bi-calendar-x fs-1 text-muted opacity-50 mb-3 d-block"></i>
+                    <h3 class="h5 fw-bold text-white">No Events Found</h3>
+                    <p class="text-muted mb-0">There are no events scheduled at the moment.</p>
+                </div>
+            </div>
+
+            <!-- Client-Side Search No Results (Hidden by default) -->
+            <div id="noResults" class="text-center py-5 d-none">
+                <i class="bi bi-search fs-1 text-muted opacity-25"></i>
+                <p class="mt-2 text-muted">No events found matching your search.</p>
+            </div>
+
+            <!-- Event Grid -->
+            <!-- Only show grid if events exist -->
+            <div th:unless="${#lists.isEmpty(events)}" class="event-grid" id="eventsGrid">
+                <div th:each="event, stat : ${events}" th:data-category="${event.category}" class="event-item">
+                    <!-- Event Card -->
+                    <div class="event-card" onclick="openDetailModal(this)" th:data-id="${event.id}" role="button"
+                        tabindex="0" th:aria-label="'View details for ' + ${event.title}" th:data-title="${event.title}"
+                        th:data-desc="${event.description}"
+                        th:data-date="${#temporals.format(event.dateTime, 'EEE, MMM dd, yyyy')}"
+                        th:data-enddate="${event.endDateTime != null ? #temporals.format(event.endDateTime, 'EEE, MMM dd, yyyy') : ''}"
+                        th:data-time="${#temporals.format(event.dateTime, 'h:mm a')}"
+                        th:data-endtime="${event.endDateTime != null ? #temporals.format(event.endDateTime, 'h:mm a') : ''}"
+                        th:data-venue="${event.venue}" th:data-cat="${event.category}" th:data-img="${event.imageUrl}"
+                        th:data-link="${event.registrationLink}">
+
+                        <div class="card-img-wrapper">
+                            <img th:if="${event.imageUrl != null and !#strings.isEmpty(event.imageUrl)}"
+                                th:src="${event.imageUrl}" class="card-img" loading="lazy">
+                            <div th:if="${event.imageUrl == null or #strings.isEmpty(event.imageUrl)}"
+                                class="d-flex align-items-center justify-content-center h-100 bg-dark text-muted fs-1 opacity-25">
+                                <i class="bi bi-image"></i>
+                            </div>
+                            <div class="position-absolute top-0 end-0 p-3">
+                                <span class="badge-pill glass event-status"
+                                    th:data-status="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')"
+                                    th:classappend="${event.dateTime.isAfter(now)} ? 'text-green' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'text-blue' : 'text-muted')"
+                                    th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="mb-2">
+                                <span class="badge-pill"
+                                    th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
+                                    th:text="${event.category}">Category</span>
+                            </div>
+                            <h5 class="event-title mb-1 text-truncate" th:text="${event.title}">Title</h5>
+                            <div class="d-flex align-items-center gap-2 text-muted small mb-3">
+                                <i class="bi bi-calendar3"></i>
+                                <div class="small fw-semibold text-white"
+                                    th:text="${#temporals.format(event.dateTime, 'MMM dd, yyyy')}">Date</div>
+                                <div class="small text-muted"
+                                    th:if="${event.endDateTime != null && !event.endDateTime.toLocalDate().isEqual(event.dateTime.toLocalDate())}"
+                                    th:text="'to ' + ${#temporals.format(event.endDateTime, 'MMM dd, yyyy')}">to Date
+                                </div>
+                                <span class="mx-1">•</span>
+                                <i class="bi bi-geo-alt"></i> <span class="text-truncate" style="max-width: 120px;"
+                                    th:text="${event.venue}">Venue</span>
+                            </div>
+
+                            <!-- Action Area (Visual Only, entire card is clickable) -->
+                            <div class="mt-auto">
+                                <button class="btn-action w-100 justify-content-center">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Event Detail Modal (Refined Split View) -->
+    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-hidden="true">
+        <!-- Changed to modal-xl for better split view, removed scrollable to handle internal scrolling -->
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content glass overflow-hidden"
+                style="border: 1px solid var(--border-glass); height: 85vh;">
+                <button type="button"
+                    class="btn position-absolute top-0 end-0 m-3 z-3 glass rounded-circle p-0 d-flex align-items-center justify-content-center"
+                    data-bs-dismiss="modal" aria-label="Close" style="width: 40px; height: 40px;">
+                    <i class="bi bi-x-lg fs-5"></i>
+                </button>
+
+                <div class="modal-body p-0 h-100">
+                    <div class="row g-0 h-100">
+                        <!-- Left Column: Poster Image -->
+                        <div
+                            class="col-lg-5 bg-black d-flex align-items-center justify-content-center h-100 position-relative">
+                            <!-- Loading Placeholder or Fallback icon -->
+                            <i class="bi bi-image text-muted opacity-25 fs-1 position-absolute"></i>
+                            <img id="detailImg" src="" class="img-fluid position-relative z-1"
+                                style="max-height: 100%; width: 100%; object-fit: contain; display: none;">
+                        </div>
+
+                        <!-- Right Column: Details -->
+                        <div class="col-lg-7 h-100">
+                            <div class="p-4 h-100 d-flex flex-column overflow-hidden custom-scrollbar">
+                                <div class="pe-5 flex-shrink-0">
+                                    <!-- Padding for close button, flex-shrink-0 to prevent crushing -->
+                                    <span id="detailCat" class="badge-pill mb-2">Category</span>
+                                    <h2 id="detailTitle" class="fw-bold mb-3 l-spacing-tight">Event Title</h2>
+                                </div>
+
+                                <!-- Meta Grid -->
+                                <div class="d-flex flex-wrap gap-3 justify-content-between mb-3 border-bottom border-secondary pb-3 flex-shrink-0"
+                                    style="border-color: var(--border-glass) !important;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle glass d-flex align-items-center justify-content-center"
+                                            style="width: 40px; height: 40px;">
+                                            <i class="bi bi-calendar3 text-pink"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted text-uppercase fw-bold d-block"
+                                                style="font-size: 0.65rem;">Date</small>
+                                            <span id="detailDate" class="fw-semibold small">Date</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle glass d-flex align-items-center justify-content-center"
+                                            style="width: 40px; height: 40px;">
+                                            <i class="bi bi-clock text-blue"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted text-uppercase fw-bold d-block"
+                                                style="font-size: 0.65rem;">Time</small>
+                                            <span id="detailTime" class="fw-semibold small">Time</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle glass d-flex align-items-center justify-content-center"
+                                            style="width: 40px; height: 40px;">
+                                            <i class="bi bi-geo-alt text-orange"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted text-uppercase fw-bold d-block"
+                                                style="font-size: 0.65rem;">Venue</small>
+                                            <span id="detailVenue" class="fw-semibold small">Venue</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- About Section -->
+                                <!-- About Section (Fill remaining space, scroll internally if needed) -->
+                                <div class="mb-3 flex-grow-1 overflow-y-auto custom-scrollbar pe-2">
+                                    <h5 class="fw-bold mb-2 small text-uppercase text-muted">About this Event</h5>
+                                    <p id="detailDesc" class="text-muted" style="font-size: 0.95rem; line-height: 1.6;">
+                                        Description...</p>
+                                </div>
+
+                                <!-- Action Footer (Sticky Bottom) -->
+                                <div class="d-grid gap-2 d-sm-flex align-items-center mt-auto pt-3 border-top border-secondary flex-shrink-0"
+                                    style="border-color: var(--border-glass) !important;">
+                                    <a id="detailLink" href="#" target="_blank"
+                                        class="btn btn-action px-4 d-none flex-grow-1">
+                                        Register Now <i class="bi bi-arrow-right-short ms-2"></i>
+                                    </a>
+                                    <button id="calendarBtn" class="btn glass px-3 flex-grow-1">
+                                        <i class="bi bi-calendar-plus me-2"></i> Add to Calendar
+                                    </button>
+                                </div>
+
+                                <div id="qrCodeContainer" class="mt-5 pt-3 text-center border-top border-secondary"
+                                    style="border-color: var(--border-glass) !important; display: none;">
+                                    <small class="text-muted d-block mb-3">Scan to Register</small>
+                                    <!-- QR Code Canvas will be appended here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 📱 Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
+        // 🔍 Search
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const q = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.event-item');
+            let visible = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent.toLowerCase();
+                const venue = card.querySelector('.bi-geo-alt').nextElementSibling.textContent.toLowerCase();
+                // Check if card is currently hidden by category filter?
+                // Ideally search should search ALL, or only filtered.
+                // Let's assume search searches within the current view or resets filter.
+                // Simple implementation: Search + current Text matching.
+
+                // For better UX: Search matches override category? Or combined?
+                // Let's stick to simple text match for now on all cards.
+
+                if (title.includes(q) || venue.includes(q)) {
+                    card.style.display = 'block';
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            checkEmpty(visible);
+        });
+
+        function checkEmpty(count) {
+            const noRes = document.getElementById('noResults');
+            noRes.className = count === 0 ? 'text-center py-5 d-block' : 'd-none';
+        }
+
+        // 🏷️ Category Filter
+        function filterCategory(cat, btn) {
+            // Update Active State
+            document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Mobile: Close sidebar on selection
+            if (window.innerWidth < 992) {
+                toggleSidebar();
+            }
+
+            const cards = document.querySelectorAll('.event-item');
+            let visible = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.dataset.category;
+                if (cat === 'all' || cardCat === cat) {
+                    card.style.display = 'block';
+                    // Re-trigger animation
+                    card.classList.remove('animate-in');
+                    void card.offsetWidth; // Trigger reflow
+                    card.classList.add('animate-in');
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            checkEmpty(visible);
+        }
+
+        // ⏳ Status Filter
+        function filterStatus(status, btn) {
+            // Update Active State
+            document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (window.innerWidth < 992) toggleSidebar();
+
+            const cards = document.querySelectorAll('.event-item');
+            let visible = 0;
+
+            cards.forEach(card => {
+                // Get status from the badge we added data-status to
+                const badge = card.querySelector('.event-status');
+                const cardStatus = badge ? badge.getAttribute('data-status') : '';
+
+                if (cardStatus === status) {
+                    card.style.display = 'block';
+                    card.classList.remove('animate-in');
+                    void card.offsetWidth;
+                    card.classList.add('animate-in');
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            checkEmpty(visible);
+        }
+
+        // 🖼️ Modal Logic
+        const detailModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
+
+        function openDetailModal(btn) {
+            const title = btn.dataset.title;
+            const desc = btn.dataset.desc;
+            const date = btn.dataset.date;
+            const endDate = btn.dataset.enddate;
+            const time = btn.dataset.time;
+            const endTime = btn.dataset.endtime;
+
+            document.getElementById('detailTitle').innerText = title;
+            document.getElementById('detailDesc').innerText = desc;
+
+            // Logic for Date Range Display
+            let dateDisplay = `${date}`;
+            if (endDate && endDate !== date) {
+                dateDisplay += ` - ${endDate}`;
+            }
+            document.getElementById('detailDate').textContent = dateDisplay;
+
+            // Logic for Time Range Display
+            let timeDisplay = `${time}`;
+            if (endTime) { // Simplified check
+                timeDisplay += ` - ${endTime}`;
+            }
+            document.getElementById('detailTime').textContent = timeDisplay;
+
+            document.getElementById('detailVenue').textContent = btn.dataset.venue;
+
+            const cat = btn.dataset.cat;
+            const catBadge = document.getElementById('detailCat');
+            catBadge.textContent = cat;
+
+            // Reset classes
+            catBadge.className = 'badge-pill mb-2';
+            if (cat === 'Technical') catBadge.classList.add('badge-tech');
+            else if (cat === 'Cultural') catBadge.classList.add('badge-cultural');
+            else if (cat === 'Sports') catBadge.classList.add('badge-sports');
+            else if (cat === 'Workshop') catBadge.classList.add('badge-workshop');
+            else if (cat === 'Seminar') catBadge.classList.add('badge-seminar');
+            else catBadge.classList.add('glass');
+
+            const img = btn.dataset.img;
+            const imgEl = document.getElementById('detailImg');
+            // Logic: If image exists, show it. The parent container controls the black bg.
+            if (img) {
+                imgEl.src = img;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+                // Optional: We could hide the left column or show a fallback, 
+                // but the template has a fallback icon behind the image, so hiding img exposes that. Perfect.
+            }
+
+            const link = btn.dataset.link;
+            const btnEl = document.getElementById('detailLink');
+            const calBtn = document.getElementById('calendarBtn');
+            const qrContainer = document.getElementById('qrCodeContainer');
+
+            // Reset QR container between opens
+            qrContainer.innerHTML = '<small class="text-muted d-block mb-3">Scan to Register</small>';
+            qrContainer.style.display = 'none';
+
+            if (link) {
+                btnEl.href = link;
+                btnEl.classList.remove('d-none');
+                btnEl.classList.add('d-block');
+
+                // QR Code
+                generateQRCode('qrCodeContainer', link);
+                qrContainer.style.display = 'block';
+            } else {
+                btnEl.classList.remove('d-block');
+                btnEl.classList.add('d-none');
+            }
+
+            // Calendar Download
+            calBtn.onclick = () => downloadICS(title, desc, date, time, btn.dataset.venue);
+
+            detailModal.show();
+        }
+
+        // Auto-open from URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const openId = params.get('open');
+            if (openId) {
+                const btn = document.querySelector(`.event-card[data-id="${openId}"]`);
+                if (btn) openDetailModal(btn);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - CampusConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/style.css?v=3}">
+</head>
+
+<body>
+
+    <!-- Particles Background -->
+    <canvas id="particleCanvas"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+
+    <div class="d-flex align-items-center justify-content-center min-vh-100 px-3">
+        <div class="glass-card w-100 animate-in text-center" style="max-width: 480px; padding: 2.5rem;">
+
+            <!-- Icon -->
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-gradient rounded-circle mb-3"
+                    style="width: 80px; height: 80px; background: rgba(239, 68, 68, 0.15); box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);">
+                    <i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
+                </div>
+                <h1 class="fw-bold text-white mb-2">Oops!</h1>
+                <p class="text-muted">Something went wrong or the page you're looking for doesn't exist.</p>
+            </div>
+
+            <!-- Detailed Error Box -->
+            <div class="glass p-3 rounded-3 mb-4 text-start border-0" style="background: rgba(0, 0, 0, 0.3);">
+                <div class="d-flex align-items-center gap-2 mb-2 border-bottom border-secondary pb-2"
+                    style="border-color: var(--border-glass) !important;">
+                    <i class="bi bi-terminal text-danger"></i>
+                    <span class="text-white fw-bold small text-uppercase">Error Details</span>
+                </div>
+
+                <div class="font-monospace small text-break" style="color: #fca5a5; font-size: 0.85rem;">
+                    <!-- Custom 404 Message -->
+                    <span th:if="${status == 404}">
+                        The page you requested could not be found. It might have been moved or deleted.
+                    </span>
+                    <!-- Default Error Message -->
+                    <span th:unless="${status == 404}" th:text="${message} ?: 'An unexpected error occurred.'">Error
+                        message...</span>
+                </div>
+
+                <div class="mt-2 pt-2 border-top border-secondary d-flex justify-content-between align-items-center"
+                    th:if="${status}" style="border-color: var(--border-glass) !important;">
+                    <span class="text-muted x-small text-uppercase">Status Code</span>
+                    <span class="badge bg-danger bg-opacity-10 text-danger" th:text="${status}">500</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <a th:href="@{/}"
+                class="btn-action shadow-lg text-decoration-none d-inline-flex justify-content-center w-100">
+                <i class="bi bi-house-door-fill me-2"></i> Return Home
+            </a>
+
+            <div class="mt-3">
+                <button onclick="history.back()" class="btn btn-link text-muted text-decoration-none small hover-white">
+                    <i class="bi bi-arrow-left me-1"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particle Animation (Red Theme)
+        (function () {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const count = 30;
+
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3, // Slower
+                    vy: (Math.random() - 0.5) * 0.3,
+                    s: Math.random() * 2 + 0.5
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.2)'; // Faint Red
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+    </script>
+</body>
+
+</html>
