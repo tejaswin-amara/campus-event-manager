@@ -18,3 +18,16 @@ uploads/
 test_results.txt
 .qodo/
 *.log
+
+# Packages
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# JVM crashes
+hs_err_pid*
+replay_pid*
