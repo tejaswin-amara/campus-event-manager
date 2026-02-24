@@ -164,7 +164,7 @@
                         th:data-venue="${event.venue}" th:data-cat="${event.category}" th:data-img="${event.imageUrl}"
                         th:data-link="${event.registrationLink}">
 
-                        <div class="card-img-wrapper position-relative">
+                        <div class="card-banner">
                             <img th:if="${event.imageUrl != null and !#strings.isEmpty(event.imageUrl)}"
                                 th:src="@{${event.imageUrl}}" class="card-img" loading="lazy"
                                 onerror="this.onerror=null; this.src='/images/logo.png'; this.classList.add('opacity-25');">
@@ -179,11 +179,10 @@
                                     th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
                                     th:text="${event.category}">Category</span>
                             </div>
-                            <div class="position-absolute top-0 end-0 p-3 z-1">
-                                <span class="badge-pill border-0 shadow-sm"
-                                    th:styleappend="${event.dateTime.isAfter(now)} ? 'background: rgba(16, 185, 129, 0.85); color: #fff; backdrop-filter: blur(4px);' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'background: rgba(6, 182, 212, 0.85); color: #fff; backdrop-filter: blur(4px);' : 'background: rgba(100, 116, 139, 0.85); color: #fff; backdrop-filter: blur(4px);')"
-                                    th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
-                            </div>
+                            <!-- Status Badge -->
+                            <span class="status-badge"
+                                th:classappend="${event.dateTime.isAfter(now)} ? 'badge-upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'badge-ongoing' : 'badge-past')"
+                                th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
                         </div>
 
                         <div class="card-content d-flex flex-column h-100">

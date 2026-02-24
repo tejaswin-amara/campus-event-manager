@@ -114,9 +114,8 @@
                                 style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: monospace; font-size: 11px;">⌘K</span>
                         </div>
                     </div>
-                    <a th:href="@{/admin/export-events}"
-                        class="btn btn-export-ghost rounded-pill px-4 flex-shrink-0 text-decoration-none d-flex align-items-center justify-content-center transition-all">
-                        <i class="bi bi-file-earmark-spreadsheet me-2"></i> Export CSV
+                    <a th:href="@{/admin/export-events}" class="btn-export">
+                        <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
                     </a>
                 </div>
             </div>
@@ -128,36 +127,23 @@
                     <div class="row g-3 h-100">
                         <!-- Total -->
                         <div class="col-md-4">
-                            <div
-                                class="glass-card stat-card h-100 d-flex flex-column justify-content-center position-relative overflow-hidden">
-                                <i class="bi bi-calendar2-event position-absolute"
-                                    style="font-size: 120px; opacity: 0.04; right: -20px; top: 50%; transform: translateY(-50%);"></i>
-                                <span class="text-label fw-bold mb-2 position-relative z-1">TOTAL EVENTS</span>
-                                <h2 class="fw-bold text-primary mb-0 position-relative z-1 counter-value"
-                                    th:data-target="${totalEvents}" style="font-size: 56px;">0</h2>
+                            <div class="stat-card" data-icon="📅">
+                                <div class="stat-label">TOTAL EVENTS</div>
+                                <div class="stat-number" th:data-countup="${totalEvents}">0</div>
                             </div>
                         </div>
                         <!-- Upcoming -->
                         <div class="col-md-4">
-                            <div class="glass-card stat-card h-100 d-flex flex-column justify-content-center position-relative overflow-hidden"
-                                style="background: linear-gradient(145deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%); border-color: rgba(16, 185, 129, 0.15);">
-                                <i class="bi bi-rocket-takeoff position-absolute text-green"
-                                    style="font-size: 120px; opacity: 0.04; right: -20px; top: 50%; transform: translateY(-50%);"></i>
-                                <span class="text-green text-uppercase small fw-bold mb-2 position-relative z-1"
-                                    style="letter-spacing: 0.1em;">UPCOMING</span>
-                                <h2 class="fw-bold text-white mb-0 position-relative z-1 counter-value"
-                                    th:data-target="${upcomingEvents}" style="font-size: 56px;">0</h2>
+                            <div class="stat-card" data-icon="🚀">
+                                <div class="stat-label" style="color: var(--success)">UPCOMING</div>
+                                <div class="stat-number" th:data-countup="${upcomingEvents}">0</div>
                             </div>
                         </div>
                         <!-- Past -->
                         <div class="col-md-4">
-                            <div
-                                class="glass-card stat-card h-100 d-flex flex-column justify-content-center position-relative overflow-hidden">
-                                <i class="bi bi-clock-history position-absolute text-muted"
-                                    style="font-size: 120px; opacity: 0.04; right: -20px; top: 50%; transform: translateY(-50%);"></i>
-                                <span class="text-label fw-bold mb-2 position-relative z-1">PAST EVENTS</span>
-                                <h2 class="fw-bold text-muted mb-0 position-relative z-1 counter-value"
-                                    th:data-target="${pastEvents}" style="font-size: 56px;">0</h2>
+                            <div class="stat-card" data-icon="⏳">
+                                <div class="stat-label">PAST EVENTS</div>
+                                <div class="stat-number" th:data-countup="${pastEvents}">0</div>
                             </div>
                         </div>
                     </div>
@@ -348,15 +334,20 @@
 
                         <div class="mb-4">
                             <label class="form-label modal-label d-block text-start">EVENT BANNER</label>
-                            <div class="file-upload-zone text-center" id="createUploadZone"
-                                onclick="document.getElementById('createImageFile').click()">
+                            <div class="upload-zone" id="createUploadZone">
+                                <i class="bi bi-cloud-arrow-up fs-2 upload-icon"></i>
+                                <span class="upload-text fw-bold">Drag & drop or click to browse</span>
+                                <span class="upload-hint">PNG, JPG, WEBP — max 5MB</span>
                                 <input type="file" class="d-none file-input" name="imageFile" id="createImageFile"
-                                    accept="image/*">
-                                <i class="bi bi-cloud-upload fs-2 text-muted mb-2 d-block upload-icon"></i>
-                                <p class="text-muted small mb-0 upload-text">Drag & Drop or <span
-                                        class="text-primary fw-medium">Browse</span></p>
-                                <span class="file-name text-primary small d-block mt-2 fw-bold"
-                                    style="display: none;"></span>
+                                    accept="image/*" hidden>
+                            </div>
+                            <div class="upload-preview mt-3" id="createPreviewBox" style="display: none;">
+                                <img id="createPreviewImg" src="" alt="Preview">
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <span class="small fw-bold">Image ready</span>
+                                    <button type="button" class="remove-btn align-self-start mt-1"
+                                        onclick="clearCreateBanner()">Remove</button>
+                                </div>
                             </div>
                         </div>
 
@@ -449,14 +440,20 @@
 
                         <div class="mb-4">
                             <label class="form-label modal-label d-block text-start">CHANGE BANNER (OPTIONAL)</label>
-                            <div class="file-upload-zone text-center" id="editUploadZone"
-                                onclick="document.getElementById('editImageFile').click()">
+                            <div class="upload-zone" id="editUploadZone">
+                                <i class="bi bi-image fs-2 upload-icon"></i>
+                                <span class="upload-text fw-bold">Click to upload new image</span>
+                                <span class="upload-hint">PNG, JPG, WEBP — max 5MB</span>
                                 <input type="file" class="d-none file-input" name="imageFile" id="editImageFile"
-                                    accept="image/*">
-                                <i class="bi bi-image fs-2 text-muted mb-2 d-block upload-icon"></i>
-                                <p class="text-muted small mb-0 upload-text">Click to upload new image</p>
-                                <span class="file-name text-primary small d-block mt-2 fw-bold"
-                                    style="display: none;"></span>
+                                    accept="image/*" hidden>
+                            </div>
+                            <div class="upload-preview mt-3" id="editPreviewBox" style="display: none;">
+                                <img id="editPreviewImg" src="" alt="Preview">
+                                <div class="d-flex flex-column flex-grow-1">
+                                    <span class="small fw-bold">Image ready</span>
+                                    <button type="button" class="remove-btn align-self-start mt-1"
+                                        onclick="clearEditBanner()">Remove</button>
+                                </div>
                             </div>
                         </div>
 
@@ -656,45 +653,55 @@
                 requestAnimationFrame(step);
             });
             // 📂 Custom Drag and Drop JS
-            function initUploadZone(zoneId, inputId) {
+            function initUploadZone(zoneId, inputId, previewBoxId, previewImgId) {
                 const zone = document.getElementById(zoneId);
                 const input = document.getElementById(inputId);
+                const previewBox = document.getElementById(previewBoxId);
+                const previewImg = document.getElementById(previewImgId);
                 if (!zone || !input) return;
 
-                const fileNameSpan = zone.querySelector('.file-name');
-                const uploadText = zone.querySelector('.upload-text');
-                const uploadIcon = zone.querySelector('.upload-icon');
+                zone.addEventListener('click', () => input.click());
 
-                zone.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    zone.classList.add('drag-active');
+                input.addEventListener('change', e => {
+                    if (e.target.files[0]) showPreview(e.target.files[0]);
                 });
-                ['dragleave', 'dragend'].forEach(type => {
-                    zone.addEventListener(type, () => zone.classList.remove('drag-active'));
-                });
-                zone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    zone.classList.remove('drag-active');
-                    if (e.dataTransfer.files.length) {
-                        input.files = e.dataTransfer.files;
-                        updatePreview();
+                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-active'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('drag-active'));
+                zone.addEventListener('drop', e => {
+                    e.preventDefault(); zone.classList.remove('drag-active');
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                        const dt = new DataTransfer(); dt.items.add(file);
+                        input.files = dt.files;
+                        showPreview(file);
                     }
                 });
-                input.addEventListener('change', updatePreview);
 
-                function updatePreview() {
-                    if (input.files && input.files[0]) {
-                        fileNameSpan.textContent = input.files[0].name;
-                        fileNameSpan.style.display = 'block';
-                        uploadText.style.display = 'none';
-                        uploadIcon.classList.replace('bi-cloud-upload', 'bi-file-earmark-image');
-                        uploadIcon.classList.replace('bi-image', 'bi-file-earmark-image');
-                        zone.style.borderColor = 'var(--primary)';
-                    }
+                function showPreview(file) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        previewImg.src = e.target.result;
+                        previewBox.style.display = 'flex';
+                        zone.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
                 }
             }
-            initUploadZone('createUploadZone', 'createImageFile');
-            initUploadZone('editUploadZone', 'editImageFile');
+
+            initUploadZone('createUploadZone', 'createImageFile', 'createPreviewBox', 'createPreviewImg');
+            initUploadZone('editUploadZone', 'editImageFile', 'editPreviewBox', 'editPreviewImg');
+
+            window.clearCreateBanner = function () {
+                document.getElementById('createImageFile').value = '';
+                document.getElementById('createPreviewBox').style.display = 'none';
+                document.getElementById('createUploadZone').style.display = 'flex';
+            };
+
+            window.clearEditBanner = function () {
+                document.getElementById('editImageFile').value = '';
+                document.getElementById('editPreviewBox').style.display = 'none';
+                document.getElementById('editUploadZone').style.display = 'flex';
+            };
         });
     </script>
 </body>
