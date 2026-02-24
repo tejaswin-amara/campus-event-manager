@@ -62,11 +62,26 @@ public class AdminController {
         }
 
         List<Event> events = eventService.findAllEvents();
+        if (events == null)
+            events = java.util.Collections.emptyList();
+
         // Analytics
         model.addAttribute("totalEvents", events.size());
-        model.addAttribute("categoryCounts", eventService.getCategoryCounts());
-        model.addAttribute("upcomingEvents", eventService.getUpcomingEventsCount());
-        model.addAttribute("pastEvents", eventService.getPastEventsCount());
+
+        java.util.Map<String, Long> categoryCounts = eventService.getCategoryCounts();
+        if (categoryCounts == null)
+            categoryCounts = java.util.Collections.emptyMap();
+        model.addAttribute("categoryCounts", categoryCounts);
+
+        Long upcomingEvents = eventService.getUpcomingEventsCount();
+        if (upcomingEvents == null)
+            upcomingEvents = 0L;
+        model.addAttribute("upcomingEvents", upcomingEvents);
+
+        Long pastEvents = eventService.getPastEventsCount();
+        if (pastEvents == null)
+            pastEvents = 0L;
+        model.addAttribute("pastEvents", pastEvents);
 
         // System Health
         Runtime runtime = Runtime.getRuntime();

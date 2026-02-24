@@ -23,12 +23,15 @@ public class SecurityConfig {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/student/**", "/uploads/**", "/css/**", "/js/**",
-                                                                "/images/**",
+                                                                "/images/**", "/favicon.ico",
                                                                 "/admin/login",
                                                                 "/test/**")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint((request, response, authException) -> response
+                                                                .sendRedirect("/admin/login")))
                                 .formLogin(form -> form
                                                 .loginPage("/admin/login")
                                                 .loginProcessingUrl("/do-login")

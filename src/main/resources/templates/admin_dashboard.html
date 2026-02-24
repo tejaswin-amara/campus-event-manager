@@ -642,28 +642,19 @@
                 });
             }
 
-            // 🔢 Counter Animation (Stat Cards)
-            const counters = document.querySelectorAll('.counter-value');
             counters.forEach(counter => {
                 const target = +counter.getAttribute('data-target') || 0;
+                if (target <= 0) { counter.textContent = 0; return; }
                 const duration = 1000;
-                const stepTime = Math.abs(Math.floor(duration / (target || 1)));
-
-                let current = 0;
-                if (target > 0) {
-                    const timer = setInterval(() => {
-                        current += 1;
-                        counter.textContent = current;
-                        if (current >= target) {
-                            clearInterval(timer);
-                            counter.textContent = target;
-                        }
-                    }, stepTime);
-                } else {
-                    counter.textContent = 0;
+                const start = performance.now();
+                function step(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    counter.textContent = Math.floor(progress * target);
+                    if (progress < 1) requestAnimationFrame(step);
+                    else counter.textContent = target;
                 }
+                requestAnimationFrame(step);
             });
-
             // 📂 Custom Drag and Drop JS
             function initUploadZone(zoneId, inputId) {
                 const zone = document.getElementById(zoneId);

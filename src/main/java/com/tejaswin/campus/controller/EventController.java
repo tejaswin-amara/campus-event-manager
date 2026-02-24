@@ -57,6 +57,10 @@ public class EventController {
             events = eventService.findAllEvents();
         }
 
+        if (events == null) {
+            events = java.util.Collections.emptyList();
+        }
+
         model.addAttribute("events", events);
         model.addAttribute("user", user);
         model.addAttribute("now", java.time.LocalDateTime.now());
