@@ -18,7 +18,11 @@ jobs:
           MYSQL_DATABASE: campus_events
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
     - uses: actions/checkout@v4
@@ -34,4 +38,10 @@ jobs:
       run: chmod +x ./mvnw
       
     - name: Build with Maven
+      env:
+        SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/campus_events?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=10000
+        MYSQLHOST: 127.0.0.1
+        MYSQLPORT: 3306
+        MYSQLUSER: root
+        MYSQLPASSWORD: root
       run: ./mvnw -B package --file pom.xml
