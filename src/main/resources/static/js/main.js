@@ -58,7 +58,9 @@ function showToast(msg, type = 'info') {
     // Build close button
     const closeBtn = document.createElement('button');
     closeBtn.className = 'toast-close';
-    closeBtn.innerHTML = '<i class="bi bi-x"></i>';
+    const closeIcon = document.createElement('i');
+    closeIcon.className = 'bi bi-x';
+    closeBtn.appendChild(closeIcon);
     closeBtn.addEventListener('click', function () {
         toast.classList.add('hide');
         setTimeout(() => toast.remove(), 300);
@@ -127,7 +129,15 @@ function generateQRCode(containerId, url) {
     const container = document.getElementById(containerId);
     if (!container || !url) return;
 
-    container.innerHTML = `<div class="qr-container"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}" alt="Registration QR Code"></div>`;
+    const qrWrapper = document.createElement('div');
+    qrWrapper.className = 'qr-container';
+    const qrImg = document.createElement('img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+    qrImg.alt = 'Registration QR Code';
+    qrWrapper.appendChild(qrImg);
+
+    container.innerHTML = ''; // Clear container
+    container.appendChild(qrWrapper);
 }
 
 

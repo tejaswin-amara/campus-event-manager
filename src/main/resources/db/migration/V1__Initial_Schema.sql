@@ -7,8 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL,
-    email VARCHAR(100) UNIQUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    email VARCHAR(254) UNIQUE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 2. Events table with robust URL lengths
 CREATE TABLE IF NOT EXISTS events (
@@ -20,7 +19,8 @@ CREATE TABLE IF NOT EXISTS events (
     venue VARCHAR(255) NOT NULL,
     category VARCHAR(50) NOT NULL,
     registration_link VARCHAR(1000),
-    max_capacity INT CHECK (max_capacity > 0),
+    max_capacity INT,
+    CONSTRAINT chk_max_capacity_positive CHECK (max_capacity > 0),
     image_url VARCHAR(1000),
     responses_link VARCHAR(1000)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

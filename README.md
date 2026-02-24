@@ -108,6 +108,7 @@ Our 2026 security audit implemented a comprehensive Zero-Trust model:
 | Role | Username | Password |
 | :--- | :--- | :--- |
 | **Admin** | `admin` | *(set via `ADMIN_PASSWORD` env var on first run)* |
-| **Student** | *Guest Access* | *Automatic* || **Student** | *Guest Access* | *Automatic* |Integrated as per university guidelines. All rights reserved.
+| **Student** | *Guest Access* | *Automatic* |
 
+> Integrated as per university guidelines. All rights reserved.
 Created with ❤️ by **Tejaswin Amara**

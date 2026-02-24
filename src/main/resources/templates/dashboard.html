@@ -478,7 +478,11 @@
             const qrContainer = document.getElementById('qrCodeContainer');
 
             // Reset QR container between opens
-            qrContainer.innerHTML = '<small class="text-muted d-block mb-3">Scan to Register</small>';
+            const scanText = document.createElement('small');
+            scanText.className = 'text-muted d-block mb-3';
+            scanText.textContent = 'Scan to Register';
+            qrContainer.innerHTML = ''; // Clear container
+            qrContainer.appendChild(scanText);
             qrContainer.style.display = 'none';
 
             if (link) {

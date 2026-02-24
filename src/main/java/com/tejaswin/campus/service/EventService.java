@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -133,6 +135,7 @@ public class EventService {
      * @return true if created, false if already existed or invalid ids
      */
     @Transactional
+    @CircuitBreaker(name = "registrationService", fallbackMethod = "registrationFallback")
     public boolean registerStudent(@NonNull Long eventId, @NonNull Long userId) {
         // Just track unique interest/clicks for analytics
         if (registrationRepository.existsByUserIdAndEventId(userId, eventId)) {
@@ -154,6 +157,15 @@ public class EventService {
 
         registrationRepository.save(registration);
         return true;
+    }
+
+    /**
+     * Fallback for registration circuit breaker.
+     */
+    public boolean registrationFallback(Long eventId, Long userId, Throwable t) {
+        logger.error("Circuit breaker triggered for registration (event:{}, user:{}): {}", eventId, userId,
+                t.getMessage());
+        return false;
     }
 
     /**

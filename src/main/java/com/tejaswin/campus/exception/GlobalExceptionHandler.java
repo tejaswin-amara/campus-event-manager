@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
     public String handleMaxSizeException(MaxUploadSizeExceededException exc, Model model) {
         logger.warn("File upload size exceeded: {}", exc.getMessage());
         model.addAttribute("errorMessage", "File is too large! Please upload a smaller file.");
@@ -24,6 +25,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFound(NoHandlerFoundException exc, Model model) {
         logger.debug("Page not found: {}", exc.getRequestURL());
         model.addAttribute("message", "The page you requested could not be found.");
@@ -32,11 +34,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EventNotFoundException.class)
-    public String handleEventNotFound(EventNotFoundException exc,
-            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleEventNotFound(EventNotFoundException exc, Model model) {
         logger.warn("Event not found: {}", exc.getMessage());
-        redirectAttributes.addFlashAttribute("error", exc.getMessage());
-        return "redirect:/admin/dashboard";
+        model.addAttribute("message", exc.getMessage());
+        model.addAttribute("status", HttpStatus.NOT_FOUND.value());
+        return "error";
     }
 
     @ExceptionHandler(InvalidImageException.class)
@@ -48,6 +51,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleAccessDenied(org.springframework.security.access.AccessDeniedException exc, Model model) {
         logger.warn("Security Access Denied: {}", exc.getMessage());
         model.addAttribute("message", "You do not have permission to access this resource.");
@@ -64,7 +68,17 @@ public class GlobalExceptionHandler {
         return "redirect:/admin/login";
     }
 
+    @ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleConstraintViolation(jakarta.validation.ConstraintViolationException exc,
+            RedirectAttributes redirectAttributes) {
+        logger.warn("Constraint violation: {}", exc.getMessage());
+        redirectAttributes.addFlashAttribute("error", "Invalid input provided!");
+        return "redirect:/admin/login";
+    }
+
     @ExceptionHandler(Exception.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleGenericException(Exception exc, Model model) {
         logger.error("Unhandled exception caught by GlobalExceptionHandler", exc);
         model.addAttribute("message", "An unexpected error occurred. Please try again later.");

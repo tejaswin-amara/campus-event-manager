@@ -71,13 +71,14 @@ public class AuthController {
         // Prevent session fixation race conditions
         HttpSession oldSession = request.getSession(false);
         if (oldSession != null) {
-            try {
-                oldSession.invalidate();
-            } catch (IllegalStateException e) {
-                // Already invalidated
+            synchronized (oldSession) {
+                try {
+                    oldSession.invalidate();
+                } catch (IllegalStateException e) {
+                    // Already invalidated by a concurrent request
+                }
             }
         }
-
         HttpSession newSession = request.getSession(true);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));

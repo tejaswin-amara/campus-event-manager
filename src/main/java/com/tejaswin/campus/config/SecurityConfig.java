@@ -2,6 +2,7 @@ package com.tejaswin.campus.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.tejaswin.campus.security.RateLimitingFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,7 +24,8 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/student/**", "/uploads/**", "/css/**", "/js/**",
                                                                 "/images/**",
-                                                                "/admin/login")
+                                                                "/admin/login",
+                                                                "/test/**")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
