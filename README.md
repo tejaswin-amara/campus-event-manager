@@ -1,176 +1,124 @@
-# 🎓 Campus Event Manager
+# 🎓 Campus Event Manager (CampusConnect)
   
-*A modern, full-stack event management system tailored for university campuses.*
+![CampusConnect Hero](images/hero.png)
 
-[![Java Platforms](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com/)
+*A premium, full-stack event management ecosystem for high-performance university communities.*
+
+[![Java Version](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/technologies/downloads/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.2-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Thymeleaf](https://img.shields.io/badge/Thymeleaf-Frontend-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Security Hardened](https://img.shields.io/badge/Security-Zero--Trust_Audit-E11D48?style=for-the-badge&logo=spring-security&logoColor=white)](#-security-hardening)
+[![Flyway Migrations](https://img.shields.io/badge/DB-Flyway_Integrated-CC0201?style=for-the-badge&logo=flyway&logoColor=white)](https://flywaydb.org/)
+[![Resilience4j](https://img.shields.io/badge/Reliability-Resilience4j-F7DF1E?style=for-the-badge&logo=blueprint&logoColor=black)](#-architecture-resilience)
 
-[Student Dashboard](http://localhost:9090/) · [Admin Panel](http://localhost:9090/admin/login) · [Report Bug](#contributing) · [Request Feature](#contributing)
-
----
-
-## 📖 Table of Contents
-
-- [About the Project](#-about-the-project)
-- [Features (Ultimate Edition)](#-features-ultimate-edition)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Quick Start (PowerShell)](#quick-start-powershell)
-  - [Docker](#docker)
-- [Access Details](#-access-details)
-- [Environment Variables](#%EF%B8%8F-environment-variables)
-- [API Endpoints](#-api-endpoints)
-- [Structure Overview](#-structure-overview)
+[Student Dashboard](http://localhost:9090/) · [Admin Panel](http://localhost:9090/admin/login) · [Documentation](#-technical-architecture)
 
 ---
 
-## 🎯 About the Project
+## 🎯 Project Overview
 
-**Campus Event Manager** is a complete, mobile-first solution aiming to bridge the gap between students and university event organizers. It provides an intuitive platform where students can seamlessly discover and register for events while granting administrators powerful tools to create, manage, and analyze event data efficiently.
+**CampusConnect** is more than just an event listing site; it's a sophisticated university middleware designed with a **mobile-first** philosophy. Developed to bridge the communication gap between student organizations and university administrations, the platform leverages cutting-edge web design (glassmorphism, micro-animations) and enterprise-grade backend stability to provide a "handheld-first" campus experience.
+
+### 📱 Preview
+![Student View](images/student_view.png)
 
 ---
 
-## ✨ Features (Ultimate Edition)
+## ✨ Features
 
-The system is split into two primary experiences, ensuring each user archetype gets a tailored, distraction-free environment.
+### 🧑‍🎓 For Students
+- **Glassmorphism UI**: A premium, translucent interface inspired by modern design trends.
+- **Micro-Animations**: Fluid transitions and interactive elements for enhanced engagement.
+- **Dynamic QR Integration**: Automatic registration QR codes for instant event enrollment.
+- **Calendar Synchronization**: Export events directly to Google/Outlook with one click.
+- **Smart Filtering**: Categorize events by *Technical*, *Cultural*, *Sports*, *Workshop*, and more.
 
-### 🧑‍🎓 Student Experience
-- **Mobile-First Design**: Glassmorphism and micro-animations for a premium feel on any device.
-- **Fast Category Switching**: Interactive sidebar with skeleton loaders for instant feedback.
-- **Dynamic QR Codes**: Instant registration QR codes generated for every event.
-- **Add to Calendar**: One-click ICS generation for Google/Outlook integration.
-- **Premium Toasts**: Animated notifications for fluid and beautiful feedback.
-- **Time Filters**: Easily filter events by *Upcoming*, *Ongoing*, and *Past*.
+### 👨‍💼 For Administrators
+- **Interactive Analytics**: Real-time data visualization via `Chart.js` for engagement tracking.
+- **Lifecycle Management**: Secure creation, modification, and automated cleanup of event assets.
+- **Data Export**: One-click CSV export of university-wide event statistics.
+- **Health Monitoring**: Real-time server resource tracking (CPU, Memory) directly in the panel.
 
-### 👨‍💼 Admin Management Panel
-- **Full Event Control**: Create, update, and securely manage all campus events.
-- **Interactive Analytics**: Dynamic and beautiful `Chart.js` visual data representations.
-- **Zero-Overflow Layout**: Clean UI optimized for high-density data management.
-- **CSV Export**: Instantly export the full event database for offline analysis.
-- **SEO Optimized**: Open Graph tags integrated for rich social sharing.
-- **Auto-Cleanup**: Smart storage management that automatically deletes images when events are removed.
+---
 
-### 🛡️ Security & Hardening
-- **Zero-Trust Auth**: Replaced legacy hashing with `BCrypt` and constant-time execution to prevent timing attacks.
-- **CSRF Protection**: Integrated Spring Security CSRF protection across all administrative state-changing operations.
-- **Dynamic Rate Limiting**: Per-IP throttling implemented for admin logins using `Bucket4j`.
-- **Database Resilience**: Managed schema migrations via **Flyway** and atomic concurrency control with **Pessimistic Locks**.
-- **Secure Sessions**: Enforced `SameSite=Strict`, `HttpOnly`, and `Secure` cookie attributes.
+## 🏗️ Technical Architecture
+
+The application follows a clean, hexagonal-lite architecture with clearly defined boundaries for logic, security, and persistence.
+
+```mermaid
+graph TD
+    User((User/Student)) -->|HTTPS| WebLayer[Spring Boot Web Layer]
+    WebLayer -->|Filter| RateLimit[Bucket4j Rate Limiter]
+    RateLimit -->|Context| Security[Spring Security / CSRF]
+    Security -->|Service| CoreLogic[Core Event Service]
+    CoreLogic -->|JPA| DB[(MySQL Database)]
+    CoreLogic -.->|Circuit Breaker| ExtAPI[External Registration APIs]
+    CoreLogic -->|Filesystem| Storage[Uploads Storage]
+```
+
+### 🛡️ Security Hardening (Zero-Trust)
+Our 2026 security audit implemented a comprehensive Zero-Trust model:
+- **Authentication**: Atomic BCrypt hashing with constant-time comparison to negate side-channel attacks.
+- **Session Protection**: Hardened CSRF tokens and strict `SameSite=Strict`, `HttpOnly`, `Secure` cookie policies.
+- **Concurrency Control**: Pessimistic Write Locking (`PESSIMISTIC_WRITE`) on critical registration paths to prevent race conditions.
+- **Resource Protection**: Symbolic link validation and UUID-based filename sanitization for all uploads.
+
+### ⚡ Architecture Resilience
+- **Resilience4j Implementation**: All external registration redirects are wrapped in a **Circuit Breaker**.
+- **Flyway Migrations**: Transactional database schema management ensuring consistency across environments.
+- **Observability**: Structured MDC-based logging with Logstash encoder for auditability.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Backend** | Java 21, Spring Boot 3.4.2 |
+| **Security** | Spring Security 6.x, Bucket4j, Resilience4j |
+| **Frontend** | Thymeleaf, Vanilla CSS (Glassmorphism), JavaScript (ES6) |
+| **Database** | MySQL (InnoDB), Flyway (Migrations), JPA/Hibernate |
+| **Observability** | Logback (MDC), Logstash Encoder, SLF4J |
+| **Tools** | Maven, Docker, Chart.js, QRGen |
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
-
 ### Prerequisites
+- JDK 21+
+- MySQL Server 8.x
+- Docker (Optional)
 
-Ensure you have the following installed before starting:
-- **Java 21** or higher
-- **MySQL Server**
-- **Docker** (Optional, for containerized deployments)
-- Windows PowerShell (for the provided scripts)
+### Installation
+1. **Clone & Setup Environment:**
+   ```bash
+   git clone https://github.com/tejaswin-amara/campus-event-manager.git
+   cd campus-event-manager
+   ```
 
-### Quick Start (PowerShell)
+2. **Configure Database:**
+   Update your `application.properties` or set environment variables:
+   - `SPRING_DATASOURCE_URL`
+   - `SPRING_DATASOURCE_USERNAME`
+   - `SPRING_DATASOURCE_PASSWORD`
 
-The easiest way to launch the application is via the integrated PowerShell script.
-
-1. **Run the Application:**
-
-```powershell
-.\run_app.ps1
-```
-
-> 💡 **Automated Workflow**: This script automatically starts the MySQL service, builds the Java Spring Boot application using Maven, and opens the app in your default browser at `http://localhost:9090`.
-
-2. **Stop & Restart:**
-- **Stop gracefully**: Press `Ctrl + C` in the running terminal.
-- **Forced Stop**: Run `.\stop_app.ps1` to kill any port 9090 conflicts.
-- **Restart**: Simply execute `.\run_app.ps1` again.
-
-### 🐳 Docker
-
-Prefer containers? You can easily spin up the environment using Docker:
-
-```bash
-# Build the Docker image
-docker build -t campus-events .
-
-# Run the container (Make sure to map the database correctly)
-docker run -p 9090:9090 \
-  -e DB_URL=jdbc:mysql://host.docker.internal:3306/campus_events?createDatabaseIfNotExist=true \
-  -e DB_USERNAME=root \
-  -e DB_PASSWORD=root \
-  campus-events
-```
+3. **Run via PowerShell (Recommended):**
+   ```powershell
+   .\run_app.ps1
+   ```
 
 ---
 
-## 🔑 Access Details
+## 🔑 Default Accounts
 
-Once the application is running, you can access the different portals using the links and credentials below.
-
-| Portal | App Link | Login Credentials |
+| Role | Username | Password |
 | :--- | :--- | :--- |
-| **Student Dashboard** | [localhost:9090](http://localhost:9090/) | *Guest Login (No credentials required)* |
-| **Admin Panel** | [localhost:9090/admin/login](http://localhost:9090/admin/login) | Username: `admin` <br> Password: `admin123` |
+| **Admin** | `admin` | `admin123` |
+| **Student** | *Guest Access* | *Automatic* |
 
 ---
 
-## ⚙️ Environment Variables
+## 📜 License
+Integrated as per university guidelines. All rights reserved.
 
-The application can be configured via the `application.properties` file or by setting the following environment variables:
-
-| Variable | Default Value | Description |
-| :--- | :--- | :--- |
-| `PORT` | `9090` | The port the Spring Boot server runs on |
-| `DB_URL` | `jdbc:mysql://localhost:3306/campus_events` | The JDBC connection URL for MySQL |
-| `DB_USERNAME` | `root` | Database username |
-| `DB_PASSWORD` | `root` | Database password |
-| `DDL_AUTO` | `update` | Hibernate DDL mode (`update`, `validate`, `none`) |
-| `ADMIN_PASSWORD` | `admin123` | The default password for the admin account |
-| `UPLOAD_DIR` | `uploads` | Local directory for storing uploaded event images |
-| `LOG_LEVEL` | `DEBUG` | Application logging verbosity |
-| `SESSION_COOKIE_SECURE` | `false` | Sets the secure flag for session cookies (Set to `true` in Production) |
-
----
-
-## 🔗 API Endpoints
-
-A quick reference for the core routing of the application:
-
-### Public & Student routes
-- `GET /` - Root directly auto-logins as guest and redirects to the dashboard.
-- `GET /student/dashboard` - Main student event listing interface.
-- `GET /student/event/{id}` - Event detail page (or redirects back to dashboard in some configurations).
-- `GET /student/register-external/{id}` - Redirects the user to an external registration link.
-
-### Admin routes
-- `GET /admin/login` - Admin authentication page.
-- `POST /admin/login` - Form submission for admin authentication.
-- `GET /admin/dashboard` - Admin dashboard featuring analytics and event management.
-- `POST /admin/events/add` - Endpoint to process new event creations.
-- `POST /admin/events/edit/{id}` - Endpoint to process event updates.
-- `POST /admin/events/delete/{id}` - Endpoint to handle event deletions.
-- `GET /admin/events/export/csv` - Initiates a CSV file download of all events.
-
----
-
-## 📂 Structure Overview
-
-```text
-📦 Campus Event Manager
- ┣ 📂 src/main/resources
- ┃ ┣ 📂 static             # CSS, Micro-animations, PWA Assets, JS
- ┃ ┗ 📂 templates          # Thymeleaf HTML Views
- ┣ 📜 run_app.ps1          # Integrated startup script (App + DB)
- ┣ 📜 stop_app.ps1         # Emergency port killer
- ┣ 📜 Dockerfile           # Multi-stage Docker build config
- ┣ 📜 .dockerignore        # Docker context exclusions
- ┗ 📜 pom.xml              # Maven project dependencies
-```  
- 
- 
+Created with ❤️ by **Tejaswin Amara**

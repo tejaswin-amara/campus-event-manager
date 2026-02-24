@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     private String uploadDir = "uploads";
+    private int bcryptStrength = 12;
+    private int sessionTimeout = 1800; // 30 minutes in seconds
     private RateLimit rateLimit = new RateLimit();
 
     public String getUploadDir() {
@@ -16,6 +18,22 @@ public class AppConfig {
 
     public void setUploadDir(String uploadDir) {
         this.uploadDir = uploadDir;
+    }
+
+    public int getBcryptStrength() {
+        return bcryptStrength;
+    }
+
+    public void setBcryptStrength(int bcryptStrength) {
+        this.bcryptStrength = bcryptStrength;
+    }
+
+    public int getSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    public void setSessionTimeout(int sessionTimeout) {
+        this.sessionTimeout = sessionTimeout;
     }
 
     public RateLimit getRateLimit() {

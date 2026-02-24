@@ -1,0 +1,38 @@
+-- V1__Initial_Schema.sql
+-- Security remediated schema based on Zero-Trust audit
+
+-- 1. Users table with 72-char password limit for BCrypt
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(72) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    email VARCHAR(100)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 2. Events table with robust URL lengths
+CREATE TABLE IF NOT EXISTS events (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    date_time DATETIME NOT NULL,
+    end_date_time DATETIME,
+    venue VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    registration_link VARCHAR(1000),
+    max_capacity INT,
+    image_url VARCHAR(1000),
+    responses_link VARCHAR(1000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 3. Registrations with UNIQUE constraint to prevent race condition duplicates
+CREATE TABLE IF NOT EXISTS registrations (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'INTERESTED',
+    user_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
+    CONSTRAINT uk_user_event UNIQUE (user_id, event_id),
+    CONSTRAINT fk_registration_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_registration_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

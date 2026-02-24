@@ -1,23 +1,31 @@
 package com.tejaswin.campus.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final Path uploadBaseDir;
+    private final int bcryptStrength;
 
-    public WebMvcConfig(@Value("${app.upload-dir:uploads}") String uploadDir) {
-        this.uploadBaseDir = Paths.get(uploadDir).toAbsolutePath().normalize();
+    public WebMvcConfig(com.tejaswin.campus.config.AppConfig appConfig) {
+        this.uploadBaseDir = Paths.get(appConfig.getUploadDir()).toAbsolutePath().normalize();
+        this.bcryptStrength = appConfig.getBcryptStrength();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(bcryptStrength);
     }
 
     @Override

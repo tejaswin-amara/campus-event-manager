@@ -73,7 +73,7 @@ public class AdminControllerSecurityTest {
         mockMvc.perform(post("/admin/login")
                 .param("username", "admin")
                 .param("password", giantPassword)
-                .with(csrf()))
+                .with((org.springframework.test.web.servlet.request.RequestPostProcessor) csrf()))
                 // Allow both the 400 framework Bad Request or exactly matching our explicit 30x
                 // logic fallback
                 .andExpect(result -> {

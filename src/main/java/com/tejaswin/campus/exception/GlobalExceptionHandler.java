@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +29,39 @@ public class GlobalExceptionHandler {
         model.addAttribute("message", "The page you requested could not be found.");
         model.addAttribute("status", HttpStatus.NOT_FOUND.value());
         return "error";
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public String handleEventNotFound(EventNotFoundException exc,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        logger.warn("Event not found: {}", exc.getMessage());
+        redirectAttributes.addFlashAttribute("error", exc.getMessage());
+        return "redirect:/admin/dashboard";
+    }
+
+    @ExceptionHandler(InvalidImageException.class)
+    public String handleInvalidImage(InvalidImageException exc,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        logger.warn("Invalid image upload: {}", exc.getMessage());
+        redirectAttributes.addFlashAttribute("error", exc.getMessage());
+        return "redirect:/admin/dashboard";
+    }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public String handleAccessDenied(org.springframework.security.access.AccessDeniedException exc, Model model) {
+        logger.warn("Security Access Denied: {}", exc.getMessage());
+        model.addAttribute("message", "You do not have permission to access this resource.");
+        model.addAttribute("status", HttpStatus.FORBIDDEN.value());
+        return "error";
+    }
+
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    public String handleAuthenticationException(org.springframework.security.core.AuthenticationException exc,
+            RedirectAttributes redirectAttributes) {
+        logger.warn("Authentication failure: {}", exc.getMessage());
+        redirectAttributes.addFlashAttribute("error",
+                "Your session has expired or authentication failed. Please login again.");
+        return "redirect:/admin/login";
     }
 
     @ExceptionHandler(Exception.class)
