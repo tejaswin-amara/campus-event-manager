@@ -28,8 +28,14 @@ WORKDIR /app
 # Copy the built JAR from builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Create uploads directory
-RUN mkdir -p uploads && chown -R appuser:appgroup /app
+# Create uploads directory and set permissions
+RUN mkdir -p uploads && chown -R appuser:appgroup /app/uploads
+
+# Set upload directory environment variable explicitely
+ENV UPLOAD_DIR=/app/uploads
+
+# Expose volume for persistent images on platforms like Railway
+VOLUME /app/uploads
 
 USER appuser
 
