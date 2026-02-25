@@ -1,23 +1,8 @@
-# Maven
+# ==============================================================================
+# Java & Maven
+# ==============================================================================
 target/
 *.class
-
-# IDEs
-.idea/
-.vscode/
-*.iml
-*.iws
-*.ipr
-
-# OS
-.DS_Store
-Thumbs.db
-
-# App Specific
-uploads/
-test_results.txt
-.qodo/
-*.log
 
 # Packages
 *.jar
@@ -28,6 +13,53 @@ test_results.txt
 *.tar.gz
 *.rar
 
-# JVM crashes
+# ==============================================================================
+# IDEs & Editor Files
+# ==============================================================================
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.classpath
+*.project
+*.settings/
+*.log
+
+# ==============================================================================
+# OS Generated Files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==============================================================================
+# App Specific & Logs
+# ==============================================================================
+uploads/
+test_results.txt
+*.log
+logs/
+
+# ==============================================================================
+# Environment & Local Configuration
+# ==============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+application-dev.properties
+application-local.properties
+application-local.yml
+
+# ==============================================================================
+# Agent tools / Temporary
+# ==============================================================================
+.qodo/
 hs_err_pid*
 replay_pid*
