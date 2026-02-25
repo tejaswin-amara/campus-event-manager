@@ -21,6 +21,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     long countByDateTimeAfter(LocalDateTime dateTime);
 
+    Page<Event> findByDateTimeAfterOrderByDateTimeAsc(LocalDateTime dateTime, Pageable pageable);
+
     List<Event> findByTitleContainingIgnoreCaseOrVenueContainingIgnoreCase(String title, String venue);
 
     Page<Event> findByTitleContainingIgnoreCaseOrVenueContainingIgnoreCase(String title, String venue,
@@ -38,4 +40,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT COUNT(e) FROM Event e WHERE (e.endDateTime IS NOT NULL AND e.endDateTime < :now) OR (e.endDateTime IS NULL AND e.dateTime < :now)")
     long countPastEvents(@Param("now") LocalDateTime now);
+
+    @Query("SELECT e FROM Event e WHERE e.dateTime <= :now AND e.endDateTime IS NOT NULL AND e.endDateTime > :now")
+    Page<Event> findOngoingEventsPage(@Param("now") LocalDateTime now, Pageable pageable);
+
+    @Query("SELECT e FROM Event e WHERE (e.endDateTime IS NOT NULL AND e.endDateTime < :now) OR (e.endDateTime IS NULL AND e.dateTime < :now)")
+    Page<Event> findPastEventsPage(@Param("now") LocalDateTime now, Pageable pageable);
 }

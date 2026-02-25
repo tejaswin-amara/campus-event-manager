@@ -91,9 +91,4 @@ public class AuthController {
         return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        sessionService.invalidateSession();
-        return "redirect:/";
-    }
 }

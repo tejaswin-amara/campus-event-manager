@@ -8,92 +8,279 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css?v=5}">
+    <link rel="stylesheet" th:href="@{/css/style.css?v=6}">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
     <script th:src="@{/js/main.js}" defer></script>
     <link rel="manifest" href="/manifest.json">
-    <!-- SEO & Social Meta Tags -->
-    <meta property="og:title" content="Admin Login - CampusConnect">
-    <meta property="og:description"
-        content="Administrator portal for managing campus events, venues, and student registrations safely.">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#12121A">
-    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        :root {
+            --login-bg: #030308;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+        }
+
+        body {
+            background: var(--login-bg);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ✨ Cyber Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+                linear-gradient(to bottom, #030308, #0a0a1a);
+        }
+
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 500px;
+            transform: rotateX(45deg);
+            transform-origin: top;
+            opacity: 0.5;
+        }
+
+        /* 💎 Refined Glass Card */
+        .login-card {
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card-inner {
+            background: rgba(18, 18, 30, 0.95);
+            border-radius: 22px;
+            padding: 0.5rem;
+            z-index: 1;
+        }
+
+        /* ⚡ Input Polish */
+        .form-floating>.form-control {
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+            border-radius: 12px !important;
+            height: 60px;
+        }
+
+        .form-floating>.form-control:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .form-floating>label {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .input-group-text {
+            border-radius: 0 12px 12px 0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-left: none !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        /* 🚀 Button Shimmer */
+        .btn-premium {
+            background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+            border: none;
+            color: white;
+            height: 56px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-premium::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+            left: -150%;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-premium:hover::after {
+            left: 150%;
+        }
+
+        .btn-premium:active {
+            transform: translateY(0);
+        }
+
+        /* 📉 Animations */
+        .stagger-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .brand-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+
+        .brand-icon-wrapper i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+        }
+
+        .pulsate {
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Hidden inputs for Premium Toast Notifications -->
-    <input type="hidden" id="flashSuccessMsg" th:value="${success}">
-    <input type="hidden" id="flashErrorMsg" th:value="${error}">
-
-    <!-- Particles Background -->
-    <canvas id="particleCanvas"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+    <!-- 🌌 Cyber Background -->
+    <div class="cyber-bg">
+        <div class="cyber-grid"></div>
+        <canvas id="particleCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+    </div>
 
     <div class="d-flex align-items-center justify-content-center min-vh-100 px-3">
-        <div class="glass-card w-100 animate-in" style="max-width: 400px; padding: 2.5rem;">
-
-            <!-- Logo / Icon -->
+        <div class="login-card stagger-in">
             <div class="text-center mb-4">
-                <img th:src="@{/images/logo.png}" alt="CampusConnect" class="brand-logo-lg">
-                <h3 class="fw-bold text-white mb-1">Admin Access</h3>
-                <p class="text-muted small">Welcome back, please login</p>
+                <div class="brand-icon-wrapper">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+                <h2 class="fw-bold text-white mb-1 stagger-in delay-1">Admin Portal</h2>
+                <p class="text-muted stagger-in delay-2">Secure access to CampusConnect</p>
             </div>
 
-            <form th:action="@{/admin/login}" method="post">
+            <form th:action="@{/admin/login}" method="post" class="stagger-in delay-3">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                <!-- Static alerts for login status -->
-                <div th:if="${param.error}" class="alert alert-danger mb-4 rounded-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    <div>⚠ Invalid username or password.</div>
+                <!-- Alerts -->
+                <div th:if="${param.error}"
+                    class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small rounded-3 mb-4 animate-in">
+                    <i class="bi bi-exclamation-circle me-2"></i> Invalid credentials.
                 </div>
-                <div th:if="${param.logout}" class="alert alert-success mb-4 rounded-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <div>✓ You have been signed out.</div>
-                </div>
-                <div th:if="${error != null}"
-                    class="alert alert-warning mb-4 rounded-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-shield-lock-fill"></i>
-                    <div>🔒 Too many attempts. Please wait before trying again.</div>
+                <div th:if="${param.logout}"
+                    class="alert alert-info border-0 bg-info bg-opacity-10 text-info small rounded-3 mb-4 animate-in">
+                    <i class="bi bi-info-circle me-2"></i> Successfully signed out.
                 </div>
 
                 <!-- Username -->
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username"
-                        required autofocus
-                        style="background: rgba(255,255,255,0.03); border-color: var(--border-glass); color: white;">
-                    <label for="username" class="fw-bold px-3 d-flex align-items-center gap-2">
-                        <i class="bi bi-person text-muted"></i> Username
-                    </label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                        required autofocus>
+                    <label for="username"><i class="bi bi-person me-2"></i>Username</label>
                 </div>
 
-                <!-- Password with Toggle -->
+                <!-- Password -->
                 <div class="input-group mb-4">
                     <div class="form-floating flex-grow-1">
-                        <input type="password" class="form-control border-end-0" id="password" name="password"
-                            placeholder="Enter password" required
-                            style="background: rgba(255,255,255,0.03); border-color: var(--border-glass); border-top-right-radius: 0; border-bottom-right-radius: 0; color: white;">
-                        <label for="password" class="fw-bold px-3 d-flex align-items-center gap-2">
-                            <i class="bi bi-lock text-muted"></i> Password
-                        </label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                            required
+                            style="border-top-right-radius:0 !important; border-bottom-right-radius:0 !important;">
+                        <label for="password"><i class="bi bi-key me-2"></i>Password</label>
                     </div>
-                    <span class="input-group-text bg-transparent text-muted cursor-pointer"
-                        style="border-color: var(--border-glass); background: rgba(255,255,255,0.03) !important; cursor: pointer; border-left: none;"
-                        onclick="togglePassword()">
-                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    <span class="input-group-text cursor-pointer" onclick="togglePassword()" style="cursor: pointer;">
+                        <i class="bi bi-eye text-muted" id="toggleIcon"></i>
                     </span>
                 </div>
 
-                <!-- Submit -->
-                <button type="submit" class="btn-action w-100 justify-content-center shadow-lg mb-4">
-                    Sign In <i class="bi bi-arrow-right-short ms-1"></i>
+                <!-- Submit Button -->
+                <button type="submit" class="btn-premium w-100 mb-4" id="loginBtn">
+                    <span>Sign In</span>
+                    <i class="bi bi-arrow-right"></i>
                 </button>
 
-                <!-- Back Link -->
-                <div class="text-center">
-                    <a th:href="@{/}" class="text-muted text-decoration-none small hover-white opacity-75">
-                        <i class="bi bi-arrow-left me-1"></i> Back to Student Portal
+                <!-- Footer Links -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <a th:href="@{/}" class="text-muted text-decoration-none small hover-white">
+                        <i class="bi bi-house-door me-1"></i> Student View
+                    </a>
+                    <a href="#" class="text-muted text-decoration-none small"
+                        onclick="alert('Please contact the IT department for password resets.'); return false;">
+                        Forgot Password?
                     </a>
                 </div>
             </form>
@@ -101,7 +288,6 @@
     </div>
 
     <script>
-        // Toggle Password Visibility
         function togglePassword() {
             const input = document.getElementById('password');
             const icon = document.getElementById('toggleIcon');
@@ -114,42 +300,56 @@
             }
         }
 
-        // Particle Animation (Subtler)
+        // Particle System
         (function () {
             const canvas = document.getElementById('particleCanvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
-            const count = 40; // Reduced count
+            const count = 50;
 
-            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-            window.addEventListener('resize', resize);
-            resize();
+            function init() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', init);
+            init();
 
             for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    s: Math.random() * 2 // Smaller particles
+                    size: Math.random() * 2 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.2
                 });
             }
 
-            function animate() {
+            function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(99, 102, 241, 0.3)'; // Dimmer
                 particles.forEach(p => {
-                    p.x += p.vx; p.y += p.vy;
-                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
+
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
                 });
-                requestAnimationFrame(animate);
+                requestAnimationFrame(draw);
             }
-            animate();
+            draw();
         })();
+
+        // Loading State
+        document.querySelector('form').onsubmit = function () {
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Authenticating...';
+        };
     </script>
 </body>
 

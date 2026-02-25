@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css?v=5}">
+    <link rel="stylesheet" th:href="@{/css/style.css?v=7}">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
     <script th:src="@{/js/main.js}" defer></script>
     <!-- SEO & Social Meta Tags -->
@@ -35,7 +35,7 @@
         </div>
         <div class="rounded-circle bg-gradient d-flex align-items-center justify-content-center"
             style="width: 32px; height: 32px; background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
-            <span th:text="${#strings.substring(user.username,0,1).toUpperCase()}">A</span>
+            <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'A'}">A</span>
         </div>
     </header>
 
@@ -53,7 +53,8 @@
             <!-- Nav Links -->
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" onclick="filterCategory('all', this)">
+                    <a th:href="@{/admin/dashboard}" class="nav-link"
+                        th:classappend="${activeStatus == null && searchQuery == null} ? 'active' : ''">
                         <i class="bi bi-grid-fill"></i> All Events
                     </a>
                 </li>
@@ -63,17 +64,20 @@
                         style="font-size: 0.7rem;">Time</span>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="filterStatus('Upcoming', this)">
+                    <a th:href="@{/admin/dashboard(status='Upcoming')}" class="nav-link"
+                        th:classappend="${activeStatus == 'Upcoming'} ? 'active' : ''">
                         <i class="bi bi-calendar-check text-green"></i> Upcoming
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="filterStatus('Ongoing', this)">
+                    <a th:href="@{/admin/dashboard(status='Ongoing')}" class="nav-link"
+                        th:classappend="${activeStatus == 'Ongoing'} ? 'active' : ''">
                         <i class="bi bi-broadcast text-blue"></i> Ongoing
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="filterStatus('Past', this)">
+                    <a th:href="@{/admin/dashboard(status='Past')}" class="nav-link"
+                        th:classappend="${activeStatus == 'Past'} ? 'active' : ''">
                         <i class="bi bi-clock-history text-muted"></i> Past
                     </a>
                 </li>
@@ -86,7 +90,11 @@
 
             <!-- User Profile (Sign Out Only) -->
             <div class="mt-auto border-top border-secondary pt-3" style="border-color: var(--border-glass) !important;">
-                <a th:href="@{/logout}" class="nav-link text-danger">
+                <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </form>
+                <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit();"
+                    class="nav-link text-danger">
                     <i class="bi bi-box-arrow-right"></i> Sign Out
                 </a>
             </div>
@@ -94,222 +102,214 @@
 
         <!-- 🚀 Main Content -->
         <main class="main-content">
+            <div th:if="${user != null}">
+                <!-- Dashboard Title Area -->
+                <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-in">
+                    <div>
+                        <h2 class="fw-bold mb-1">Overview</h2>
+                        <p class="text-muted small mb-0">Manage events and view analytics.</p>
+                    </div>
 
-            <!-- Dashboard Title Area -->
-            <div
-                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-in">
-                <div>
-                    <h2 class="fw-bold mb-1">Overview</h2>
-                    <p class="text-muted small mb-0">Manage events and view analytics.</p>
+                    <!-- Search & Actions (Responsive) -->
+                    <div class="d-flex flex-column flex-sm-row gap-3 w-100 justify-content-end"
+                        style="max-width: 500px;">
+                        <form th:action="@{/admin/dashboard}" method="get"
+                            class="position-relative flex-grow-1 admin-search-wrapper">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 search-icon text-muted"></i>
+                            <input type="text" name="search" id="searchInput"
+                                class="form-control rounded-pill admin-search-input" th:value="${searchQuery}"
+                                placeholder="Search events..." aria-label="Search events to manage">
+                            <div
+                                class="position-absolute top-50 end-0 translate-middle-y me-3 search-shortcut d-none d-md-block pointer-events-none">
+                                <span class="badge rounded-pill"
+                                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: monospace; font-size: 11px;">⌘K</span>
+                            </div>
+                        </form>
+                        <a th:href="@{/admin/export-events}" class="btn-export">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Search & Actions (Responsive) -->
-                <div class="d-flex flex-column flex-sm-row gap-3 w-100 justify-content-end" style="max-width: 500px;">
-                    <div class="position-relative flex-grow-1 admin-search-wrapper">
-                        <i
-                            class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 search-icon text-muted"></i>
-                        <input type="text" id="searchInput" class="form-control rounded-pill admin-search-input"
-                            placeholder="Search events..." aria-label="Search events to manage">
-                        <div
-                            class="position-absolute top-50 end-0 translate-middle-y me-3 search-shortcut d-none d-md-block pointer-events-none">
-                            <span class="badge rounded-pill"
-                                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: monospace; font-size: 11px;">⌘K</span>
+                <!-- 📊 Stats & Charts Grid -->
+                <div class="row g-4 mb-4 animate-in" style="animation-delay: 0.05s;">
+                    <!-- Total -->
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="stat-card h-100" data-icon="📅">
+                            <div class="stat-label">TOTAL</div>
+                            <div class="stat-number" th:data-countup="${totalEvents}" th:text="${totalEvents}">0</div>
                         </div>
                     </div>
-                    <a th:href="@{/admin/export-events}" class="btn-export">
-                        <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
-                    </a>
+                    <!-- Upcoming -->
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="stat-card h-100" data-icon="🚀">
+                            <div class="stat-label" style="color: var(--success)">UPCOMING</div>
+                            <div class="stat-number" th:data-countup="${upcomingEvents}" th:text="${upcomingEvents}">0
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ongoing -->
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="stat-card h-100" data-icon="📡">
+                            <div class="stat-label" style="color: var(--secondary)">ONGOING</div>
+                            <div class="stat-number" th:data-countup="${ongoingEvents}" th:text="${ongoingEvents}">0
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Past -->
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="stat-card h-100" data-icon="⏳">
+                            <div class="stat-label">PAST</div>
+                            <div class="stat-number" th:data-countup="${pastEvents}" th:text="${pastEvents}">0</div>
+                        </div>
+                    </div>
+
+                    <!-- 📈 Analytics Chart Column -->
+                    <div class="col-12 col-lg-4">
+                        <div class="glass-card h-100 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted small fw-bold text-uppercase">Distribution</span>
+                                <i class="bi bi-pie-chart-fill text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 position-relative" style="min-height: 150px;">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 📋 Data Table (Responsive Wrapper) -->
+                <div class="glass-card p-0 overflow-hidden animate-in" style="animation-delay: 0.1s;">
+                    <div class="table-responsive">
+                        <table class="table table-custom w-100" id="eventsTable">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4" style="width: 40px;">#</th>
+                                    <th style="min-width: 150px;">Title</th>
+                                    <th style="min-width: 100px;">Category</th>
+                                    <th style="min-width: 160px;">Date & Time</th>
+                                    <th style="min-width: 120px;">Venue</th>
+                                    <th style="min-width: 90px;">Status</th>
+                                    <th class="text-end pe-4" style="min-width: 90px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Event Row -->
+                                <tr th:each="event, stat : ${events}" class="align-middle fade-in"
+                                    th:data-category="${event.category}"
+                                    th:data-status="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">
+                                    <td class="ps-4 text-muted" th:text="${stat.index + 1}">1</td>
+                                    <td>
+                                        <div class="fw-bold text-white text-truncate" style="max-width: 200px;"
+                                            th:text="${event.title}">Title</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-pill"
+                                            th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
+                                            th:text="${event.category}">Category</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column" style="line-height: 1.3;">
+                                            <div class="small fw-semibold text-white"
+                                                th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Date</div>
+
+                                            <!-- Handle optional end date (if different) -->
+                                            <div class="small text-muted"
+                                                th:if="${event.endDateTime != null && !event.endDateTime.toLocalDate().isEqual(event.dateTime.toLocalDate())}"
+                                                th:text="'to ' + ${#temporals.format(event.endDateTime, 'MMM dd')}">to
+                                                Date</div>
+
+                                            <div class="small text-muted"
+                                                th:text="${#temporals.format(event.dateTime, 'h:mm a')}">Time</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate text-white" style="max-width: 120px;"
+                                            th:text="${event.venue}">Venue
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-pill border-0"
+                                            style="font-size: 0.7rem; padding: 0.3em 0.8em;"
+                                            th:classappend="${event.dateTime.isAfter(now)} ? 'badge-upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'badge-ongoing' : 'badge-past')"
+                                            th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <button type="button" class="btn-icon-ghost hover-edit"
+                                                onclick="openEditModal(this)" th:data-id="${event.id}"
+                                                th:data-title="${event.title}" th:data-category="${event.category}"
+                                                th:data-datetime="${event.dateTime}"
+                                                th:data-enddatetime="${event.endDateTime}"
+                                                th:data-venue="${event.venue}" th:data-link="${event.registrationLink}"
+                                                th:data-desc="${event.description}" th:data-image="${event.imageUrl}"
+                                                th:data-responses="${event.responsesLink}"
+                                                th:data-capacity="${event.maxCapacity}" title="Edit"
+                                                aria-label="Edit this event">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button type="button" class="btn-icon-ghost hover-delete"
+                                                data-bs-toggle="modal" data-bs-target="#deleteEventModal"
+                                                th:onclick="'setDeleteId(' + ${event.id} + ')'" title="Delete"
+                                                aria-label="Delete this event">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${events == null or events.isEmpty()}">
+                                    <td colspan="7" class="text-center py-5 text-muted">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <i class="bi bi-inbox fs-1 mb-2" style="opacity: 0.5;"></i>
+                                            <p class="mb-0">No events found matching your criteria.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 🔄 Pagination Controls -->
+                    <div class="px-4 py-3 border-top border-white-10 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3"
+                        th:if="${totalPages > 0}">
+                        <div class="text-muted small">
+                            Showing page <span class="text-white fw-bold" th:text="${currentPage + 1}">1</span> of
+                            <span class="text-white fw-bold" th:text="${totalPages}">1</span>
+                            (Total: <span th:text="${totalItems}">0</span> records)
+                        </div>
+                        <nav aria-label="Events table navigation">
+                            <ul class="pagination pagination-sm mb-0 admin-pagination custom-pagination">
+                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link border-0"
+                                        th:href="@{/admin/dashboard(page=${currentPage - 1}, search=${searchQuery})}"
+                                        tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+                                    th:classappend="${currentPage == pageNum} ? 'active'">
+                                    <a class="page-link border-0"
+                                        th:href="@{/admin/dashboard(page=${pageNum}, search=${searchQuery})}"
+                                        th:text="${pageNum + 1}">1</a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                                    <a class="page-link border-0"
+                                        th:href="@{/admin/dashboard(page=${currentPage + 1}, search=${searchQuery})}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
 
-            <!-- 📊 Stats & Charts Grid -->
-            <div class="row g-4 mb-4 animate-in" style="animation-delay: 0.05s;">
-                <!-- Total -->
-                <div class="col-6 col-md-3 col-lg-2">
-                    <div class="stat-card h-100" data-icon="📅">
-                        <div class="stat-label">TOTAL</div>
-                        <div class="stat-number" th:data-countup="${totalEvents}">0</div>
-                    </div>
+            <div class="glass-card p-5 text-center animate-in" th:if="${user == null}">
+                <div class="rounded-circle bg-danger bg-opacity-10 mx-auto mb-4 d-flex align-items-center justify-content-center"
+                    style="width: 64px; height: 64px;">
+                    <i class="bi bi-shield-lock-fill text-danger fs-3"></i>
                 </div>
-                <!-- Upcoming -->
-                <div class="col-6 col-md-3 col-lg-2">
-                    <div class="stat-card h-100" data-icon="🚀">
-                        <div class="stat-label" style="color: var(--success)">UPCOMING</div>
-                        <div class="stat-number" th:data-countup="${upcomingEvents}">0</div>
-                    </div>
-                </div>
-                <!-- Ongoing -->
-                <div class="col-6 col-md-3 col-lg-2">
-                    <div class="stat-card h-100" data-icon="📡">
-                        <div class="stat-label" style="color: var(--secondary)">ONGOING</div>
-                        <div class="stat-number" th:data-countup="${ongoingEvents}">0</div>
-                    </div>
-                </div>
-                <!-- Past -->
-                <div class="col-6 col-md-3 col-lg-2">
-                    <div class="stat-card h-100" data-icon="⏳">
-                        <div class="stat-label">PAST</div>
-                        <div class="stat-number" th:data-countup="${pastEvents}">0</div>
-                    </div>
-                </div>
-
-                <!-- 📈 Analytics Chart Column -->
-                <div class="col-12 col-lg-4">
-                    <div class="glass-card h-100 d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted small fw-bold text-uppercase">Distribution</span>
-                            <i class="bi bi-pie-chart-fill text-primary"></i>
-                        </div>
-                        <div class="flex-grow-1 position-relative" style="min-height: 150px;">
-                            <canvas id="categoryChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 📋 Data Table (Responsive Wrapper) -->
-            <div class="glass-card p-0 overflow-hidden animate-in" style="animation-delay: 0.1s;">
-                <div class="table-responsive">
-                    <table class="table table-custom w-100" id="eventsTable">
-                        <thead>
-                            <tr>
-                                <th class="ps-4" style="width: 40px;">#</th>
-                                <th style="min-width: 150px;">Title</th>
-                                <th style="min-width: 100px;">Category</th>
-                                <th style="min-width: 160px;">Date & Time</th>
-                                <th style="min-width: 120px;">Venue</th>
-                                <th style="min-width: 90px;">Status</th>
-                                <th class="text-end pe-4" style="min-width: 90px;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Event Row -->
-                            <tr th:each="event, stat : ${events}" class="align-middle fade-in"
-                                th:data-category="${event.category}"
-                                th:data-status="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">
-                                <td class="ps-4 text-muted" th:text="${stat.index + 1}">1</td>
-                                <td>
-                                    <div class="fw-bold text-white text-truncate" style="max-width: 200px;"
-                                        th:text="${event.title}">Title</div>
-                                </td>
-                                <td>
-                                    <span class="badge-pill"
-                                        th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
-                                        th:text="${event.category}">Category</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-column" style="line-height: 1.3;">
-                                        <div class="small fw-semibold text-white"
-                                            th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Date</div>
-
-                                        <!-- Handle optional end date (if different) -->
-                                        <div class="small text-muted"
-                                            th:if="${event.endDateTime != null && !event.endDateTime.toLocalDate().isEqual(event.dateTime.toLocalDate())}"
-                                            th:text="'to ' + ${#temporals.format(event.endDateTime, 'MMM dd')}">to
-                                            Date</div>
-
-                                        <div class="small text-muted"
-                                            th:text="${#temporals.format(event.dateTime, 'h:mm a')}">Time</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-truncate text-white" style="max-width: 120px;"
-                                        th:text="${event.venue}">Venue
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge-pill border-0" style="font-size: 0.7rem; padding: 0.3em 0.8em;"
-                                        th:classappend="${event.dateTime.isAfter(now)} ? 'badge-upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'badge-ongoing' : 'badge-past')"
-                                        th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn-icon-ghost hover-edit"
-                                            onclick="openEditModal(this)" th:data-id="${event.id}"
-                                            th:data-title="${event.title}" th:data-category="${event.category}"
-                                            th:data-datetime="${event.dateTime}"
-                                            th:data-enddatetime="${event.endDateTime}" th:data-venue="${event.venue}"
-                                            th:data-link="${event.registrationLink}" th:data-desc="${event.description}"
-                                            th:data-image="${event.imageUrl}" th:data-responses="${event.responsesLink}"
-                                            th:data-capacity="${event.maxCapacity}" title="Edit"
-                                            aria-label="Edit this event">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button type="button" class="btn-icon-ghost hover-delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteEventModal"
-                                            th:onclick="'setDeleteId(' + ${event.id} + ')'" title="Delete"
-                                            aria-label="Delete this event">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr th:if="${events == null or events.isEmpty()}">
-                                <td colspan="7" class="text-center py-5 text-muted">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <i class="bi bi-inbox fs-1 mb-2" style="opacity: 0.5;"></i>
-                                        <p class="mb-0">No events found matching your criteria.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- 🔄 Pagination Controls -->
-                <div class="px-4 py-3 border-top border-white-10 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3"
-                    th:if="${totalPages > 0}">
-                    <div class="text-muted small">
-                        Showing page <span class="text-white fw-bold" th:text="${currentPage + 1}">1</span> of
-                        <span class="text-white fw-bold" th:text="${totalPages}">1</span>
-                        (Total: <span th:text="${totalItems}">0</span> records)
-                    </div>
-                    <nav aria-label="Events table navigation">
-                        <ul class="pagination pagination-sm mb-0 admin-pagination custom-pagination">
-                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                                <a class="page-link border-0"
-                                    th:href="@{/admin/dashboard(page=${currentPage - 1}, search=${searchQuery})}"
-                                    tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
-                                th:classappend="${currentPage == pageNum} ? 'active'">
-                                <a class="page-link border-0"
-                                    th:href="@{/admin/dashboard(page=${pageNum}, search=${searchQuery})}"
-                                    th:text="${pageNum + 1}">1</a>
-                            </li>
-                            <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
-                                <a class="page-link border-0"
-                                    th:href="@{/admin/dashboard(page=${currentPage + 1}, search=${searchQuery})}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
-            <!-- Server-Side Pagination Controls -->
-            <div th:if="${totalPages > 1}" class="d-flex justify-content-between align-items-center mt-4 mb-2 px-3">
-                <span class="text-muted small">
-                    Showing page <span th:text="${currentPage + 1}">1</span> of <span th:text="${totalPages}">1</span>
-                    (<span th:text="${totalItems}">0</span> total events)
-                </span>
-                <nav aria-label="Event pagination">
-                    <ul class="pagination pagination-sm pagination-glass mb-0">
-                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                            <a class="page-link shadow-sm"
-                                th:href="@{/admin/dashboard(page=${currentPage - 1}, search=${searchQuery})}"
-                                tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                            th:classappend="${currentPage == i} ? 'active'">
-                            <a class="page-link shadow-sm"
-                                th:href="@{/admin/dashboard(page=${i}, search=${searchQuery})}" th:text="${i + 1}">1</a>
-                        </li>
-                        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                            <a class="page-link shadow-sm"
-                                th:href="@{/admin/dashboard(page=${currentPage + 1}, search=${searchQuery})}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                <h3 class="fw-bold text-white mb-2">Session Expired</h3>
+                <p class="text-muted mb-4">You are not currently logged in as an administrator.</p>
+                <a th:href="@{/admin/login}" class="btn-action justify-content-center">Go to Login</a>
             </div>
         </main>
     </div>
@@ -575,7 +575,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 
     <script th:inline="javascript">
         // 📱 Sidebar Toggle Function
@@ -682,14 +681,16 @@
             form.action = '/admin/delete-event/' + id;
             form.style.display = 'none';
 
-            const csrfName = "[[${_csrf.parameterName}]]";
-            const csrfTokenValue = "[[${_csrf.token}]]";
+            /*[# th:if="${_csrf}"]*/
+            const csrfName = /*[[${_csrf.parameterName}]]*/ 'csrfName';
+            const csrfTokenValue = /*[[${_csrf.token}]]*/ 'csrfToken';
 
             const csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
             csrfToken.name = csrfName;
             csrfToken.value = csrfTokenValue;
             form.appendChild(csrfToken);
+            /*[/]*/
 
             document.body.appendChild(form);
             document.getElementById('confirmDeleteBtn').onclick = (e) => {
@@ -698,29 +699,24 @@
             };
         }
 
-        // 📊 Chart Logic
+        // 📊 Chart Logic — uses server-side totals so distribution is always correct regardless of active filter
         document.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('categoryChart');
             if (ctx) {
-                const counts = { 'Technical': 0, 'Cultural': 0, 'Sports': 0, 'Workshop': 0, 'Seminar': 0 };
-                document.querySelectorAll('#eventsTable tbody tr').forEach(row => {
-                    const cat = row.getAttribute('data-category');
-                    if (cat && counts[cat] !== undefined) counts[cat]++;
-                });
+                // Server-provided counts across ALL events (not just the filtered page)
+                const categoryCounts = /*[[${categoryCounts}]]*/ {};
+                const labels = ['Technical', 'Cultural', 'Sports', 'Workshop', 'Seminar'];
+                const data = labels.map(l => categoryCounts[l] || 0);
+                const colors = ['#7C3AED', '#06B6D4', '#10B981', '#F59E0B', '#EC4899'];
+                const total = data.reduce((a, b) => a + b, 0);
 
                 new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: Object.keys(counts),
+                        labels: labels,
                         datasets: [{
-                            data: Object.values(counts),
-                            backgroundColor: [
-                                '#7C3AED',  // Technical
-                                '#06B6D4',  // Cultural
-                                '#10B981',  // Sports
-                                '#F59E0B',  // Workshop
-                                '#EC4899'   // Seminar
-                            ],
+                            data: data,
+                            backgroundColor: colors,
                             borderWidth: 0
                         }]
                     },
@@ -736,6 +732,14 @@
                                 position: 'right',
                                 labels: { color: '#a1a1aa', usePointStyle: true, boxWidth: 8 }
                             },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const pct = total > 0 ? Math.round(context.parsed / total * 100) : 0;
+                                        return ` ${context.label}: ${context.parsed} (${pct}%)`;
+                                    }
+                                }
+                            }
                         },
                         cutout: '75%'
                     }

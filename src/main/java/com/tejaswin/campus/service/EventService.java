@@ -137,6 +137,19 @@ public class EventService {
                 pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Event> findEventsByStatusPage(String status, Pageable pageable) {
+        LocalDateTime now = LocalDateTime.now();
+        if ("Upcoming".equalsIgnoreCase(status)) {
+            return eventRepository.findByDateTimeAfterOrderByDateTimeAsc(now, pageable);
+        } else if ("Ongoing".equalsIgnoreCase(status)) {
+            return eventRepository.findOngoingEventsPage(now, pageable);
+        } else if ("Past".equalsIgnoreCase(status)) {
+            return eventRepository.findPastEventsPage(now, pageable);
+        }
+        return findAllEventsPage(pageable);
+    }
+
     /**
      * Returns events by category ordered by start time desc.
      * If category is null/blank or 'all', returns all events.

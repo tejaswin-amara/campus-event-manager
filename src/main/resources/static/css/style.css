@@ -43,7 +43,13 @@
 
     /* Animation system */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    /* Standard: smooth decel */
+    --ease-enter: cubic-bezier(0.0, 0, 0.2, 1);
+    /* Entrances: decelerate in */
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    /* Exits: accelerate out */
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Playful overshoot */
     --dur-micro: 150ms;
     --dur-fast: 250ms;
     --dur-normal: 350ms;
@@ -103,18 +109,9 @@
     --radius-modal: 14px;
     --radius-pill: 999px;
 
-    /* 🏎️ Unified Animation Language */
-    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-
-    --dur-micro: 150ms;
-    --dur-overlay: 350ms;
-    --dur-complex: 500ms;
-
     /* 📐 Layout Variables */
     --sidebar-width: 260px;
     --mobile-header-height: 64px;
-    --tr-fast: 200ms ease;
-    --tr-smooth: 350ms cubic-bezier(0.4, 0, 0.2, 1);
     --bg-overlay: rgba(0, 0, 0, 0.5);
 }
 
@@ -152,7 +149,88 @@
     }
 }
 
-/* -------------------------------------------------------------------------
+/* =========================================================================
+   ANIMATION LIBRARY — Canonical @keyframes & Utility Classes
+   (Keep all keyframes here; reference them from components via these classes)
+   ========================================================================= */
+
+/* 1. Entrance: fade + slide up (the workhorse) */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 2. Modal scale-in */
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.00) translateY(0);
+    }
+}
+
+/* 3. Gentle float (for empty states / decorative elements) */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* 4. Ongoing event badge pulse */
+@keyframes badgePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(15, 217, 122, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(15, 217, 122, 0);
+    }
+}
+
+/* 5. Page-level entrance (applied to <body>) */
+@keyframes pageIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Utility Classes ── */
+.animate-in {
+    animation: fadeSlideUp var(--dur-normal) var(--ease-enter) both;
+}
+
+.fade-in {
+    animation: fadeSlideUp var(--dur-fast) var(--ease-enter) both;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* =========================================================================
    2. RESET & BASE STYLES
    ------------------------------------------------------------------------- */
 *,
@@ -304,10 +382,18 @@ body {
     left: 0;
     bottom: 0;
     z-index: 1050;
-    /* Above overlay */
     padding: 2rem 1.5rem;
     overflow-y: auto;
-    transition: transform var(--tr-smooth);
+    transition: transform var(--tr-smooth), visibility var(--tr-smooth);
+    /* Mobile-First: Start hidden */
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar.show {
+    transform: translateX(0) !important;
+    visibility: visible !important;
 }
 
 /* Mobile Header (Hidden on Desktop) */
@@ -374,11 +460,7 @@ body {
         display: flex;
     }
 
-    /* Sidebar transform off-screen */
-    .sidebar {
-        transform: translateX(-100%);
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
-    }
+    /* Sidebar is already hidden by default */
 
     .sidebar.show {
         transform: translateX(0);
@@ -397,6 +479,8 @@ body {
     /* Ensure sidebar is visible on desktop */
     .sidebar {
         transform: translateX(0) !important;
+        visibility: visible !important;
+        box-shadow: none !important;
     }
 
     /* Hide mobile toggles */
@@ -1454,7 +1538,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     background: var(--bg-modal);
     border: 1px solid var(--border-2);
     border-radius: var(--r-xl);
-    animation: modalIn var(--dur-normal) var(--ease) forwards;
+    animation: modalIn var(--dur-normal) var(--ease-enter) forwards;
 }
 
 .modal-header {
@@ -1490,17 +1574,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     border-top: 1px solid var(--border);
 }
 
-@keyframes modalIn {
-    from {
-        opacity: 0;
-        transform: scale(0.94) translateY(16px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1.00) translateY(0);
-    }
-}
+/* modalIn → defined in Animation Library section above */
 
 /* 2.6 Admin Dashboard stat cards layout */
 .stat-card {
@@ -1622,7 +1696,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     background: var(--bg-card);
     border: 1px solid var(--border);
     transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
-    animation: fadeUp var(--dur-normal) var(--ease) both;
+    animation: fadeSlideUp var(--dur-normal) var(--ease-enter) both;
 }
 
 .event-card:hover {
@@ -1642,17 +1716,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     color: var(--text-primary);
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* fadeUp → replaced by canonical .animate-in (.fadeSlideUp) */
 
 /* 4.1 Sidebar */
 .sidebar-link {
@@ -1719,16 +1783,6 @@ body {
     animation: pageIn 0.4s ease both;
 }
 
-@keyframes pageIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
 /* 2. Card "View Details" button hover glow + arrow slide */
 .event-card .btn-action {
     width: auto;
@@ -1792,19 +1846,7 @@ body {
     background: rgba(123, 111, 255, 0.5);
 }
 
-/* 5. Ongoing badge pulse animation */
+/* 5. Ongoing badge pulse — references canonical badgePulse keyframe */
 .badge-ongoing {
-    animation: ongoingPulse 2.5s ease-in-out infinite;
-}
-
-@keyframes ongoingPulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(15, 217, 122, 0.4);
-    }
-
-    50% {
-        box-shadow: 0 0 0 6px rgba(15, 217, 122, 0);
-    }
+    animation: badgePulse 2.5s ease-in-out infinite;
 }

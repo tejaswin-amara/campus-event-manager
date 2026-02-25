@@ -2,7 +2,6 @@ package com.tejaswin.campus.controller;
 
 import com.tejaswin.campus.model.Event;
 import com.tejaswin.campus.service.EventService;
-import com.tejaswin.campus.security.SecurityAuditLogger;
 import com.tejaswin.campus.service.SessionService;
 import com.tejaswin.campus.exception.EventNotFoundException;
 import com.tejaswin.campus.exception.InvalidImageException;
@@ -26,14 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -54,6 +46,7 @@ public class AdminController {
     @Transactional(readOnly = true)
     public String adminDashboard(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size,
             Model model) {
@@ -70,6 +63,9 @@ public class AdminController {
         if (search != null && !search.isBlank()) {
             eventsPage = eventService.searchEventsPage(search.trim(), pageable);
             model.addAttribute("searchQuery", search.trim());
+        } else if (status != null && !status.isBlank() && !"all".equalsIgnoreCase(status)) {
+            eventsPage = eventService.findEventsByStatusPage(status.trim(), pageable);
+            model.addAttribute("activeStatus", status.trim());
         } else {
             eventsPage = eventService.findAllEventsPage(pageable);
         }
