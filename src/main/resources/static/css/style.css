@@ -17,6 +17,7 @@
     /* Borders */
     --border: #1E1E32;
     --border-2: #2A2A42;
+    --border-glass: rgba(255, 255, 255, 0.08);
 
     /* Text */
     --text-primary: #E2E2F0;
@@ -560,8 +561,8 @@ body {
 /* 📊 Stat Cards */
 .stat-card {
     background: var(--bg-1);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border-glass);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--radius-card);
     padding: var(--space-6);
     position: relative;
