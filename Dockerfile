@@ -27,22 +27,23 @@ WORKDIR /app
 
 # Copy the built JAR from builder stage (using explicit name to avoid globbing issues)
 COPY --from=builder /app/target/campus-event-manager-0.0.1-SNAPSHOT.jar app.jar
-
 # Create uploads directory and set permissions
 RUN mkdir -p uploads && chown -R appuser:appgroup /app/uploads
 
 # Set upload directory environment variable explicitely
 ENV UPLOAD_DIR=/app/uploads
-ENV PORT=9090
 
 USER appuser
 
-# Expose the configurable port (default 9090)
-EXPOSE 9090
+# Copy the built JAR from builder stage (using explicit name to avoid globbing issues)
+COPY --from=builder /app/target/campus-event-manager-0.0.1-SNAPSHOT.jar app.jar
 
-# Health check (Actuator) - using standard health endpoint
+# Expose the configurable port (standardize on PORT variable)
+EXPOSE ${PORT:-9090}
+
+# Health check (Actuator) - using dynamic port
 HEALTHCHECK --interval=30s --timeout=15s --start-period=60s --retries=5 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:9090/actuator/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-9090}/actuator/health || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
