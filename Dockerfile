@@ -39,9 +39,9 @@ USER appuser
 # Expose the configurable port (default 9090)
 EXPOSE ${PORT:-9090}
 
-# Health check (More lenient for cloud startup)
+# Health check (Actuator)
 HEALTHCHECK --interval=60s --timeout=15s --start-period=60s --retries=5 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-9090}/admin/login || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-9090}/actuator/health || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
