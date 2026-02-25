@@ -35,9 +35,6 @@ ENV UPLOAD_DIR=/app/uploads
 
 USER appuser
 
-# Copy the built JAR from builder stage (using explicit name to avoid globbing issues)
-COPY --from=builder /app/target/campus-event-manager-0.0.1-SNAPSHOT.jar app.jar
-
 # Expose the configurable port (standardize on PORT variable)
 EXPOSE ${PORT:-9090}
 
