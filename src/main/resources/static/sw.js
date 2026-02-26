@@ -1,4 +1,4 @@
-const CACHE_NAME = 'campus-events-v6';
+const CACHE_NAME = 'campus-events-v7';
 const ASSETS = [
     '/student/dashboard',
     '/manifest.json',
