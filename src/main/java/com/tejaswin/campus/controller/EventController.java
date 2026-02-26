@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import java.util.List;
 
 @Controller
 @RequestMapping("/student")
@@ -85,6 +84,10 @@ public class EventController {
         User user = sessionService.getLoggedInUser();
         if (user == null) {
             return "redirect:/";
+        }
+
+        if (eventId == null) {
+            return "redirect:/student/dashboard";
         }
 
         // Track interest for analytics
