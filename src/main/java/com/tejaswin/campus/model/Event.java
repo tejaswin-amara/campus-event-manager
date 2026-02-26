@@ -43,7 +43,7 @@ public class Event {
     private String category; // Technical, Cultural, Sports, Workshop, Seminar
 
     @URL(message = "Invalid registration link URL")
-    @Pattern(regexp = "^https?://.*", message = "Must be a valid HTTP/HTTPS URL")
+    @Pattern(regexp = "^$|^https?://.*", message = "Must be a valid HTTP/HTTPS URL")
     @Size(max = 1000, message = "URL too long")
     @Column(length = 1000)
     private String registrationLink;
@@ -55,7 +55,7 @@ public class Event {
     private String imageUrl;
 
     @URL(message = "Invalid responses link URL")
-    @Pattern(regexp = "^https?://.*", message = "Must be a valid HTTP/HTTPS URL")
+    @Pattern(regexp = "^$|^https?://.*", message = "Must be a valid HTTP/HTTPS URL")
     @Size(max = 1000, message = "URL too long")
     @Column(length = 1000)
     private String responsesLink;
