@@ -436,8 +436,7 @@ public class EventService {
 
             try (var inputStream = imageFile.getInputStream()) {
                 Files.copy(inputStream, targetPath,
-                        java.nio.file.StandardCopyOption.REPLACE_EXISTING,
-                        java.nio.file.LinkOption.NOFOLLOW_LINKS);
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             }
             auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "SUCCESS");
             return "/uploads/" + fileName;
