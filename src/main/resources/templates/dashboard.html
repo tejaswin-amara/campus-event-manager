@@ -262,20 +262,16 @@
                 <div class="modal-body p-0 h-100">
                     <div class="row g-0 h-100">
                         <!-- Left Column: Poster Image -->
-                        <div class="col-lg-5 bg-black position-relative overflow-hidden">
+                        <div
+                            class="col-lg-5 bg-dark position-relative d-flex justify-content-center align-items-center">
                             <!-- Loading Placeholder or Fallback icon -->
                             <div
                                 class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center z-0">
                                 <i class="bi bi-image text-muted opacity-25 fs-1"></i>
                             </div>
                             <img id="detailImg" src="" class="position-relative w-100 h-100 z-1"
-                                style="object-fit: cover; display: none;"
+                                style="object-fit: contain; display: none;"
                                 onerror="this.onerror=null; this.src='/images/logo.png'; this.style.objectFit='contain'; this.classList.add('opacity-50', 'p-5');">
-
-                            <!-- Inner Shadow Overlay -->
-                            <div class="position-absolute w-100 h-100 top-0 start-0 z-2"
-                                style="box-shadow: inset -24px 0 48px -12px rgba(10, 10, 15, 0.8); pointer-events: none;">
-                            </div>
                         </div>
 
                         <!-- Right Column: Details -->
