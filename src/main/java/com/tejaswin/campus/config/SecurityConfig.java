@@ -44,6 +44,8 @@ public class SecurityConfig {
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/")
                                                 .permitAll())
+                                .sessionManagement(session -> session
+                                                .sessionFixation(sf -> sf.migrateSession()))
                                 .csrf(csrf -> csrf
                                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                                 .headers(headers -> headers

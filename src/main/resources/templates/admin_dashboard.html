@@ -9,14 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css?v=8}">
+    <link rel="stylesheet" th:href="@{/css/style.css?v=13}">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
     <script th:src="@{/js/main.js}" defer></script>
     <!-- SEO & Social Meta Tags -->
     <meta property="og:title" content="CampusConnect - Admin Control Center">
     <meta property="og:description" content="Manage and analyze campus events with ease.">
     <meta property="og:type" content="website">
-    <meta name="theme-color" content="#12121A">
+    <meta name="theme-color" content="#0C0C14">
     <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -54,7 +54,8 @@
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
                     <a th:href="@{/admin/dashboard}" class="nav-link"
-                        th:classappend="${activeStatus == null && searchQuery == null} ? 'active' : ''">
+                        th:classappend="${activeStatus == null && searchQuery == null} ? 'active' : ''"
+                        aria-label="Show all events">
                         <i class="bi bi-grid-fill"></i> All Events
                     </a>
                 </li>
@@ -65,24 +66,27 @@
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin/dashboard(status='Upcoming')}" class="nav-link"
-                        th:classappend="${activeStatus == 'Upcoming'} ? 'active' : ''">
+                        th:classappend="${activeStatus == 'Upcoming'} ? 'active' : ''"
+                        aria-label="Filter upcoming events">
                         <i class="bi bi-calendar-check text-green"></i> Upcoming
                     </a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin/dashboard(status='Ongoing')}" class="nav-link"
-                        th:classappend="${activeStatus == 'Ongoing'} ? 'active' : ''">
+                        th:classappend="${activeStatus == 'Ongoing'} ? 'active' : ''"
+                        aria-label="Filter ongoing events">
                         <i class="bi bi-broadcast text-blue"></i> Ongoing
                     </a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin/dashboard(status='Past')}" class="nav-link"
-                        th:classappend="${activeStatus == 'Past'} ? 'active' : ''">
+                        th:classappend="${activeStatus == 'Past'} ? 'active' : ''" aria-label="Filter past events">
                         <i class="bi bi-clock-history text-muted"></i> Past
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#addEventModal"
+                        aria-label="Create a new event">
                         <i class="bi bi-plus-circle-fill text-gradient"></i> Create Event
                     </a>
                 </li>
@@ -578,226 +582,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script th:inline="javascript">
-        // 📱 Sidebar Toggle Function
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        }
-
-        // 🔍 Search Functionality & Shortcuts
-        const searchInput = document.getElementById('searchInput');
-
-        // Command+K or Ctrl+K to focus search
-        document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                searchInput.focus();
-            }
-        });
-
-
-        // 🏷️ Category Filter
-        function filterCategory(category, btn) {
-            // Update Active State
-            document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (window.innerWidth < 992) toggleSidebar();
-
-            let rows = document.querySelectorAll('#eventsTable tbody tr');
-            rows.forEach(row => {
-                let rowCategory = row.getAttribute('data-category');
-                // Handle empty rows
-                if (row.querySelector('td[colspan]')) return;
-
-                if (category === 'all' || rowCategory === category) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        // ⏳ Status Filter
-        function filterStatus(status, btn) {
-            // Update Active State
-            document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (window.innerWidth < 992) toggleSidebar();
-
-            let rows = document.querySelectorAll('#eventsTable tbody tr');
-            rows.forEach(row => {
-                let rowStatus = row.getAttribute('data-status');
-                // Handle empty rows
-                if (row.querySelector('td[colspan]')) return;
-
-                if (rowStatus === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        // 📝 Edit Modal Populate
-        const editModal = new bootstrap.Modal(document.getElementById('editEventModal'));
-        function openEditModal(btn) {
-            document.getElementById('editId').value = btn.dataset.id;
-            document.getElementById('editTitle').value = btn.dataset.title;
-            document.getElementById('editCategory').value = btn.dataset.category;
-            document.getElementById('editVenue').value = btn.dataset.venue;
-            document.getElementById('editDesc').value = btn.dataset.desc;
-            document.getElementById('editDateTime').value = btn.dataset.datetime;
-            document.getElementById('editEndDateTime').value = btn.dataset.enddatetime || ''; // Handle null safely
-            document.getElementById('editLink').value = btn.dataset.link || '';
-            document.getElementById('editResponsesLink').value = btn.dataset.responses || '';
-            document.getElementById('editCapacity').value = btn.dataset.capacity || '';
-
-            editModal.show();
-        }
-
-        // 🗑️ Delete Logic
-        function setDeleteId(id) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/admin/delete-event/' + id;
-            form.style.display = 'none';
-
-            /*[# th:if="${_csrf}"]*/
-            const csrfName = /*[[${_csrf.parameterName}]]*/ 'csrfName';
-            const csrfTokenValue = /*[[${_csrf.token}]]*/ 'csrfToken';
-
-            const csrfToken = document.createElement('input');
-            csrfToken.type = 'hidden';
-            csrfToken.name = csrfName;
-            csrfToken.value = csrfTokenValue;
-            form.appendChild(csrfToken);
-            /*[/]*/
-
-            document.body.appendChild(form);
-            document.getElementById('confirmDeleteBtn').onclick = (e) => {
-                e.preventDefault();
-                form.submit();
-            };
-        }
-
-        // 📊 Chart Logic — uses server-side totals so distribution is always correct regardless of active filter
-        document.addEventListener('DOMContentLoaded', function () {
-            const ctx = document.getElementById('categoryChart');
-            if (ctx) {
-                // Server-provided counts across ALL events (not just the filtered page)
-                const categoryCounts = /*[[${categoryCounts}]]*/ {};
-                const labels = ['Technical', 'Cultural', 'Sports', 'Workshop', 'Seminar'];
-                const data = labels.map(l => categoryCounts[l] || 0);
-                const colors = ['#7C3AED', '#06B6D4', '#10B981', '#F59E0B', '#EC4899'];
-                const total = data.reduce((a, b) => a + b, 0);
-
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: colors,
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: {
-                            duration: 600,
-                            easing: 'easeOutQuart'
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: { color: '#a1a1aa', usePointStyle: true, boxWidth: 8 }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        const pct = total > 0 ? Math.round(context.parsed / total * 100) : 0;
-                                        return ` ${context.label}: ${context.parsed} (${pct}%)`;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '75%'
-                    }
-                });
-            }
-
-            // 📊 Stat Number Count-Up Animation
-            const counters = document.querySelectorAll('[data-countup]');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-countup') || 0;
-                if (target <= 0) { counter.textContent = 0; return; }
-                const duration = 1000;
-                const start = performance.now();
-                function step(now) {
-                    const progress = Math.min((now - start) / duration, 1);
-                    counter.textContent = Math.floor(progress * target);
-                    if (progress < 1) requestAnimationFrame(step);
-                    else counter.textContent = target;
-                }
-                requestAnimationFrame(step);
-            });
-            // 📂 Custom Drag and Drop JS
-            function initUploadZone(zoneId, inputId, previewBoxId, previewImgId) {
-                const zone = document.getElementById(zoneId);
-                const input = document.getElementById(inputId);
-                const previewBox = document.getElementById(previewBoxId);
-                const previewImg = document.getElementById(previewImgId);
-                if (!zone || !input) return;
-
-                zone.addEventListener('click', () => input.click());
-
-                input.addEventListener('change', e => {
-                    if (e.target.files[0]) showPreview(e.target.files[0]);
-                });
-                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-active'); });
-                zone.addEventListener('dragleave', () => zone.classList.remove('drag-active'));
-                zone.addEventListener('drop', e => {
-                    e.preventDefault(); zone.classList.remove('drag-active');
-                    const file = e.dataTransfer.files[0];
-                    if (file) {
-                        const dt = new DataTransfer(); dt.items.add(file);
-                        input.files = dt.files;
-                        showPreview(file);
-                    }
-                });
-
-                function showPreview(file) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        previewImg.src = e.target.result;
-                        previewBox.style.display = 'flex';
-                        zone.style.display = 'none';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            initUploadZone('createUploadZone', 'createImageFile', 'createPreviewBox', 'createPreviewImg');
-            initUploadZone('editUploadZone', 'editImageFile', 'editPreviewBox', 'editPreviewImg');
-
-            window.clearCreateBanner = function () {
-                document.getElementById('createImageFile').value = '';
-                document.getElementById('createPreviewBox').style.display = 'none';
-                document.getElementById('createUploadZone').style.display = 'flex';
-            };
-
-            window.clearEditBanner = function () {
-                document.getElementById('editImageFile').value = '';
-                document.getElementById('editPreviewBox').style.display = 'none';
-                document.getElementById('editUploadZone').style.display = 'flex';
-            };
-        });
+        // Server data bridge — consumed by external admin-dashboard.js
+        window.__adminData = {
+            csrfName:       /*[[${_csrf.parameterName}]]*/ '_csrf',
+            csrfToken:      /*[[${_csrf.token}]]*/         '',
+            categoryCounts: /*[[${categoryCounts}]]*/      {}
+        };
     </script>
+    <script th:src="@{/js/admin-dashboard.js?v=13}"></script>
 </body>
 
 </html>

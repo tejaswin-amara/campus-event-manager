@@ -6,8 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import java.io.StringWriter;
 
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class RateLimitingFilterTest {
 
     private RateLimitingFilter filter;
@@ -36,21 +38,19 @@ class RateLimitingFilterTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
+        filter = new RateLimitingFilter(appConfig);
+    }
+
+    private void setupRateLimitMocks() {
         when(appConfig.getRateLimit()).thenReturn(rateLimit);
         when(rateLimit.getCapacity()).thenReturn(5);
         when(rateLimit.getTokens()).thenReturn(5);
         when(rateLimit.getMinutes()).thenReturn(1);
-
-        filter = new RateLimitingFilter(appConfig);
-
-        when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
     }
 
     @Test
     void doFilterInternal_WithGetRequest_ShouldAlwaysAllow() throws Exception {
         when(request.getMethod()).thenReturn("GET");
-        when(request.getServletPath()).thenReturn("/any");
 
         filter.doFilterInternal(request, response, filterChain);
 
@@ -59,8 +59,10 @@ class RateLimitingFilterTest {
 
     @Test
     void doFilterInternal_WithPostRequestToAdminLogin_ShouldRateLimit() throws Exception {
+        setupRateLimitMocks();
         when(request.getMethod()).thenReturn("POST");
         when(request.getServletPath()).thenReturn("/admin/login");
+        when(response.getWriter()).thenReturn(new java.io.PrintWriter(new java.io.StringWriter()));
         when(request.getRemoteAddr()).thenReturn("1.2.3.4");
 
         // Consume all tokens
@@ -77,6 +79,7 @@ class RateLimitingFilterTest {
 
     @Test
     void doFilterInternal_WithTrustedProxy_ShouldUseXffHeader() throws Exception {
+        setupRateLimitMocks();
         when(request.getMethod()).thenReturn("POST");
         when(request.getServletPath()).thenReturn("/admin/login");
         when(request.getRemoteAddr()).thenReturn("127.0.0.1");

@@ -79,8 +79,8 @@ public class AdminControllerSecurityTest {
                 .andExpect(result -> {
                     int statusCode = result.getResponse().getStatus();
                     org.junit.jupiter.api.Assertions.assertTrue(
-                            statusCode == 302 || statusCode == 400 || statusCode == 200,
-                            "Expected 200/302/400 but received " + statusCode);
+                            statusCode == 302 || statusCode == 400,
+                            "Expected 302 (redirect) or 400 (bad request) but received " + statusCode);
                 });
     }
 }

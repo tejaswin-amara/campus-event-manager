@@ -5,7 +5,6 @@ import com.tejaswin.campus.service.UserService;
 import com.tejaswin.campus.security.SecurityAuditLogger;
 import com.tejaswin.campus.service.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,18 +67,16 @@ public class AuthController {
             return "redirect:/admin/login";
         }
 
-        // Prevent session fixation race conditions
-        HttpSession oldSession = request.getSession(false);
+        // Prevent session fixation for custom auth flow by manually migrating the
+        // session
+        jakarta.servlet.http.HttpSession oldSession = request.getSession(false);
         if (oldSession != null) {
-            synchronized (oldSession) {
-                try {
-                    oldSession.invalidate();
-                } catch (IllegalStateException e) {
-                    // Already invalidated by a concurrent request
-                }
-            }
+            oldSession.invalidate();
         }
-        HttpSession newSession = request.getSession(true);
+        jakarta.servlet.http.HttpSession newSession = request.getSession(true);
+        newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
         SecurityContextHolder.getContext().setAuthentication(authToken);

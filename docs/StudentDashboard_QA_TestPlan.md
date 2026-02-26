@@ -54,7 +54,7 @@ This testing process covers:
 
 ### 5.2. Responsiveness
 - **Grid Layout:** 1 column on mobile, 2 on tablet, 3+ on desktop.
-- **Detail Modal:** On mobile, verify the modal fits the screen and allowing internal scrolling for descriptions.
+- **Detail Modal:** On mobile, verify the modal fits the screen and allows internal scrolling for descriptions.
 
 ### 5.3. Technical Health
 - **Console Monitoring:** Ensure no parsing errors (e.g., `manifest.json`) or 404s for static assets.

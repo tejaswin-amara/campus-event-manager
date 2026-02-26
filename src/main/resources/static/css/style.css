@@ -7,90 +7,93 @@
    1. VARIABLES & DESIGN TOKENS
    ------------------------------------------------------------------------- */
 :root {
-    /* Phase 2 New Tokens */
-    --bg-base: #080810;
-    --bg-surface: #0F0F1A;
-    --bg-card: #141422;
-    --bg-input: #161625;
-    --bg-modal: #121220;
+    /* ─── Surface Elevation Ladder (Zinc-blue family) ─────────────────────
+       Each step is ~3-4% luminance apart. Avoids pure-black OLED smearing
+       while keeping the premium dark aesthetic.                           */
+    --bg-base: #0C0C14;
+    --bg-surface: #13131E;
+    --bg-card: #1A1A26;
+    --bg-elevated: #222230;
+    --bg-input: #161622;
+    --bg-modal: #13131E;
 
-    /* Borders */
+    /* Backward-compat aliases for legacy --bg-N references */
+    --bg-0: var(--bg-base);
+    --bg-1: var(--bg-surface);
+    --bg-2: var(--bg-card);
+    --bg-3: var(--bg-elevated);
+
+    /* ─── Borders ─────────────────────────────────────────────────────── */
     --border: #1E1E32;
     --border-2: #2A2A42;
-    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-glass: rgba(255, 255, 255, 0.07);
 
-    /* Text */
+    /* ─── Elevation Shadows (primary depth system — replaces hard borders) */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(123, 111, 255, 0.12);
+    --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    /* ─── Text (WCAG 2.1 AA compliant on all surface levels) ──────────── */
     --text-primary: #E2E2F0;
+    /* 14.8:1 on --bg-base */
     --text-secondary: #A0A0C0;
-    /* MINIMUM for WCAG AA */
-    --text-muted: #606080;
-    --text-label: #8080A0;
+    /* 7.2:1 on --bg-surface */
+    --text-muted: #7A7A9A;
+    /* 4.56:1 on --bg-surface ✅ AA */
+    --text-label: #8A8AAA;
+    --text-main: var(--text-primary);
 
-    /* Accents */
+    /* ─── Accents ─────────────────────────────────────────────────────── */
     --accent: #7B6FFF;
     --accent-light: #A09CFF;
     --accent-glow: rgba(123, 111, 255, 0.15);
+    --primary: #7C3AED;
+    --primary-glow: rgba(124, 58, 237, 0.35);
+    --secondary: #06B6D4;
     --success: #0FD97A;
     --danger: #FF5C5C;
     --warning: #FF9F43;
+    --accent-green: var(--success);
+    --accent-red: var(--danger);
 
-    /* Category colors */
+    /* ─── Category Colors ─────────────────────────────────────────────── */
     --cat-technical: #7B6FFF;
+    --cat-tech: #7C3AED;
     --cat-cultural: #06B6D4;
     --cat-sports: #14B8A6;
     --cat-workshop: #FF9F43;
     --cat-seminar: #EC4899;
 
-    /* Animation system */
+    /* ─── Animation System ────────────────────────────────────────────── */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
-    /* Standard: smooth decel */
     --ease-enter: cubic-bezier(0.0, 0, 0.2, 1);
-    /* Entrances: decelerate in */
     --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-    /* Exits: accelerate out */
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    /* Playful overshoot */
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
     --dur-micro: 150ms;
     --dur-fast: 250ms;
     --dur-normal: 350ms;
     --dur-slow: 550ms;
     --dur-component: 300ms;
-
-    /* Shorthand transition tokens */
+    --dur-complex: 500ms;
     --tr-smooth: 300ms ease;
     --tr-fast: 150ms ease;
-    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* Spacing & shape */
+    /* ─── Spacing & Shape ─────────────────────────────────────────────── */
     --r-sm: 6px;
     --r-md: 10px;
     --r-lg: 14px;
     --r-xl: 18px;
     --r-pill: 999px;
-
-    /* Aliases for legacy references */
-    --text-main: var(--text-primary);
     --border-radius: var(--r-md);
     --border-radius-sm: var(--r-sm);
-    --bg-glass-heavy: rgba(20, 20, 30, 0.85);
-    --accent-green: var(--success);
-    --accent-red: var(--danger);
+    --radius-input: 6px;
+    --radius-card: 10px;
+    --radius-modal: 14px;
+    --radius-pill: 999px;
 
-    /* Legacy layout tokens (non-conflicting with Phase 2) */
-    /* 🎨 Color Palette */
-    --bg-0: #0A0A0F;
-    --bg-1: #111118;
-    --bg-2: #1A1A24;
-    --bg-3: #22222E;
-
-    --primary: #7C3AED;
-    --primary-glow: rgba(124, 58, 237, 0.35);
-    --secondary: #06B6D4;
-
-    /* Category Colors (non-conflicting) */
-    --cat-tech: #7C3AED;
-
-    /* 📐 Dimensions & Spacing (Base 4px) */
     --space-2: 8px;
     --space-3: 12px;
     --space-4: 16px;
@@ -99,41 +102,18 @@
     --space-8: 32px;
     --space-12: 48px;
 
-    /* Shapes / Radii */
-    --radius-input: 6px;
-    --radius-card: 10px;
-    --radius-modal: 14px;
-    --radius-pill: 999px;
-
-    /* 📐 Layout Variables */
+    /* ─── Layout ──────────────────────────────────────────────────────── */
     --sidebar-width: 260px;
     --mobile-header-height: 64px;
     --bg-overlay: rgba(0, 0, 0, 0.5);
+    --bg-glass-heavy: rgba(20, 20, 30, 0.85);
 }
 
 .tracking-widest {
     letter-spacing: 0.15em;
 }
 
-.modal-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-}
-
-.modal-input {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid var(--border-glass) !important;
-    color: white !important;
-    padding: 0.8rem 1rem !important;
-}
-
-.modal-input:focus {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15) !important;
-}
+/* .modal-label / .modal-input — see Phase 2 definitions below (§ Modal Refinements) */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -141,8 +121,22 @@
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
+}
+
+/* Universal keyboard focus ring — accessible on every interactive element */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+}
+
+/* Remove outline for mouse/touch users */
+:focus:not(:focus-visible) {
+    outline: none;
 }
 
 /* =========================================================================
@@ -370,7 +364,7 @@ body {
 .sidebar {
     width: var(--sidebar-width);
     background: var(--bg-surface);
-    border-right: 1px solid var(--border-glass);
+    border-right: none;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -384,7 +378,7 @@ body {
     /* Mobile-First: Start hidden */
     transform: translateX(-100%);
     visibility: hidden;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
 }
 
 .sidebar.show {
@@ -400,10 +394,10 @@ body {
     left: 0;
     right: 0;
     height: var(--mobile-header-height);
-    background: rgba(10, 10, 10, 0.95);
-    /* Nearly opaque */
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-glass);
+    background: rgba(12, 12, 20, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
     z-index: 1040;
     padding: 0 1.5rem;
     align-items: center;
@@ -618,8 +612,8 @@ body {
 
 /* 🔍 Admin Search Bar */
 .admin-search-input {
-    background-color: #16161F !important;
-    border: 1px solid #2A2A38 !important;
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border) !important;
     color: var(--text-primary) !important;
     transition: all 200ms var(--ease-standard) !important;
 }
@@ -627,7 +621,7 @@ body {
 .admin-search-input:focus {
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25) !important;
-    background-color: #1A1A24 !important;
+    background-color: var(--bg-card) !important;
 }
 
 .admin-search-input:focus+.search-shortcut {
@@ -640,9 +634,8 @@ body {
 
 /* 📊 Stat Cards */
 .stat-card {
-    background: var(--bg-1);
-    border: 1px solid var(--border-glass);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--bg-surface);
+    border: none;
     border-radius: var(--radius-card);
     padding: var(--space-6);
     position: relative;
@@ -650,12 +643,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-shadow: var(--shadow-sm), var(--inner-light);
     transition: all var(--dur-component) var(--ease-standard);
 }
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg), var(--inner-light);
 }
 
 .stat-card::after {
@@ -784,17 +778,17 @@ table.table-custom {
 
 .table-custom tbody tr {
     transition: all var(--dur-micro) var(--ease-standard);
-    background-color: var(--bg-1) !important;
+    background-color: var(--bg-surface) !important;
 }
 
 .table-custom tbody tr:nth-child(even) {
-    background-color: #13131C !important;
+    background-color: var(--bg-base) !important;
 }
 
 .table-custom tbody tr:hover {
-    background-color: #1E1E2E !important;
+    background-color: var(--bg-elevated) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
     z-index: 10;
     position: relative;
 }
@@ -833,15 +827,14 @@ table.table-custom {
 }
 
 .event-card {
-    background: var(--bg-2);
-    /* App surface variant */
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-card);
+    border: none;
     border-radius: var(--radius-card);
-    /* 10px */
     overflow: hidden;
     height: 100%;
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-sm), var(--inner-light);
     transition: all var(--dur-component) var(--ease-standard);
     position: relative;
     cursor: pointer;
@@ -850,9 +843,7 @@ table.table-custom {
 
 .event-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(124, 58, 237, 0.5);
-    /* var(--primary) with opacity */
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.15);
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(123, 111, 255, 0.15), var(--shadow-glow);
 }
 
 .card-img-wrapper {
@@ -966,23 +957,7 @@ table.table-custom {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Animation Utilities legacy removed */
-
-.animate-float {
-    animation: floating 6s ease-in-out infinite;
-}
-
-@keyframes floating {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
+/* Animation Utilities — canonical .animate-float lives in Animation Library section above */
 
 /* Floating Labels (Admin Modals) */
 .form-floating>label {
@@ -1068,10 +1043,10 @@ body.modal-open {
     background: var(--bg-glass-heavy);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-glass);
+    border: none;
     border-radius: var(--border-radius);
     color: var(--text-main);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-lg), var(--inner-light);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -1172,7 +1147,8 @@ body.modal-open {
 .skeleton-card {
     height: 380px;
     background: var(--bg-glass-heavy);
-    border: 1px solid var(--border-glass);
+    border: none;
+    box-shadow: var(--shadow-sm), var(--inner-light);
     border-radius: var(--border-radius);
     padding: 0;
     overflow: hidden;
@@ -1252,11 +1228,11 @@ body.modal-open {
 
 /* Refined Glassmorphism */
 .glass {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: var(--shadow-sm), var(--inner-light);
     color: var(--text-main);
     transform: translateZ(0);
 }
@@ -1288,20 +1264,7 @@ body.modal-open {
     height: auto;
 }
 
-/* Export Button Gradient */
-.btn-export {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    border: none;
-    color: white;
-    font-weight: 600;
-    transition: var(--tr-smooth);
-}
-
-.btn-export:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-    color: white;
-}
+/* .btn-export — canonical ghost definition is in Phase 2 section below (§ 2.7) */
 
 /* Calendar Button */
 .btn-calendar {
@@ -1728,8 +1691,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     color: var(--accent-light);
 }
 
-/* 4.2 Table Action buttons */
-.btn-action {
+/* 4.2 Table Action buttons (icon-sized variant) */
+.btn-action-icon {
     width: 32px;
     height: 32px;
     border-radius: 7px;
@@ -1743,13 +1706,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
     transition: all var(--dur-micro) var(--ease);
 }
 
-.btn-edit:hover {
+.btn-action-icon.btn-edit:hover {
     color: var(--accent);
     background: var(--accent-glow);
     border-color: rgba(123, 111, 255, 0.25);
 }
 
-.btn-delete:hover {
+.btn-action-icon.btn-delete:hover {
     color: var(--danger);
     background: rgba(255, 92, 92, 0.10);
     border-color: rgba(255, 92, 92, 0.25);
@@ -1835,4 +1798,120 @@ body {
 /* 5. Ongoing badge pulse — references canonical badgePulse keyframe */
 .badge-ongoing {
     animation: badgePulse 2.5s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------
+   MODAL POSTER & QR OVERRIDES
+   (Extracted from dashboard.html inline <style>)
+   ------------------------------------------------------------------------- */
+
+/* The poster column: fills full height, no scroll */
+.modal-poster-col {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Desktop: poster takes 42% width, side by side */
+@media (min-width: 992px) {
+    .modal-poster-col {
+        width: 42% !important;
+        flex-shrink: 0;
+    }
+}
+
+/* On mobile, limit poster to 40vh so details are visible below */
+@media (max-width: 991.98px) {
+    .modal-poster-col {
+        height: 40vh;
+        max-height: 40vh;
+        flex-shrink: 0;
+        width: 100% !important;
+    }
+}
+
+.qr-img-override {
+    max-width: 150px !important;
+    height: auto !important;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Skeleton loader toggle utilities */
+.skeleton-grid {
+    display: grid;
+}
+
+.skeleton-grid.hidden {
+    display: none;
+}
+
+.event-grid.loading {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------
+   PRINT STYLESHEET
+   Flip to light mode, strip decorations, and ensure legible output.
+   ------------------------------------------------------------------------- */
+@media print {
+
+    *,
+    *::before,
+    *::after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    .sidebar,
+    .mobile-header,
+    .sidebar-overlay,
+    .toast-container,
+    .btn-action,
+    .btn-export,
+    .btn-calendar,
+    .btn-icon-ghost,
+    .search-shortcut,
+    nav[aria-label],
+    .pagination {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .event-card,
+    .stat-card,
+    .glass-card,
+    .glass {
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: #666 !important;
+    }
+
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+    }
+
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
 }

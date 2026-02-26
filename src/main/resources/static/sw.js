@@ -1,9 +1,11 @@
-const CACHE_NAME = 'campus-events-v8';
+const CACHE_NAME = 'campus-events-v10';
 const ASSETS = [
     '/student/dashboard',
     '/manifest.json',
     '/css/style.css',
     '/js/main.js',
+    '/js/dashboard.js',
+    '/js/admin-dashboard.js',
     '/favicon.svg',
     'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
     'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css',
