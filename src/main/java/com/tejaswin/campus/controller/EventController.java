@@ -91,9 +91,13 @@ public class EventController {
             return "redirect:/student/dashboard";
         }
 
+        if (user.getId() == null) {
+            logger.warn("User {} has null ID, skipping registration", user.getUsername());
+            return "redirect:/student/event/" + eventId;
+        }
         // Track interest for analytics
         auditLogger.logSecurityLinkClick(user.getUsername(), "REGISTER_EXTERNAL", eventId);
-        eventService.registerStudent(eventId, user.getId() != null ? user.getId() : 0L);
+        eventService.registerStudent(eventId, user.getId().longValue());
 
         Event event = eventService.findEventById(eventId);
         if (event != null && event.getRegistrationLink() != null && !event.getRegistrationLink().isEmpty()) {

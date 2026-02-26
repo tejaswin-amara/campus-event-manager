@@ -667,7 +667,7 @@ body {
     opacity: 0.03;
     pointer-events: none;
     transform: rotate(-15deg);
-    transition: all var(--dur-complex) var(--ease-standard);
+    transition: all var(--dur-slow) var(--ease-standard);
 }
 
 .stat-card:hover::after {
@@ -966,22 +966,7 @@ table.table-custom {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Animation Utilities */
-.animate-in {
-    animation: fadeIn 0.6s cubic-bezier(0.19, 1, 0.22, 1) both;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.95) translateY(20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
+/* Animation Utilities legacy removed */
 
 .animate-float {
     animation: floating 6s ease-in-out infinite;
