@@ -28,6 +28,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            align-self: flex-start;
         }
 
         @media (min-width: 992px) {
@@ -286,7 +287,8 @@
                 <div class="modal-body p-0 h-100 overflow-y-auto custom-scrollbar">
                     <div class="row g-0 d-flex flex-column flex-lg-row">
                         <!-- Left Column: Poster Image -->
-                        <div class="col-lg-5 bg-black position-relative modal-poster-col flex-shrink-0"
+                        <div id="modalPosterCol"
+                            class="col-lg-5 bg-black position-relative modal-poster-col flex-shrink-0"
                             style="display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 250px;">
                             <!-- Loading Placeholder or Fallback icon -->
                             <div
@@ -299,7 +301,7 @@
                         </div>
 
                         <!-- Right Column: Details -->
-                        <div class="col-lg-7 flex-grow-1" style="background: var(--bg-1);">
+                        <div id="modalDetailsCol" class="col-lg-7 flex-grow-1" style="background: var(--bg-1);">
                             <div class="p-5 d-flex flex-column h-100">
                                 <div class="flex-shrink-0 mb-4">
                                     <span id="detailCat" class="badge-pill mb-3 d-inline-block">Category</span>
@@ -520,6 +522,8 @@
 
             const img = btn.dataset.img;
             const imgEl = document.getElementById('detailImg');
+            const posterCol = document.getElementById('modalPosterCol');
+            const detailsCol = document.getElementById('modalDetailsCol');
 
             // Clear any previous error states that might darken the image
             imgEl.classList.remove('opacity-50', 'p-5');
@@ -528,10 +532,12 @@
             if (img) {
                 imgEl.src = img;
                 imgEl.style.display = 'block';
+                posterCol.style.display = 'flex';
+                detailsCol.className = 'col-lg-7 flex-grow-1';
             } else {
                 imgEl.style.display = 'none';
-                // Optional: We could hide the left column or show a fallback, 
-                // but the template has a fallback icon behind the image, so hiding img exposes that. Perfect.
+                posterCol.style.display = 'none';
+                detailsCol.className = 'col-lg-12 flex-grow-1';
             }
 
             const link = btn.dataset.link;
