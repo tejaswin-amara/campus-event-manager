@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -97,7 +99,10 @@ public class EventController {
         }
         // Track interest for analytics
         auditLogger.logSecurityLinkClick(user.getUsername(), "REGISTER_EXTERNAL", eventId);
-        eventService.registerStudent(eventId, user.getId().longValue());
+        Long studentId = user.getId();
+        if (studentId != null) {
+            eventService.registerStudent(eventId, studentId);
+        }
 
         Event event = eventService.findEventById(eventId);
         if (event != null && event.getRegistrationLink() != null && !event.getRegistrationLink().isEmpty()) {
@@ -133,5 +138,33 @@ public class EventController {
         model.addAttribute("baseUrl", baseUrl);
         model.addAttribute("event", event);
         return "event_detail";
+    }
+
+    @GetMapping("/api/public/events/image/{id}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<byte[]> getEventImage(@PathVariable Long id) {
+        Event event = eventService.findEventById(id);
+        if (event == null || event.getImageData() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MediaType mediaType = MediaType.IMAGE_JPEG; // Default
+        String storedMimeType = event.getImageMimeType();
+        if (storedMimeType != null) {
+            try {
+                mediaType = MediaType.parseMediaType(storedMimeType);
+            } catch (Exception e) {
+                logger.warn("Invalid MIME type stored for event {}: {}", id, storedMimeType);
+            }
+        }
+
+        byte[] imageData = event.getImageData();
+        if (imageData == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .body(imageData);
     }
 }

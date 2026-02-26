@@ -10,8 +10,8 @@
     <meta property="og:title" th:content="${event.title}">
     <meta property="og:description" th:content="${event.description}">
     <!-- Absolute URL for social crawlers -->
-    <meta property="og:image" th:if="${event.imageUrl != null}"
-        th:content="${event.imageUrl.startsWith('http') ? event.imageUrl : baseUrl + event.imageUrl}">
+    <meta property="og:image" th:if="${event.imageData != null}"
+        th:content="${baseUrl + '/student/api/public/events/image/' + event.id}">
     <meta property="og:url" th:content="${baseUrl + '/student/event/' + event.id}">
     <meta property="og:type" content="article">
 
@@ -19,8 +19,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" th:content="${event.title}">
     <meta name="twitter:description" th:content="${event.description}">
-    <meta name="twitter:image" th:if="${event.imageUrl != null}"
-        th:content="${event.imageUrl.startsWith('http') ? event.imageUrl : baseUrl + event.imageUrl}">
+    <meta name="twitter:image" th:if="${event.imageData != null}"
+        th:content="${baseUrl + '/student/api/public/events/image/' + event.id}">
 
     <link rel="stylesheet" th:href="@{/css/style.css?v=13}">
     <style>

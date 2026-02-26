@@ -249,7 +249,8 @@
                                                 th:data-datetime="${event.dateTime}"
                                                 th:data-enddatetime="${event.endDateTime}"
                                                 th:data-venue="${event.venue}" th:data-link="${event.registrationLink}"
-                                                th:data-desc="${event.description}" th:data-image="${event.imageUrl}"
+                                                th:data-desc="${event.description}"
+                                                th:data-image="${event.imageData != null ? '/student/api/public/events/image/' + event.id : ''}"
                                                 th:data-responses="${event.responsesLink}"
                                                 th:data-capacity="${event.maxCapacity}" title="Edit"
                                                 aria-label="Edit this event">

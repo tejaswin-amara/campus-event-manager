@@ -42,8 +42,7 @@ public class EventServiceTest {
     @BeforeEach
     void setUp() {
         // Manual construction because EventService requires a @Value string parameter
-        eventService = new EventService(eventRepository, registrationRepository, userRepository, auditLogger,
-                "test-uploads");
+        eventService = new EventService(eventRepository, registrationRepository, userRepository, auditLogger);
     }
 
     // ── Existing Tests ──────────────────────────────────────────────────

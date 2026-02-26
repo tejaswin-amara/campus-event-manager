@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -43,7 +42,6 @@ public class EventService {
     private final UserRepository userRepository;
     private final SecurityAuditLogger auditLogger;
 
-    private final Path uploadBaseDir;
     private static final Set<String> ALLOWED_IMAGE_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".webp", ".gif");
 
     /**
@@ -61,14 +59,11 @@ public class EventService {
     public EventService(EventRepository eventRepository,
             RegistrationRepository registrationRepository,
             UserRepository userRepository,
-            SecurityAuditLogger auditLogger,
-            @org.springframework.beans.factory.annotation.Value("${app.upload-dir:uploads}") String uploadDir) {
+            SecurityAuditLogger auditLogger) {
         this.eventRepository = eventRepository;
         this.registrationRepository = registrationRepository;
         this.userRepository = userRepository;
         this.auditLogger = auditLogger;
-        String effectiveDir = (uploadDir == null || uploadDir.isBlank()) ? "uploads" : uploadDir;
-        this.uploadBaseDir = java.nio.file.Paths.get(effectiveDir).toAbsolutePath().normalize();
     }
 
     /**
@@ -227,7 +222,9 @@ public class EventService {
         // 1. Get event to find image path
         Event event = eventRepository.findById(id).orElse(null);
         if (event != null && event.getImageUrl() != null) {
-            deleteImageByUrl(event.getImageUrl());
+            // No need to delete from filesystem anymore, DB handles it via Cascade if we
+            // used it,
+            // but here we just delete the event record.
         }
 
         registrationRepository.deleteByEventId(id);
@@ -395,13 +392,14 @@ public class EventService {
     }
 
     /**
-     * Saves an uploaded image to the filesystem, sanitizing the filename
-     * and checking for allowed extensions and path traversal.
+     * Saves an uploaded image to the Event object (for DB storage), sanitizing the
+     * filename
+     * and checking for allowed extensions.
      */
-    public String saveUploadedImage(MultipartFile imageFile, String username) {
+    public boolean saveUploadedImage(MultipartFile imageFile, String username, Event event) {
         String originalFilename = imageFile.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
-            return null;
+            return false;
         }
 
         String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9._-]", "_");
@@ -413,57 +411,30 @@ public class EventService {
 
         if (!ALLOWED_IMAGE_EXTENSIONS.contains(ext)) {
             auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "REJECTED_INVALID_EXTENSION");
-            return null;
+            return false;
         }
 
         try {
-            String fileName = UUID.randomUUID().toString() + ext;
-            Path targetPath = uploadBaseDir.resolve(fileName).normalize();
+            event.setImageData(imageFile.getBytes());
+            event.setImageMimeType(imageFile.getContentType());
+            // We'll keep the imageUrl as a marker for now, or just set it to a special path
+            // that our new controller will handle.
+            event.setImageUrl("/api/public/events/image/" + UUID.randomUUID().toString()); // Placeholder to indicate
+                                                                                           // image exists
 
-            if (!targetPath.startsWith(uploadBaseDir)) {
-                auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "REJECTED_PATH_TRAVERSAL");
-                return null;
-            }
-
-            if (!Files.exists(uploadBaseDir)) {
-                Files.createDirectories(uploadBaseDir);
-            }
-
-            if (Files.isSymbolicLink(targetPath)) {
-                auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "REJECTED_SYMLINK");
-                return null;
-            }
-
-            try (var inputStream = imageFile.getInputStream()) {
-                Files.copy(inputStream, targetPath,
-                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-            }
-            auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "SUCCESS");
-            return "/uploads/" + fileName;
+            auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "SUCCESS (DB)");
+            return true;
         } catch (Exception e) {
             auditLogger.logFileUpload(username, originalFilename, imageFile.getSize(), "ERROR: " + e.getMessage());
-            logger.error("Failed to save uploaded image for user {}: {}", username, e.getMessage(), e);
-            return null;
+            logger.error("Failed to process uploaded image for user {}: {}", username, e.getMessage(), e);
+            return false;
         }
     }
 
     /**
-     * Deletes an image from the filesystem given its URL.
+     * Deletes an image. (No-op now as DB handles it when Event is deleted)
      */
     public void deleteImageByUrl(String imageUrl) {
-        if (imageUrl != null && imageUrl.startsWith("/uploads/")) {
-            try {
-                String filename = imageUrl.substring("/uploads/".length());
-                Path path = uploadBaseDir.resolve(filename).normalize();
-                if (path.startsWith(uploadBaseDir)) {
-                    Files.deleteIfExists(path);
-                    logger.info("AUDIT: Deleted image file: {}", path);
-                } else {
-                    logger.warn("Security: Path traversal attempt prevented during deletion: {}", imageUrl);
-                }
-            } catch (Exception e) {
-                logger.error("Failed to delete image file: {}", imageUrl, e);
-            }
-        }
+        // No-op for DB storage
     }
 }

@@ -132,7 +132,6 @@ public class AdminController {
             return "redirect:/admin/dashboard";
         }
 
-        String newlyUploadedUrl = null;
         try {
             Event event = new Event();
             event.setTitle(title);
@@ -157,11 +156,8 @@ public class AdminController {
             }
 
             if (imageFile != null && !imageFile.isEmpty()) {
-                String savedUrl = eventService.saveUploadedImage(imageFile, loggedInUser.getUsername());
-                if (savedUrl != null) {
-                    event.setImageUrl(savedUrl);
-                    newlyUploadedUrl = savedUrl;
-                } else {
+                boolean saved = eventService.saveUploadedImage(imageFile, loggedInUser.getUsername(), event);
+                if (!saved) {
                     throw new InvalidImageException("Invalid image file. Allowed: JPG, PNG, WebP, GIF.");
                 }
             }
@@ -169,16 +165,7 @@ public class AdminController {
             eventService.saveEvent(event);
             redirectAttributes.addFlashAttribute("success", "Event added successfully!");
         } catch (Exception e) {
-            // Clean up newly uploaded file if DB save fails
-            if (newlyUploadedUrl != null) {
-                try {
-                    eventService.deleteImageByUrl(newlyUploadedUrl);
-                    logger.warn("AUDIT: Deleted newly uploaded file due to transaction failure in addEvent: {}",
-                            newlyUploadedUrl);
-                } catch (Exception ex) {
-                    logger.error("Failed to clean up file after transaction failure in addEvent", ex);
-                }
-            }
+            // DB handles transactionality
             logger.error("Failed to add event: {}", e.getMessage(), e);
             throw e;
         }
@@ -221,7 +208,6 @@ public class AdminController {
             throw new EventNotFoundException("Event not found with ID: " + id);
         }
 
-        String newlyUploadedUrl = null;
         try {
             event.setTitle(title);
             event.setDescription(description);
@@ -240,34 +226,17 @@ public class AdminController {
             }
 
             if (imageFile != null && !imageFile.isEmpty()) {
-                String oldUrl = event.getImageUrl();
-                String savedUrl = eventService.saveUploadedImage(imageFile, loggedInUser.getUsername());
+                boolean saved = eventService.saveUploadedImage(imageFile, loggedInUser.getUsername(), event);
 
-                if (savedUrl == null) {
+                if (!saved) {
                     throw new InvalidImageException("Invalid image file. Allowed: JPG, PNG, WebP, GIF.");
-                }
-
-                event.setImageUrl(savedUrl);
-                newlyUploadedUrl = savedUrl;
-
-                // Delete old image
-                if (oldUrl != null) {
-                    eventService.deleteImageByUrl(oldUrl);
                 }
             }
 
             eventService.saveEvent(event);
             redirectAttributes.addFlashAttribute("success", "Event updated successfully!");
         } catch (Exception e) {
-            // Clean up newly uploaded file if DB save fails
-            if (newlyUploadedUrl != null) {
-                try {
-                    eventService.deleteImageByUrl(newlyUploadedUrl);
-                    logger.warn("AUDIT: Deleted newly uploaded file due to transaction failure: {}", newlyUploadedUrl);
-                } catch (Exception ex) {
-                    logger.error("Failed to clean up file after transaction failure", ex);
-                }
-            }
+            // DB handles transactionality
             logger.error("Failed to edit event (ID: {}): {}", id, e.getMessage(), e);
             throw e;
         }
