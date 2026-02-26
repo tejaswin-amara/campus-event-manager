@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://www.oracle.com/java/technologies/downloads/"><img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java Version"></a>
-  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring_Boot-3.4.2-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot"></a>
+  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring_Boot-3.4.13-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot"></a>
   <a href="#%EF%B8%8F-security--reliability"><img src="https://img.shields.io/badge/Security-Zero--Trust-E11D48?style=for-the-badge&logo=spring-security&logoColor=white" alt="Security Hardened"></a>
   <a href="https://flywaydb.org/"><img src="https://img.shields.io/badge/DB-Flyway-CC0201?style=for-the-badge&logo=flyway&logoColor=white" alt="Flyway Migrations"></a>
   <a href="#architecture-resilience"><img src="https://img.shields.io/badge/Resilience-Resilience4j-F7DF1E?style=for-the-badge&logo=blueprint&logoColor=black" alt="Resilience4j"></a>
@@ -83,7 +83,7 @@ graph TD
 
 | Layer | Technology |
 | :--- | :--- |
-| **Backend** | Java 21, Spring Boot 3.4.2 |
+| **Backend** | Java 21, Spring Boot 3.4.13 |
 | **Security** | Spring Security 6.x, Bucket4j, Session Management |
 | **Resilience** | Resilience4j (Circuit Breaker) |
 | **Frontend** | Thymeleaf, Vanilla CSS (Glassmorphism), JavaScript (ES6) |
