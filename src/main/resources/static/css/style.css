@@ -37,7 +37,7 @@
     /* Category colors */
     --cat-technical: #7B6FFF;
     --cat-cultural: #06B6D4;
-    --cat-sports: #0FD97A;
+    --cat-sports: #14B8A6;
     --cat-workshop: #FF9F43;
     --cat-seminar: #EC4899;
 
@@ -84,7 +84,7 @@
     /* Category Colors */
     --cat-tech: #7C3AED;
     --cat-cultural: #06B6D4;
-    --cat-sports: #10B981;
+    --cat-sports: #14B8A6;
     --cat-workshop: #F59E0B;
     --cat-seminar: #EC4899;
 
@@ -731,11 +731,12 @@ body {
 }
 
 .badge-sports {
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(20, 184, 166, 0.15);
     /* var(--cat-sports) */
     color: var(--cat-sports);
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(20, 184, 166, 0.3);
 }
+
 
 .badge-workshop {
     background: rgba(245, 158, 11, 0.15);
@@ -1676,18 +1677,22 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .badge-upcoming {
-    background: rgba(123, 111, 255, 0.78);
-    color: #fff;
+    background: rgba(15, 217, 122, 0.15);
+    color: var(--success);
+    border-color: rgba(15, 217, 122, 0.3);
 }
 
 .badge-past {
-    background: rgba(70, 70, 100, 0.78);
-    color: #ccc;
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-muted);
+    border-color: rgba(100, 116, 139, 0.3);
 }
 
 .badge-ongoing {
-    background: rgba(15, 217, 122, 0.78);
-    color: #fff;
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--secondary);
+    border-color: rgba(6, 182, 212, 0.3);
+    animation: badgePulse 2.5s ease-in-out infinite;
 }
 
 .event-card {

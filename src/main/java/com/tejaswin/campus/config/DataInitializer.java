@@ -6,14 +6,17 @@ import com.tejaswin.campus.repository.EventRepository;
 import com.tejaswin.campus.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -23,6 +26,9 @@ public class DataInitializer implements CommandLineRunner {
     private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
     private final String adminPassword;
+
+    @Autowired
+    private Environment environment;
 
     public DataInitializer(UserRepository userRepository, EventRepository eventRepository,
             PasswordEncoder passwordEncoder,
@@ -36,6 +42,16 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        // Fail fast if using default admin password in production
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")
+                && "admin123".equals(adminPassword)) {
+            throw new IllegalStateException(
+                    "SECURITY: Default admin password detected in production! Set ADMIN_PASSWORD env var.");
+        }
+        if ("admin123".equals(adminPassword)) {
+            logger.warn("⚠️  SECURITY: Using default admin password. Set ADMIN_PASSWORD env var for production.");
+        }
+
         // 1. Ensure Guest User Exists (CRITICAL: Required for auto-login on /)
         User guest = userRepository.findByUsernameForUpdate("guest").orElse(null);
         if (guest == null) {

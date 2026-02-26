@@ -144,6 +144,11 @@ public class AdminController {
             event.setResponsesLink(responsesLink);
             event.setEndDateTime(endDateTime);
 
+            if (dateTime.isBefore(LocalDateTime.now())) {
+                redirectAttributes.addFlashAttribute("error", "Event start date must be in the future!");
+                return "redirect:/admin/dashboard";
+            }
+
             if (imageFile != null && !imageFile.isEmpty()) {
                 String savedUrl = eventService.saveUploadedImage(imageFile,
                         sessionService.getLoggedInUser().getUsername());
@@ -281,11 +286,7 @@ public class AdminController {
     private boolean isValidUrl(String url) {
         if (url == null || url.isBlank())
             return true;
-        try {
-            new java.net.URL(url).toURI();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        String lower = url.toLowerCase();
+        return lower.startsWith("http://") || lower.startsWith("https://");
     }
 }
