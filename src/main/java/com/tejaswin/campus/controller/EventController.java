@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.CacheControl;
+import java.util.concurrent.TimeUnit;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -163,7 +165,11 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
 
+        String etag = Integer.toHexString(java.util.Arrays.hashCode(imageData));
+
         return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic().immutable())
+                .eTag(etag)
                 .contentType(mediaType)
                 .body(imageData);
     }

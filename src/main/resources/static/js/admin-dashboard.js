@@ -90,6 +90,21 @@ function openEditModal(btn) {
     document.getElementById('editResponsesLink').value = btn.dataset.responses || '';
     document.getElementById('editCapacity').value = btn.dataset.capacity || '';
 
+    // Show existing image preview if it exists
+    const previewImg = document.getElementById('editPreviewImg');
+    const previewBox = document.getElementById('editPreviewBox');
+    const uploadZone = document.getElementById('editUploadZone');
+
+    if (btn.dataset.image) {
+        previewImg.src = btn.dataset.image;
+        previewBox.style.display = 'flex';
+        uploadZone.style.display = 'none';
+    } else {
+        previewImg.src = '';
+        previewBox.style.display = 'none';
+        uploadZone.style.display = 'flex';
+    }
+
     editModal.show();
 }
 
