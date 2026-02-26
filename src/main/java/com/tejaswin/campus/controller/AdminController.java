@@ -187,7 +187,7 @@ public class AdminController {
 
     @PostMapping("/edit-event")
     @Transactional
-    public String editEvent(@RequestParam Long id,
+    public String editEvent(@RequestParam @NonNull Long id,
             @RequestParam @Size(max = 255, message = "Title too long") String title,
             @RequestParam @Size(max = 2000, message = "Description too long") String description,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/student")
@@ -115,7 +116,7 @@ public class EventController {
 
     @GetMapping("/event/{id}")
     public String eventDetail(@PathVariable Long id, Model model,
-            jakarta.servlet.http.HttpServletRequest request) {
+            HttpServletRequest request) {
         Event event = eventService.findEventById(id);
         if (event == null) {
             return "redirect:/student/dashboard";

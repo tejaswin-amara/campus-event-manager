@@ -383,6 +383,10 @@ public class EventService {
     private String escapeCsv(String data) {
         if (data == null)
             return "";
+        // Prevent CSV injection (Formula Injection)
+        if (data.startsWith("=") || data.startsWith("+") || data.startsWith("-") || data.startsWith("@")) {
+            data = "'" + data;
+        }
         String escaped = data.replace("\"", "\"\"");
         if (escaped.contains(",") || escaped.contains("\n") || escaped.contains("\"")) {
             return "\"" + escaped + "\"";
