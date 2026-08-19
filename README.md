@@ -1,38 +1,69 @@
 # CampusConnect
 
-CampusConnect is a university event-management platform for publishing campus events, discovering upcoming activities, tracking student interest, and giving administrators a secure operational dashboard. The repository is implemented as a **Spring Boot modular monolith** with Thymeleaf, MySQL, Flyway, Spring Security, Resilience4j, Actuator, Prometheus metrics, and JaCoCo coverage.
+> **A trustworthy campus event catalogue with a secure administrative control plane.**
 
-> **Production posture:** the application is suitable for a production-oriented demonstration and a controlled deployment after environment-specific secrets, TLS, persistent storage, backups, and operational ownership are configured. This repository does not claim that MongoDB, pgvector, Kafka, or independently deployable Node.js/FastAPI services are already implemented; those are documented as bounded evolution paths where the course handout calls for them.
+CampusConnect helps universities publish events, give students a fast way to discover what is happening, and provide administrators with controlled lifecycle management and engagement visibility. The current website is a **Spring Boot modular monolith**: one deployable application with explicit event, identity, registration-interest, recommendation, and operations boundaries.
 
-## What the product does
+[![CI](https://github.com/tejaswin-amara/campus-connect/actions/workflows/ci.yml/badge.svg)](https://github.com/tejaswin-amara/campus-connect/actions/workflows/ci.yml)
+[![Java](https://img.shields.io/badge/Java-25-437291?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-CampusConnect provides a public student experience for event discovery and event details, including category/search filtering and an external registration redirect. Administrators can create, update, delete, filter, analyze, and export events. Event images are validated and stored as database-backed media. The current registration record represents **student interest in an event**, while the authoritative registration transaction remains with the external link configured by an administrator.
+> **Production posture.** The repository is production-oriented and suitable for a controlled deployment after environment-specific secrets, TLS, persistent storage, backups, monitoring ownership, and a release approval process are configured. Technologies such as MongoDB, pgvector, Kafka, FastAPI, Node.js, and Kubernetes are documented as bounded evolution paths; they are not falsely claimed as deployed runtime components.
 
-| Capability | Current implementation |
+## Product at a glance
+
+| Capability | Current behavior |
 | --- | --- |
-| Event catalogue | Spring MVC and Thymeleaf with paginated discovery, search, category filtering, and event details |
-| Administration | Role-protected dashboard for event lifecycle management, analytics, and CSV export |
-| Authentication | Spring Security session authentication, BCrypt password hashing, CSRF protection, session-fixation mitigation, and admin RBAC |
-| Database | MySQL 8.4 LTS with JPA/Hibernate and Flyway migrations V1–V3 |
-| Integrity | Unique user-event interests, foreign keys, event date checks, status checks, query-aware indexes, and transaction boundaries |
-| Recommendations | Explainable server-side recommendations based on prior interests and event demand, adapted from the Firebase-Addition matchmaker concept |
-| Resilience | Bucket4j login rate limiting and Resilience4j registration fallback |
-| Observability | Actuator health/info, Prometheus registry, structured logging, and audit logging |
-| Delivery | Maven Wrapper, Dockerfile, Docker Compose, GitHub Actions verification, JaCoCo gate, dependency review, and container build |
+| Event discovery | Public, server-rendered catalogue with search, category filtering, pagination, event details, and upcoming-event recommendations |
+| Administration | `ADMIN`-protected event create, update, delete, filtering, analytics, and CSV export workflows |
+| Interest tracking | At most one user-event interest row, enforced by a unique constraint and transaction-safe locking; the configured external registration link remains authoritative |
+| Media | Validated event image uploads stored as database-backed media with bounded size and type checks |
+| Security | BCrypt, CSRF, session-fixation mitigation, RBAC, login rate limiting, secure headers, safe redirects, and audit logging |
+| Operations | Flyway migrations, Hibernate validation, Actuator health, Prometheus metrics, structured logs, Docker Compose, and GitHub Actions |
 
-## Quick start
+## Stable technology baseline
 
-The fastest reproducible local path uses Docker Compose. Copy `.env.example` to `.env`, replace every placeholder, and then start the stack.
+| Layer | Version or approach |
+| --- | --- |
+| Runtime | Java 25; Eclipse Temurin 25 JDK/JRE container images |
+| Backend | Spring Boot 4.1.0, Spring Framework 7, Spring MVC, Thymeleaf, Spring Security, Spring Data JPA |
+| Database | MySQL 8.4 LTS with Flyway V1–V3 migrations |
+| Build | Maven Wrapper using Maven 3.9.11 |
+| Quality | JaCoCo 0.8.15, Surefire 3.5.4, 63 automated tests, line and branch gates |
+| Resilience and observability | Resilience4j 2.4.0 Boot 4 adapter, Bucket4j 8.10.1, Actuator, Micrometer Prometheus registry |
+
+See [`docs/stable-versions.md`](docs/stable-versions.md) for the complete compatibility record and intentional pins.
+
+## Quick start with Docker Compose
+
+The most reproducible local path starts the application and MySQL together.
 
 ```bash
 cp .env.example .env
+# Replace every placeholder in .env with local-only values.
 docker compose up --build -d
-./scripts/smoke-test.sh
+BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
 ```
 
-The application is then available at `http://localhost:9090`. The health endpoint is `http://localhost:9090/actuator/health`, and the generated OpenAPI document is available at `http://localhost:9090/v3/api-docs`. Prometheus metrics are exposed at `/actuator/prometheus`; protect this endpoint at the network or ingress layer in a real deployment.
+The website is available at `http://localhost:9090`. Operational endpoints are:
 
-For a local MySQL installation, set `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, `MYSQLPASSWORD`, and `ADMIN_PASSWORD` in the shell before running the Maven Wrapper. Production startup uses Flyway as the schema authority and sets Hibernate to `validate`; do not use `DDL_AUTO=update` in production.
+| Endpoint | Purpose |
+| --- | --- |
+| `/actuator/health` | Liveness/readiness-oriented health response |
+| `/v3/api-docs` | Generated OpenAPI document |
+| `/swagger-ui.html` | Interactive API documentation when enabled |
+| `/actuator/prometheus` | Prometheus scrape endpoint; protect it at the network or ingress layer |
+
+To stop the stack:
+
+```bash
+docker compose down
+```
+
+## Local Maven workflow
+
+For a local MySQL installation, export the required variables before invoking the Maven Wrapper. Production uses Flyway as the schema authority and Hibernate `validate`; do not use `DDL_AUTO=update` in production.
 
 ```bash
 export MYSQLHOST=localhost
@@ -42,101 +73,99 @@ export MYSQLUSER=campus_app
 export MYSQLPASSWORD='replace-with-a-local-password'
 export ADMIN_PASSWORD='replace-with-a-unique-admin-secret'
 export DDL_AUTO=validate
+
 ./mvnw -B verify
 ./mvnw spring-boot:run
 ```
 
+The committed CI and Compose configurations use MySQL 8.4. A local MySQL 8.0 installation may not be accepted by Flyway 12; follow [`docs/operations/README.md`](docs/operations/README.md) for the safe local verification alternative.
+
 ## Configuration contract
 
-Production credentials are intentionally not shipped as usable defaults. Compose fails fast when `MYSQLPASSWORD`, `MYSQL_ROOT_PASSWORD`, or `ADMIN_PASSWORD` is absent. The `.env.example` file contains placeholders only.
+Credentials are intentionally absent from source control. Compose fails fast when required secrets are missing, and production bootstrap refuses to use a known admin password.
 
-| Variable | Required | Purpose | Safe production guidance |
+| Variable | Required | Purpose | Production guidance |
 | --- | :---: | --- | --- |
-| `MYSQLHOST` / `MYSQLPORT` | Yes | Database network location | Use a private managed database endpoint |
-| `MYSQLDATABASE` | Yes | Database name | Provision it before startup |
-| `MYSQLUSER` / `MYSQLPASSWORD` | Yes | Application database account | Use a least-privilege non-root account |
-| `MYSQL_ROOT_PASSWORD` | Compose only | Local database initialization | Keep it out of source control and rotate it |
-| `ADMIN_PASSWORD` | Yes | Admin bootstrap/synchronization secret | Supply through a secret manager, never README or image layers |
-| `SPRING_PROFILES_ACTIVE` | Recommended | Runtime profile selection | Use `prod` for TLS and strict production overrides |
-| `DDL_AUTO` | Recommended | Hibernate schema behavior | Use `validate` with Flyway-controlled migrations |
+| `MYSQLHOST`, `MYSQLPORT` | Yes | Database network location | Use a private managed endpoint |
+| `MYSQLDATABASE` | Yes | Database name | Provision before application startup |
+| `MYSQLUSER`, `MYSQLPASSWORD` | Yes | Least-privilege application account | Never use the database root account |
+| `MYSQL_ROOT_PASSWORD` | Compose only | Local database initialization | Keep in a secret manager or local `.env` only |
+| `ADMIN_PASSWORD` | Yes | Admin bootstrap/synchronization secret | Supply through a secret manager; never bake into an image |
+| `SPRING_PROFILES_ACTIVE` | Recommended | Profile selection | Use `prod` for strict production overrides |
+| `DDL_AUTO` | Recommended | Hibernate schema behavior | Keep `validate` with Flyway-controlled migrations |
 | `COOKIE_SECURE` | Recommended | HTTPS-only session cookies | Set `true` behind HTTPS |
-| `MYSQL_USE_SSL` | Recommended | MySQL TLS flag | Set `true` with certificate verification in production |
+| `MYSQL_USE_SSL` | Recommended | MySQL TLS connection | Enable with certificate verification in production |
 | `UPLOAD_DIR` | Recommended | Persistent media path | Mount durable storage and back it up |
-| `LOG_LEVEL` | Optional | Application log level | Prefer `INFO` or `WARN` in production |
+| `LOG_LEVEL` | Optional | Application logging level | Prefer `INFO` or `WARN` |
 
 ## Architecture at a glance
 
 ```mermaid
 flowchart LR
-    Browser[Student or Admin Browser] --> Web[Spring Boot Web Layer]
-    Web --> Security[Spring Security + CSRF + RBAC]
-    Security --> Services[Event and User Services]
-    Services --> Repositories[Spring Data JPA Repositories]
-    Repositories --> MySQL[(MySQL 8)]
-    Services --> Media[(Event image BLOBs)]
-    Services -.-> Resilience[Resilience4j fallback]
-    AppOps[Actuator + Prometheus] --> Ops[Monitoring / Scraping Layer]
+    Browser[Student or Admin Browser] --> Web[Spring MVC + Thymeleaf]
+    Web --> Security[Spring Security\nCSRF + RBAC + Sessions]
+    Security --> Event[Event Service]
+    Security --> Identity[User and Session Services]
+    Event --> Interest[Registration-interest workflow]
+    Event --> Recommendation[Derived recommendation scoring]
+    Event --> JPA[Spring Data JPA]
+    Identity --> JPA
+    Interest --> JPA
+    JPA --> MySQL[(MySQL 8.4)]
+    MySQL --> Flyway[Flyway V1–V3]
+    AppOps[Actuator + Micrometer] --> Ops[Monitoring boundary]
 ```
 
-The current architecture is intentionally a modular monolith. The documented bounded-context evolution path separates identity/access, event catalogue, registration/capacity, and activity/notification/search concerns without pretending that extraction has already happened. See [Architecture and C4 documentation](docs/architecture/README.md).
+The system intentionally remains a modular monolith. The logical boundaries are explicit enough to support future extraction, while the current deployment keeps transactions, security, and operations simple. See the [C4 architecture package](docs/architecture/README.md).
 
-## Course-handout compliance
+## Handout compliance
 
-The attached DBSE&DBD handout expects concrete evidence across relational engineering, polyglot persistence, backend API design, architectural evolution, microservices concepts, deployment, observability, CI/CD, security, load testing, C4 diagrams, README quality, and final showcase. The compliance matrix maps each course outcome to source files, migrations, tests, scripts, and documentation.
+The DBSE&DBD evidence package maps the implementation to CO1–CO6 without overstating what is live.
 
-| Outcome | Evidence status in this repository |
+| Outcome | Evidence summary |
 | --- | --- |
-| CO1 | Implemented through MySQL/JPA/Flyway, normalized core entities, constraints, transaction boundaries, a pessimistic event-row lock, and V3 indexes/checks; documented in `docs/data/` |
-| CO2 | SQL/NoSQL/vector trade-offs and a semantic-search evolution design are documented; the active implementation remains relational, and the Firebase-inspired recommendation scorer is implemented as derived Java/MySQL logic without falsely claiming Firestore or pgvector is live |
-| CO3 | Implemented through Spring MVC/Spring Security validation and Springdoc OpenAPI; the API contract and security boundary are documented in `docs/api/` |
-| CO4 | Spring Boot service architecture is implemented; Node.js/Express and FastAPI are documented as bounded evolution options rather than unimplemented claims |
-| CO5 | Bounded contexts, REST/event-flow options, resilience, and Saga/compensation design are documented; the current release remains a modular monolith |
-| CO6 | Dockerfile, Compose, health checks, Prometheus support, GitHub Actions, JaCoCo gate, dependency review, smoke test, load test, C4 diagrams, and showcase script are included |
+| CO1 | MySQL/JPA/Flyway normalization, constraints, indexes, transaction boundaries, pessimistic locking, and migration evidence |
+| CO2 | SQL/NoSQL/vector trade-off analysis plus a tested relational recommendation scorer; no false claim of live Firestore, MongoDB, or pgvector |
+| CO3 | Spring MVC routes, validation, Spring Security, OpenAPI, session authentication, error handling, and tests |
+| CO4 | Spring Boot modular service layer with documented FastAPI and Node.js/Express extraction options |
+| CO5 | Bounded contexts, resilience, REST/event-flow design, outbox/Saga guidance, and explicit modular-monolith limitation |
+| CO6 | Dockerfile, Compose, MySQL 8.4 CI service, health/metrics, JaCoCo, dependency review, smoke/load checks, C4 diagrams, and showcase script |
+
+Open the full [`docs/compliance-matrix.md`](docs/compliance-matrix.md) for file-level traceability.
 
 ## Documentation map
 
-| Document | Purpose |
+| Audience | Start here |
 | --- | --- |
-| [`docs/requirements.md`](docs/requirements.md) | Problem statement, actors, scope, functional and non-functional requirements |
-| [`docs/compliance-matrix.md`](docs/compliance-matrix.md) | CO1–CO6 traceability to implementation evidence |
-| [`docs/architecture/README.md`](docs/architecture/README.md) | C4 views, request flows, bounded contexts, and evolution path |
-| [`docs/data/README.md`](docs/data/README.md) | Relational model, normalization, constraints, indexes, transactions, and polyglot search strategy |
-| [`docs/api/README.md`](docs/api/README.md) | OpenAPI access, route conventions, security, validation, and error behavior |
-| [`docs/services/README.md`](docs/services/README.md) | Current modules and future service boundaries |
-| [`docs/operations/README.md`](docs/operations/README.md) | Docker, configuration, migrations, health, metrics, backups, and release operations |
-| [`docs/security/README.md`](docs/security/README.md) | Threat model, RBAC, OWASP API checklist, and secret handling |
-| [`docs/testing/README.md`](docs/testing/README.md) | Test strategy, coverage, smoke checks, load-test method, and release gates |
-| [`docs/showcase.md`](docs/showcase.md) | A five-to-ten-minute demonstration mapped to CO1–CO6 |
-| [`docs/reference-repositories.md`](docs/reference-repositories.md) | Full register of supplied repositories and their safe reuse decisions |
-| [`docs/hybrid-integration-decision.md`](docs/hybrid-integration-decision.md) | Feature comparison, Firebase provenance, data ownership, and handout-first hybrid decisions |
-| [`docs/stable-versions.md`](docs/stable-versions.md) | Stable version targets, compatibility policy, upgrade evidence, and intentional pins |
-| [`TECHNICAL_GUIDE.md`](TECHNICAL_GUIDE.md) | Existing implementation-oriented technical reference |
-| [`SECURITY.md`](SECURITY.md) | Vulnerability reporting policy |
+| New developer | [`docs/README.md`](docs/README.md), [`CONTRIBUTING.md`](CONTRIBUTING.md), [`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md) |
+| Maintainer | [`TECHNICAL_GUIDE.md`](TECHNICAL_GUIDE.md), [`docs/architecture/README.md`](docs/architecture/README.md), [`docs/data/README.md`](docs/data/README.md) |
+| Release operator | [`docs/operations/README.md`](docs/operations/README.md), [`docs/testing/README.md`](docs/testing/README.md), [`docs/stable-versions.md`](docs/stable-versions.md) |
+| Security reviewer | [`docs/security/README.md`](docs/security/README.md), [`SECURITY.md`](SECURITY.md), [`docs/api/README.md`](docs/api/README.md) |
+| DBSE&DBD evaluator | [`docs/compliance-matrix.md`](docs/compliance-matrix.md), [`docs/showcase.md`](docs/showcase.md), [`docs/reference-repositories.md`](docs/reference-repositories.md) |
 
 ## Verification commands
 
 ```bash
-# Unit, integration, packaging, coverage gate
+# Complete build, tests, package, migrations, and coverage gates
 ./mvnw -B verify
 
-# Runtime health and OpenAPI smoke checks
+# Runtime health and OpenAPI checks
 BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
 
-# Lightweight concurrent health load test
+# Repeatable lightweight concurrency sanity check
 REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
 ```
 
-The CI workflow runs the Maven verification lifecycle against MySQL, uploads the JaCoCo report, builds the container image, and performs dependency review on pull requests. The repository’s current local baseline is 61 passing tests with line and branch coverage gates defined in `pom.xml`; the stable-version matrix is maintained in [`docs/stable-versions.md`](docs/stable-versions.md).
-
 ## License and security
 
-See [`LICENSE`](LICENSE) for licensing terms and [`SECURITY.md`](SECURITY.md) for responsible vulnerability reporting. Never commit `.env`, credentials, production database URLs, private keys, or generated uploads.
+CampusConnect is released under the [MIT License](LICENSE). See [`SECURITY.md`](SECURITY.md) for responsible vulnerability reporting. Never commit `.env`, passwords, private keys, production database URLs, generated uploads, or temporary credentials.
 
 ## References
 
-[1]: https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html "Spring Boot Actuator reference"
-[2]: https://documentation.red-gate.com/flyway/reference "Flyway documentation"
-[3]: https://docs.docker.com/compose/ "Docker Compose documentation"
-[4]: https://docs.github.com/en/actions "GitHub Actions documentation"
-[5]: https://micrometer.io/docs/registry/prometheus "Micrometer Prometheus registry"
-[6]: https://owasp.org/API-Security/editions/2023/en/0x00-header/ "OWASP API Security Top 10"
+[1]: https://spring.io/projects/spring-boot "Spring Boot project"
+[2]: https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html "Spring Boot Actuator reference"
+[3]: https://documentation.red-gate.com/flyway/reference "Flyway reference"
+[4]: https://docs.docker.com/compose/ "Docker Compose documentation"
+[5]: https://docs.github.com/en/actions "GitHub Actions documentation"
+[6]: https://micrometer.io/docs/registry/prometheus "Micrometer Prometheus registry"
+[7]: https://owasp.org/API-Security/editions/2023/en/0x00-header/ "OWASP API Security Top 10"

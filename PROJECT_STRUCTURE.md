@@ -1,122 +1,168 @@
-# 📂 Project Structure
+# CampusConnect project structure
 
-This document provides a detailed breakdown of the **CampusConnect** codebase, organized by responsibility and layer.
+> **Purpose:** Map repository paths to runtime responsibility, verification evidence, and contributor entry points.
+> **Current baseline:** Java 25, Spring Boot 4.1.0, MySQL 8.4, Flyway V1–V3
 
-## Project Root
+CampusConnect is organized as a **layered modular monolith**. Spring component scanning, Thymeleaf view resolution, Flyway migration discovery, and CI conventions mean that a file can be required even when it has no direct caller in another Java class.
 
-| File / Directory | Purpose |
-| :--- | :--- |
-| `pom.xml` | Maven configuration, dependencies, and build settings |
-| `Dockerfile` | Multi-stage Docker build (build + runtime) |
-| `docker-compose.yml` | Full-stack local development (MySQL + App) |
-| `run_app.ps1` / `stop_app.ps1` | PowerShell convenience scripts for local dev |
-| `README.md` | Project overview, setup, and deployment guide |
-| `TECHNICAL_GUIDE.md` | In-depth architecture and implementation details |
-| `CONTRIBUTING.md` | Contributor workflow and guidelines |
-| `SECURITY.md` | Responsible disclosure policy |
-| `LICENSE` | MIT License |
+## Repository root
 
----
+| Path | Responsibility |
+| --- | --- |
+| `pom.xml` | Maven dependencies, Spring Boot parent, Surefire, JaCoCo, and build plugins |
+| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/` | Reproducible Maven entry points for Unix-like systems and Windows |
+| `Dockerfile` | Multi-stage Java 25 build and non-root runtime image |
+| `docker-compose.yml` | MySQL 8.4 plus application local stack with health-gated startup |
+| `.env.example` | Configuration contract with placeholders only; never add real secrets |
+| `run_app.ps1`, `stop_app.ps1` | Optional Windows developer convenience scripts; Docker Compose remains the canonical local path |
+| `README.md` | Product overview, quick start, configuration, architecture, and compliance entry point |
+| `TECHNICAL_GUIDE.md` | Implementation-oriented architecture and change guide |
+| `PROJECT_STRUCTURE.md` | This source-tree map |
+| `CONTRIBUTING.md` | Branching, commit, review, testing, and secret hygiene workflow |
+| `SECURITY.md` | Responsible vulnerability disclosure policy |
+| `LICENSE` | MIT license |
 
-## 📦 Backend (`src/main/java/com/tejaswin/campus`)
+## Backend source tree
 
-The Java source code follows a clean 3-tier architecture:
+The Java package is `com.tejaswin.campus`.
 
-### 🧩 Models (`/model`)
+### Application entry point
 
-Entities representing the database schema.
+| File | Responsibility |
+| --- | --- |
+| `CampusEventManagerApplication.java` | Spring Boot application entry point |
 
-- `User.java` — Admin and Student users with role-based access.
-- `Event.java` — Main event entity (title, date, venue, category, image, capacity).
-- `Registration.java` — Links users to events for interest tracking and analytics.
+### Configuration
 
-### 💾 Repositories (`/repository`)
+| File | Responsibility |
+| --- | --- |
+| `AppConfig.java` | Typed application settings and shared beans such as BCrypt configuration |
+| `DataInitializer.java` | Safe startup data initialization with transactional and locking safeguards |
+| `SecurityConfig.java` | Spring Security filter chain, CSRF, session, headers, login, and role rules |
+| `WebMvcConfig.java` | MVC/resource configuration and controlled media resource handling |
 
-JPA interfaces for database communication.
+### Controllers
 
-- `UserRepository.java` — User queries and lookups.
-- `EventRepository.java` — Event CRUD and filtered queries.
-- `RegistrationRepository.java` — Registration tracking and analytics.
+| File | Responsibility |
+| --- | --- |
+| `AuthController.java` | Login, logout, and authentication-facing views |
+| `EventController.java` | Public catalogue, event details, interest workflow, and recommendation presentation |
+| `AdminController.java` | Admin-only event lifecycle, analytics, image upload, filtering, and CSV export |
 
-### ⚙️ Services (`/service`)
+### Services
 
-Business logic layer.
+| File | Responsibility |
+| --- | --- |
+| `EventService.java` | Event lifecycle, validation, media handling, registration-interest transaction, analytics, and CSV export |
+| `UserService.java` | User lookup, password handling, role behavior, and authentication support |
+| `SessionService.java` | Small abstraction around session invalidation and session state |
+| `RecommendationService.java` | Deterministic, server-side recommendation scoring over upcoming events and user interest history |
 
-- `EventService.java` — CSV exports, image handling, N+1 query optimization, event registration.
-- `UserService.java` — User authentication, role management, BCrypt hashing.
-- `RegistrationService.java` — Event registration logic with circuit breaker resilience.
+### Models
 
-### 🎮 Controllers (`/controller`)
+| File | Responsibility |
+| --- | --- |
+| `User.java` | Authentication identity, role, and password state |
+| `Event.java` | Event metadata, dates, venue, capacity, external link, and database-backed media fields |
+| `Registration.java` | Local user-event interest record and status; the configured external URL remains authoritative for registration |
+| `RecommendedEvent.java` | Non-persistent recommendation DTO containing derived score/reason data |
 
-HTTP request handlers.
+### Repositories
 
-- `AuthController.java` — Login/Logout for Students and Admins.
-- `EventController.java` — Student Dashboard and event engagement.
-- `AdminController.java` — Admin Dashboard (CRUD, Analytics, CSV Exports).
+| File | Responsibility |
+| --- | --- |
+| `UserRepository.java` | User lookup and pessimistic initialization queries |
+| `EventRepository.java` | Event filtering, pagination, upcoming-event queries, and locking queries |
+| `RegistrationRepository.java` | User-event interest persistence, uniqueness support, and analytics queries |
 
-### 🔒 Security (`/security`)
+### Security and exception handling
 
-- `SecurityConfig.java` — Spring Security filter chain, CSRF, session, and role-based access configuration.
-- `RateLimitingFilter.java` — Bucket4j-based rate limiting for login endpoints.
+| File | Responsibility |
+| --- | --- |
+| `RateLimitingFilter.java` | Caffeine-backed Bucket4j login throttling |
+| `SecurityAuditLogger.java` | Structured security-relevant logging without raw PII or secrets |
+| `PiiUtils.java` | Stable hashing/obfuscation helpers for audit fields |
+| `EventNotFoundException.java` | Domain exception for missing events |
+| `InvalidImageException.java` | Domain exception for invalid image content |
+| `GlobalExceptionHandler.java` | Consistent user-safe handling of validation, not-found, upload, authorization, and unexpected errors |
 
-### 🛠️ Configuration (`/config`)
+## Resources
 
-- `WebMvcConfig.java` — Static resource paths for external file access (uploads).
-- `CacheConfig.java` — Caffeine cache configuration.
-- `ResilienceConfig.java` — Resilience4j circuit breaker setup.
-- `OpenApiConfig.java` — Swagger/OpenAPI documentation configuration.
+### Configuration and operations
 
-### ⚠️ Exception Handling (`/exception`)
+| Path | Responsibility |
+| --- | --- |
+| `src/main/resources/application.properties` | Default environment-variable-driven configuration, Flyway, JPA validation, session, uploads, resilience, logging, and Actuator settings |
+| `src/main/resources/application-prod.properties` | Stricter production profile with HTTPS cookies, MySQL TLS, no database creation, and hidden health details |
+| `src/main/resources/logback-spring.xml` | Console and structured Logstash logging configuration |
 
-- `GlobalExceptionHandler.java` — Centralized error handling (file size limits, 404s, general errors).
-- `EventNotFoundException.java` — Custom exception for missing events.
-- `RegistrationException.java` — Custom exception for registration failures.
+### Database migrations
 
-### 🚀 Application Entry Point
+| File | Responsibility |
+| --- | --- |
+| `V1__Initial_Schema.sql` | Baseline users, events, registrations, keys, and initial constraints |
+| `V2__Add_Image_Blob_Columns.sql` | Database-backed image data and MIME metadata |
+| `V3__Add_event_query_indexes_and_integrity_checks.sql` | Query-aware indexes, event date checks, status constraints, and integrity hardening |
 
-- `CampusEventManagerApplication.java` — Spring Boot main class.
+Flyway migration filenames are part of the database contract. Do not rename or delete an applied migration; add a new version instead.
 
----
+### Thymeleaf templates
 
-## 🎨 Frontend & Resources (`src/main/resources`)
+| Template | Responsibility |
+| --- | --- |
+| `dashboard.html` | Student-facing event catalogue and recommendations |
+| `event_detail.html` | Event details, image, external registration link, and interest action |
+| `admin_login.html` | Admin login form |
+| `admin_dashboard.html` | Admin event management, analytics, filtering, and export controls |
+| `error.html` | User-safe error fallback |
 
-### 🏙️ Templates (`/templates`)
+### Static assets
 
-Thymeleaf HTML templates with dynamic content:
+| Path | Responsibility |
+| --- | --- |
+| `static/css/style.css` | Visual system, responsive layout, glassmorphism surfaces, and accessibility-conscious states |
+| `static/js/main.js` | Catalogue interactions, search/filter behavior, and progressive enhancement |
+| `static/js/dashboard.js` | Dashboard-specific behavior and recommendation interactions |
+| `static/js/admin-dashboard.js` | Admin dashboard interactions and visualization behavior |
+| `static/images/logo.png` | Application brand asset |
+| `static/favicon.svg` | Browser favicon |
+| `static/manifest.json`, `static/sw.js` | PWA metadata and service-worker behavior; preserve only when the corresponding install/offline experience is supported |
 
-| Template | Purpose |
-| :--- | :--- |
-| `dashboard.html` | Student-facing event listing and interaction |
-| `admin_dashboard.html` | Admin management console with real-time analytics |
-| `admin_login.html` | Secure administrative login page |
-| `event_detail.html` | Individual event detail view |
-| `error.html` | Polished, animated error fallback page |
+## Tests
 
-### 🛠️ Static Assets (`/static`)
+The repository contains **63 automated tests** across unit, model, controller, security, service, and integration-oriented classes.
 
-- `css/style.css` — Core design system (Glassmorphism, Dark Theme, Micro-Animations).
-- `js/main.js` — Frontend logic for search, filtering, and Chart.js integration.
-- `favicon.svg` — Application favicon.
-- `manifest.json` & `sw.js` — Progressive Web App (PWA) configuration for offline support and mobile install.
+| Test class | Evidence area |
+| --- | --- |
+| `AppConfigTest`, `DataInitializerTest` | Configuration and safe bootstrap |
+| `AdminControllerIntegrationTest`, `AdminControllerSecurityTest` | Admin workflows and authorization |
+| `AuthControllerTest`, `SessionFixationTest` | Authentication and session security |
+| `EventControllerTest` | Public event routes and request behavior |
+| `GlobalExceptionHandlerTest` | User-safe error mapping |
+| `EventTest`, `RecommendedEventTest` | Domain/model invariants and DTO behavior |
+| `RateLimitingFilterTest`, `SecurityAuditLoggerTest` | Abuse controls and structured audit behavior |
+| `EventServiceTest`, `RecommendationServiceTest`, `SessionServiceTest`, `UserServiceTest` | Core application services and recommendation logic |
 
-### 📝 Configuration
+Run the complete suite with `./mvnw -B verify`. Runtime-backed tests require the documented MySQL configuration; the CI and Compose verification path uses MySQL 8.4.
 
-- `application.properties` — Server port, database, session, Flyway, Resilience4j, and upload settings.
+## CI and documentation evidence
 
-### 🗂️ Database Migrations (`/db/migration`)
+| Path | Responsibility |
+| --- | --- |
+| `.github/workflows/ci.yml` | Java 25 build, MySQL 8.4 service, tests, coverage, dependency review, and image checks |
+| `.github/ISSUE_TEMPLATE/` | Reproducible bug and feature intake |
+| `.github/PULL_REQUEST_TEMPLATE.md` | Review, test, security, and documentation checklist |
+| `scripts/smoke-test.sh` | Health/OpenAPI runtime smoke checks |
+| `scripts/load-test.sh` | Repeatable lightweight concurrency sanity check |
+| `docs/` | Requirements, C4 architecture, data, API, services, operations, security, testing, compliance, showcase, cleanup audit, and reference provenance |
+| `images/` | Optional repository-level showcase assets; not runtime media storage |
 
-- Flyway `.sql` scripts for deterministic schema versioning.
+## Cleanup boundary
 
----
+The Ponytail cleanup audit is documented in [`docs/cleanup-audit.md`](docs/cleanup-audit.md). High-confidence stale remediation notes and a machine-specific CodeRabbit rule were removed. Windows helpers, editor settings, runtime dependencies, migrations, tests, CI, screenshots, and QA material remain because each has a documented developer, runtime, visual, or handout-evidence role.
 
-## 🧪 Tests (`src/test/java`)
+## References
 
-- `EventServiceTest.java` — JUnit 5 / Mockito suites verifying critical business logic without a live database.
-
----
-
-## 🔧 CI/CD (`.github`)
-
-- `workflows/ci.yml` — GitHub Actions CI pipeline (build + test with MySQL service container).
-- `ISSUE_TEMPLATE/` — Bug report and feature request templates.
-- `PULL_REQUEST_TEMPLATE.md` — Standardized PR checklist.
+[1]: https://docs.spring.io/spring-boot/docs/current/reference/html/ "Spring Boot reference"
+[2]: https://documentation.red-gate.com/flyway/reference "Flyway reference"
+[3]: https://github.com/DietrichGebert/ponytail/blob/main/skills/ponytail-audit/SKILL.md "Ponytail audit skill"

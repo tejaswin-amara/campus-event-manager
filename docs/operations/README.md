@@ -2,7 +2,7 @@
 
 ## Runtime topology
 
-The supported local topology is Docker Compose with one MySQL service and one non-root Java application container. The database has a health check; the application waits for the database to become healthy before starting. The application writes event images to a named uploads volume and exposes a health endpoint for deployment probes.
+The supported local topology is Docker Compose with one MySQL 8.4 service and one non-root Java 25 application container. The database has a health check; the application waits for the database to become healthy before starting. The application writes event images to a named uploads volume and exposes a health endpoint for deployment probes.
 
 ```bash
 cp .env.example .env
@@ -39,7 +39,7 @@ Protect metrics and detailed actuator endpoints at the network or authentication
 
 ## CI/CD pipeline
 
-The GitHub Actions workflow performs checkout, Java 21 setup, Maven verification against a MySQL service, JaCoCo artifact upload, container image build, and dependency review for pull requests. The workflow is intentionally build-and-verify only; publishing requires a separately approved release workflow with registry credentials, signed artifacts, deployment credentials, and rollback policy.
+The GitHub Actions workflow performs checkout, Java 25 setup, Maven verification against a MySQL 8.4 service, JaCoCo artifact upload, container image build, and dependency review for pull requests. The workflow is intentionally build-and-verify only; publishing requires a separately approved release workflow with registry credentials, signed artifacts, deployment credentials, and rollback policy.
 
 The workflow structure is informed by [GitHub starter workflows](https://github.com/actions/starter-workflows) and [GitHub Actions documentation](https://docs.github.com/en/actions). A production extension should add immutable image tags, SBOM generation, vulnerability thresholds, environment approvals, database migration policy, deployment smoke checks, and automatic rollback criteria.
 

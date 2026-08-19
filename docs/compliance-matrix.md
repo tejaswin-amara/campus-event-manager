@@ -4,7 +4,7 @@ The attached handout emphasizes relational engineering, SQL/NoSQL/vector concept
 
 | CO | Outcome focus | Implemented evidence | Design/documentation evidence | Status |
 | --- | --- | --- | --- | --- |
-| CO1 | Normalized relational schema, optimized SQL, transactions, and backend integration | `V1__Initial_Schema.sql`, V2/V3 migrations, JPA models/repositories, Flyway startup, `EventService` transaction, pessimistic event-row lock, indexes/checks, analytics queries, 61 passing tests | [`docs/data/README.md`](data/README.md) and ER diagram | **Implemented** |
+| CO1 | Normalized relational schema, optimized SQL, transactions, and backend integration | `V1__Initial_Schema.sql`, V2/V3 migrations, JPA models/repositories, Flyway startup, `EventService` transaction, pessimistic event-row lock, indexes/checks, analytics queries, 63 automated tests | [`docs/data/README.md`](data/README.md) and ER diagram | **Implemented** |
 | CO2 | SQL/NoSQL comparison, polyglot persistence, vector/semantic search | MySQL relational core, indexed lexical search, and Firebase-inspired derived recommendation scoring are implemented in `RecommendationService` with unit tests | SQL/NoSQL/vector decision table, Firestore/activity boundary, pgvector/vector adapter with lexical fallback, authorization-aware derived data, and [`docs/hybrid-integration-decision.md`](hybrid-integration-decision.md) | **Partially implemented; design evidence complete** |
 | CO3 | Production-quality APIs, validation, authentication, JWT/OAuth2 concepts, OpenAPI, testing | Spring MVC routes, Bean Validation, Spring Security, CSRF, RBAC, rate limiting, session handling, Springdoc `/v3/api-docs`, controller/security tests | [`docs/api/README.md`](api/README.md) describes current HTML/API mix and future JSON contract | **Implemented for current Spring MVC architecture** |
 | CO4 | Node.js/Express and Spring Boot services, SOA and architectural thinking | Spring Boot modular service layer, controller/service/repository separation, Resilience4j | Bounded-context and future Node.js/Express/FastAPI extraction options in [`docs/services/README.md`](services/README.md) and architecture C4 views | **Spring implemented; polyglot evolution documented** |
@@ -26,6 +26,7 @@ The attached handout emphasizes relational engineering, SQL/NoSQL/vector concept
 | Testing and release evidence | [`docs/testing/README.md`](testing/README.md) |
 | Showcase | [`docs/showcase.md`](showcase.md) |
 | Supplied repository integration | [`docs/reference-repositories.md`](reference-repositories.md) |
+| Ponytail cleanup audit | [`docs/cleanup-audit.md`](cleanup-audit.md) |
 | Firebase hybrid decision | [`docs/hybrid-integration-decision.md`](hybrid-integration-decision.md) |
 | Runtime smoke test | [`scripts/smoke-test.sh`](../scripts/smoke-test.sh) |
 | Runtime load check | [`scripts/load-test.sh`](../scripts/load-test.sh) |

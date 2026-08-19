@@ -10,7 +10,7 @@ The design uses the following logical layers:
 | --- | --- | --- |
 | Presentation | Thymeleaf views, static assets, public student routes, and admin routes | `src/main/resources/templates`, `EventController`, `AdminController` |
 | Security | Authentication, role checks, CSRF, session policy, rate limiting, security headers | `SecurityConfig`, `RateLimitingFilter`, `SecurityAuditLogger` |
-| Application services | Event lifecycle, user authentication, session state, interest tracking, analytics, media handling | `EventService`, `UserService`, `SessionService` |
+| Application services | Event lifecycle, user authentication, session state, interest tracking, analytics, media handling, and derived recommendations | `EventService`, `UserService`, `SessionService`, `RecommendationService` |
 | Persistence | Repositories, JPA mappings, Flyway migrations, database-backed image storage | `repository/`, `model/`, `db/migration/` |
 | Operations | Health, metrics, structured logs, resilience fallback, container/runtime configuration | Actuator, Micrometer, Resilience4j, Dockerfile, Compose |
 
@@ -20,7 +20,7 @@ The design uses the following logical layers:
 flowchart LR
     Student[Student / Guest] --> CampusConnect[CampusConnect event-management platform]
     Admin[Administrator] --> CampusConnect
-    CampusConnect --> MySQL[(MySQL 8 database)]
+    CampusConnect --> MySQL[(MySQL 8.4 database)]
     CampusConnect --> ExternalRegistration[External registration form]
     ReleaseOperator[Release / Operations team] --> CampusConnect
     Monitoring[Prometheus-compatible monitoring] --> CampusConnect
@@ -76,7 +76,7 @@ flowchart TB
     Operator[Release operator] --> CI[GitHub Actions]
     CI --> Image[CampusConnect container image]
     Image --> Runtime[Container runtime / managed host]
-    Runtime --> App[App container: non-root Java 21]
+    Runtime --> App[App container: non-root Java 25]
     Runtime --> DB[(Managed MySQL or Compose MySQL)]
     App --> DB
     App --> Volume[Persistent uploads volume]
