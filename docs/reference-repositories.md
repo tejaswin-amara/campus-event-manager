@@ -54,7 +54,7 @@ The repository metadata was checked with GitHub CLI on 19 August 2026. The sourc
 
 ## Directly integrated patterns
 
-The current release directly incorporates the highest-value patterns that fit the existing codebase: the Firebase-Addition recommendation concept rewritten as a tested server-side Spring service; conventional commit and review guidance; a source-linked documentation register; health-gated Compose startup; explicit environment configuration; Flyway-first schema control; JaCoCo verification; GitHub Actions artifact/dependency gates; OWASP-oriented security review; reproducible smoke/load scripts; and an architecture evolution record that distinguishes implemented behavior from future service extraction.
+The current release directly incorporates the highest-value patterns that fit the existing codebase: the Firebase-Addition recommendation concept rewritten as a tested server-side Spring service; conventional commit and review guidance; a source-linked documentation register; health-gated Compose startup; explicit environment configuration; Flyway-first schema control with the required `flyway-mysql` 12.4.0 module; JaCoCo verification; GitHub Actions artifact/dependency gates; OWASP-oriented security review; reproducible smoke/load scripts; and an architecture evolution record that distinguishes implemented behavior from future service extraction. The successful repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) confirms the MySQL 8.4 path.
 
 ## Deliberately not vendored
 

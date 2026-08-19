@@ -32,7 +32,7 @@ A version is adopted only when it is stable, available from its official distrib
 
 ## Verification evidence
 
-The upgrade is validated by `./mvnw -B verify` on Java 25, by the CI contract against MySQL 8.4, by a packaged application running on an isolated port, by the health/OpenAPI smoke script, and by the concurrent health load script. The sandbox’s available Ubuntu server is MySQL 8.0, which Flyway 12 intentionally rejects; local code verification can therefore use a manually migrated schema with Flyway disabled, while the committed CI/Compose path remains MySQL 8.4 and exercises automatic migrations. The test suite includes the hybrid recommendation tests and remains above the documented JaCoCo thresholds.
+The upgrade is validated by `./mvnw -B verify` on Java 25, by the CI contract against MySQL 8.4, by the `flyway-mysql` 12.4.0 module resolving in Maven, by a packaged application running on an isolated port, by the health/OpenAPI smoke script, and by the concurrent health load script. The latest GitHub Actions repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) passed the CI build, tests, coverage, and container-build path. The sandbox’s available Ubuntu server is MySQL 8.0, which Flyway 12 intentionally rejects; local code verification can therefore use a manually migrated schema with Flyway disabled, while the committed CI/Compose path remains MySQL 8.4 and exercises automatic migrations. The test suite includes the hybrid recommendation tests and remains above the documented JaCoCo thresholds.
 
 ## References
 

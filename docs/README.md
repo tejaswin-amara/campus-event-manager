@@ -1,74 +1,72 @@
 # CampusConnect documentation
 
 > **Documentation status:** Maintained for the current `main` branch
+> **Last verified against:** Commit `39d5e6a`
 > **Audience:** Developers, reviewers, release operators, security reviewers, and DBSE&DBD evaluators
-> **System posture:** Production-oriented Spring Boot modular monolith with documented evolution boundaries
 
-This directory is the evidence package for CampusConnect. It explains **what is implemented**, **how to run and verify it**, and **which distributed or polyglot capabilities are intentionally documented as future evolution rather than misrepresented as live services**.
+This directory is the authoritative evidence package for CampusConnect. It distinguishes **implemented behavior** from **documented evolution**, records the cleanup decisions that shaped the repository, and provides reproducible commands for build, test, operations, and demonstration.
 
 ## Start here
 
 | Need | Read |
 | --- | --- |
 | Understand the product and run it locally | [`README.md`](../README.md) |
-| Navigate the system and C4 views | [`architecture/README.md`](architecture/README.md) |
-| Understand the relational model and migrations | [`data/README.md`](data/README.md) |
-| Review routes, authentication, and validation | [`api/README.md`](api/README.md) |
+| Understand implementation boundaries | [`TECHNICAL_GUIDE.md`](../TECHNICAL_GUIDE.md) and [`PROJECT_STRUCTURE.md`](../PROJECT_STRUCTURE.md) |
+| Navigate C4 architecture and evolution | [`architecture/README.md`](architecture/README.md) |
+| Understand schema, migrations, indexes, and locking | [`data/README.md`](data/README.md) |
+| Review routes, validation, and OpenAPI | [`api/README.md`](api/README.md) |
 | Operate, deploy, back up, and troubleshoot | [`operations/README.md`](operations/README.md) |
-| Review threats and security controls | [`security/README.md`](security/README.md) |
-| Run tests and collect release evidence | [`testing/README.md`](testing/README.md) |
-| Prepare the five-to-ten-minute demonstration | [`showcase.md`](showcase.md) |
+| Review security controls and residual risk | [`security/README.md`](security/README.md) and [`../SECURITY.md`](../SECURITY.md) |
+| Run tests and interpret CI evidence | [`testing/README.md`](testing/README.md) |
+| Prepare a five-to-ten-minute assessment demonstration | [`showcase.md`](showcase.md) |
 
 ## Documentation map
 
-### Product and requirements
+### Product, requirements, and assessment
 
 | Document | Purpose |
 | --- | --- |
-| [`requirements.md`](requirements.md) | Problem statement, actors, scope, functional requirements, and non-functional acceptance criteria |
-| [`compliance-matrix.md`](compliance-matrix.md) | CO1–CO6 traceability from handout outcome to source, test, and operational evidence |
-| [`showcase.md`](showcase.md) | Demonstration script, reviewer talking points, and evidence sequence |
+| [`requirements.md`](requirements.md) | Actors, scope, functional requirements, non-functional requirements, and acceptance evidence |
+| [`compliance-matrix.md`](compliance-matrix.md) | CO1–CO6 traceability from outcome to implementation, test, and operational evidence |
+| [`showcase.md`](showcase.md) | Demonstration sequence, reviewer talking points, and honest limitations |
 
 ### Engineering and architecture
 
 | Document | Purpose |
 | --- | --- |
-| [`architecture/README.md`](architecture/README.md) | C4 context, container, component, deployment, bounded contexts, and evolution decisions |
-| [`data/README.md`](data/README.md) | Normalization, constraints, indexes, transactions, migration ownership, and SQL/NoSQL/vector trade-offs |
-| [`api/README.md`](api/README.md) | Current HTML-plus-targeted-endpoint contract, route inventory, validation, errors, and future JSON boundaries |
-| [`services/README.md`](services/README.md) | Current logical modules and safe extraction boundaries for future services |
-| [`hybrid-integration-decision.md`](hybrid-integration-decision.md) | Comparison with Firebase-Addition and provenance of the implemented recommendation feature |
-| [`reference-repositories.md`](reference-repositories.md) | Complete register of supplied repositories and how each informed the solution |
-| [`cleanup-audit.md`](cleanup-audit.md) | Ponytail findings, deletion dispositions, reachability safeguards, and cleanup evidence |
-| [`stable-versions.md`](stable-versions.md) | Stable version policy, compatibility decisions, and upgrade evidence |
+| [`architecture/README.md`](architecture/README.md) | C4 context, containers, components, deployment, bounded contexts, and distributed-evolution decisions |
+| [`data/README.md`](data/README.md) | Relational model, Flyway V1–V3, `flyway-mysql`, constraints, indexes, transactions, and persistence trade-offs |
+| [`api/README.md`](api/README.md) | HTML and targeted endpoint contract, validation, authentication, error behavior, and OpenAPI |
+| [`services/README.md`](services/README.md) | Logical module ownership and safe future extraction boundaries |
+| [`hybrid-integration-decision.md`](hybrid-integration-decision.md) | Firebase-Addition comparison and the server-side recommendation decision |
+| [`reference-repositories.md`](reference-repositories.md) | Complete register of supplied repositories and adopted or rejected practices |
+| [`stable-versions.md`](stable-versions.md) | Stable version baseline, compatibility policy, and upgrade evidence |
 
-### Delivery and governance
+### Delivery, security, and governance
 
 | Document | Purpose |
 | --- | --- |
-| [`operations/README.md`](operations/README.md) | Configuration, migrations, health, metrics, deployment, backups, and incident handling |
-| [`security/README.md`](security/README.md) | Threat model, authentication, authorization, OWASP-oriented controls, and residual risk |
-| [`testing/README.md`](testing/README.md) | Test pyramid, coverage, smoke/load checks, CI gates, and release evidence |
-| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | Branching, commits, review, test evidence, and secret hygiene |
-| [`../SECURITY.md`](../SECURITY.md) | Vulnerability reporting policy |
-| [`../PROJECT_STRUCTURE.md`](../PROJECT_STRUCTURE.md) | Source tree and responsibility map |
-| [`../TECHNICAL_GUIDE.md`](../TECHNICAL_GUIDE.md) | Implementation-oriented guide for maintainers |
+| [`operations/README.md`](operations/README.md) | Configuration, migrations, health, metrics, deployment, backups, and incident response |
+| [`security/README.md`](security/README.md) | Threat model, authentication, authorization, input handling, and OWASP-oriented controls |
+| [`testing/README.md`](testing/README.md) | 63-test inventory, coverage gates, smoke/load checks, CI behavior, and release gates |
+| [`cleanup-audit.md`](cleanup-audit.md) | Ponytail findings, deletion dispositions, framework reachability safeguards, and cleanup history |
+| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | Branching, commits, review, testing, deletion policy, and secret hygiene |
+| [`../.github/PULL_REQUEST_TEMPLATE.md`](../.github/PULL_REQUEST_TEMPLATE.md) | Pull-request evidence checklist |
 
-## Reading conventions
-
-The documentation uses the following language consistently.
+## Current implementation vocabulary
 
 | Term | Meaning |
 | --- | --- |
-| **Implemented** | Present in source, exercised by tests or runtime checks, and safe to claim as current behavior |
-| **Documented evolution** | A designed future boundary or technology option that is not deployed in the current release |
-| **External registration** | The configured registration URL remains authoritative; the local `registrations` table records student interest and analytics |
-| **Production-oriented** | Suitable for controlled deployment after environment-specific secrets, TLS, storage, backups, and operational ownership are configured |
+| **Implemented** | Present in source and represented by tests, CI, or runtime evidence |
+| **Production-oriented** | Safe for controlled deployment after environment-specific secrets, TLS, durable storage, backups, monitoring ownership, and release approval are configured |
+| **External registration** | The configured event URL remains authoritative; the local `registrations` table records interest and analytics |
+| **Documented evolution** | A future boundary or technology option that is not a deployed runtime component |
+| **Derived recommendation** | A non-persistent view computed by `RecommendationService` from relational event and interest data |
 
 ## Verification commands
 
 ```bash
-# Complete build, test, package, migration validation, and coverage gate
+# Complete build, test, migration, package, and JaCoCo verification
 ./mvnw -B verify
 
 # Runtime checks after starting the application
@@ -76,11 +74,15 @@ BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
 REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
 ```
 
-The committed CI and Compose paths target **MySQL 8.4**. If a local sandbox only provides MySQL 8.0, Flyway 12 may reject it; use the documented migration procedure in [`operations/README.md`](operations/README.md) rather than weakening the production configuration.
+The canonical CI and Compose path uses **Java 25 and MySQL 8.4**. Flyway 12 requires the MySQL database support module, which is declared as `org.flywaydb:flyway-mysql` alongside Spring Boot’s `spring-boot-starter-flyway`. A local sandbox with MySQL 8.0 or without credentials may not reproduce the runtime-backed test path; do not weaken production validation to accommodate it.
 
-## Source references
+## Current CI evidence
 
-[1]: https://docs.spring.io/spring-boot/docs/current/reference/html/ "Spring Boot reference documentation"
+The latest repair commit, `39d5e6a`, passed GitHub Actions build, test, coverage, container-build, and dependency-review workflow handling. The CI job provisions MySQL 8.4, configures the application with test-only credentials, runs `./mvnw -B verify`, uploads JaCoCo output, and builds the container without pushing it.
+
+## References
+
+[1]: https://spring.io/projects/spring-boot "Spring Boot project"
 [2]: https://documentation.red-gate.com/flyway/reference "Flyway reference documentation"
 [3]: https://docs.github.com/en/actions "GitHub Actions documentation"
 [4]: https://owasp.org/API-Security/editions/2023/en/0x00-header/ "OWASP API Security Top 10"

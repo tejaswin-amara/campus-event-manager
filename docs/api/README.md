@@ -4,7 +4,7 @@
 
 CampusConnect currently serves server-rendered pages through Spring MVC and also exposes generated OpenAPI metadata through Springdoc. The API documentation endpoint is available at `/v3/api-docs` and the interactive UI at `/swagger-ui.html` when the application is running. The generated specification should be treated as the source of truth for any future frontend or service client.
 
-The current release is not a pure REST API. Public event browsing is rendered as HTML, while image delivery, CSV export, and form workflows use targeted HTTP endpoints. This distinction is deliberate and documented so the project does not claim a REST-only architecture that the code does not implement.
+The current release is not a pure REST API. Public event browsing is rendered as HTML, while image delivery, CSV export, and form workflows use targeted HTTP endpoints. This distinction is deliberate and documented so the project does not claim a REST-only architecture that the code does not implement. The documented runtime baseline is Java 25, Spring Boot 4.1.0, and MySQL 8.4; the latest CI verification is recorded in [run 32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649).
 
 ## Route inventory
 
@@ -49,6 +49,17 @@ sequenceDiagram
 ## Future gateway and service contract
 
 If the application later becomes polyglot, a FastAPI gateway may provide JSON aggregation and token forwarding, while the existing Spring Boot module remains the transactional event service. A Node.js service may own flexible activity or notification documents. Each service must publish an explicit OpenAPI or event schema, own its database writes, and define timeout, retry, idempotency, and fallback behavior before it is independently deployed.
+
+## Verification
+
+After starting the application with the required database configuration, verify the generated contract and health boundary:
+
+```bash
+curl --fail http://localhost:9090/actuator/health
+curl --fail http://localhost:9090/v3/api-docs
+```
+
+The OpenAPI document is generated from the running Spring application. It must be reviewed whenever a controller route, request model, validation rule, or error response changes.
 
 ## References
 

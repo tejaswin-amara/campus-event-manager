@@ -12,7 +12,7 @@ The Firebase repository is a strong React/Vite/Firebase feature prototype, but i
 | --- | --- | --- | --- | --- |
 | Event discovery and filtering | React dashboard with search/category filtering and event cards | Thymeleaf dashboard with server-side pagination, search, category/status filters, calendar, and registration QR | Retain Spring implementation; borrow card/presentation ideas only | Preserves CO3 API/backend evidence and CO6 simplicity |
 | Event CRUD and media | Firestore writes plus Firebase Storage upload | Spring MVC, Bean Validation, MySQL/Flyway, validated database-backed image storage | Retain Spring/MySQL authority | Strengthens CO1 constraints, transactions, and deployment evidence |
-| Recommendations | Pure matchmaker based on category affinity, peers, and capacity fill rate | No recommendations | **Adopt concept and rewrite as a server-side Java service** using existing registrations and event data | Adds a testable derived-data feature without CO1 compromise |
+| Recommendations | Pure matchmaker based on category affinity, peers, and capacity fill rate | `RecommendationService` and `RecommendedEvent` provide server-side derived recommendations from existing event and interest data | **Implemented as a server-side Java service** with deterministic unit tests | Adds a testable derived-data feature without CO1 compromise |
 | QR pass/ticket | QR payload contains user/event/registration IDs; attendance scanner marks `ATTENDED` | QR currently represents external registration link; registration record is `INTERESTED` | Document as future capacity/attendance slice; do not misrepresent external interest as a ticket | Prevents false CO1/CO5 claims and keeps current semantics honest |
 | Waitlist | Firestore transaction and Cloud Function auto-promotion | No authoritative internal seat allocation; max capacity is metadata | Document future design; do not implement partial waitlist | Preserves transaction and distributed-systems credibility |
 | Paid events | Mock Stripe checkout/session and mock payment webhook | No payment flow | Reject mock payment code; document real payment boundary as future work | Avoids insecure/demonstration-only payment claims |
@@ -25,7 +25,7 @@ The Firebase repository is a strong React/Vite/Firebase feature prototype, but i
 
 ## Selected implementation
 
-The first hybrid feature is a **server-side “Recommended for you” section** on the student dashboard. It follows the Firebase matchmaker’s useful logic: exclude already-interesting events, prioritize categories represented in prior student activity, add a popularity/capacity signal, and return at most three upcoming events with human-readable reasons. The algorithm will be rewritten in Java, run inside the existing service/controller boundary, use existing MySQL queries, and be covered by unit tests.
+The first hybrid feature is an implemented **server-side “Recommended for you” section** on the student dashboard. It follows the Firebase matchmaker’s useful logic: exclude already-interesting events, prioritize categories represented in prior student activity, add a popularity/capacity signal, and return at most three upcoming events with human-readable reasons. The algorithm runs in Java inside the existing service/controller boundary, uses MySQL-backed queries, and is covered by `RecommendationServiceTest` and `RecommendedEventTest`.
 
 The UI will remain Thymeleaf/Bootstrap/vanilla JavaScript. The existing calendar action and registration-link QR flow are retained because they already cover part of the Firebase pass experience without claiming that an external registration link is an attendance ticket. Firebase’s ticket scanner, waitlist, payments, certificates, and FCM workflows remain documented as future bounded contexts until the relational model and product semantics support them.
 
@@ -42,7 +42,7 @@ MySQL remains authoritative for events, users, and interest records. Recommendat
 | CO3 | Spring MVC/OpenAPI/security boundary remains authoritative; the new recommendation model is server-generated rather than trusting client-supplied scores or roles |
 | CO4 | Spring service/module retained; React/Firebase and Functions are evaluated as alternative frontend/serverless references rather than duplicated runtime services |
 | CO5 | Firebase Functions’ waitlist/notification ideas are retained as future asynchronous bounded contexts with outbox/idempotency requirements, not copied as unowned dual writes |
-| CO6 | Docker, MySQL, CI, tests, smoke/load scripts, C4 diagrams, showcase, and compliance docs remain the release evidence; Firebase baseline lockfile failure is recorded and not introduced into the production build |
+| CO6 | Docker, MySQL 8.4, CI, tests, smoke/load scripts, C4 diagrams, showcase, and compliance docs remain the release evidence; the successful Flyway repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) confirms the production baseline |
 
 ## Provenance and licensing
 

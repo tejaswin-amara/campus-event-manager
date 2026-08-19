@@ -30,7 +30,7 @@ BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
 REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
 ```
 
-The committed CI workflow and Docker Compose path use **MySQL 8.4**. The sandbox used for code-only work may expose MySQL 8.0 or no usable credentials; Flyway 12 can reject an unsupported server, so that limitation must be reported rather than hidden by weakening production configuration. Runtime-backed tests should be run through MySQL 8.4 in CI/Compose or an equivalently configured environment.
+The committed CI workflow and Docker Compose path use **MySQL 8.4**. The application declares `org.flywaydb:flyway-mysql` 12.4.0 because Flyway 12 separates MySQL database support from the core engine. The sandbox used for code-only work may expose MySQL 8.0 or no usable credentials; Flyway 12 can reject an unsupported server, so that limitation must be reported rather than hidden by weakening production configuration. Runtime-backed tests should be run through MySQL 8.4 in CI/Compose or an equivalently configured environment.
 
 The supplied [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app) informs a future browser-E2E strategy: use seeded data, explicit authentication flows, deterministic cleanup, and CI artifacts. The current project does not vendor Cypress because it has no Node-based frontend test harness; the shell smoke path remains the minimal portable release gate.
 
@@ -40,7 +40,7 @@ The supplied [axe-core](https://github.com/dequelabs/axe-core) informs the acces
 
 The current load script sends concurrent requests to `/actuator/health` by default. It is a deployment sanity check, not a capacity certification. For a meaningful event-catalogue benchmark, run against `/student/dashboard` with a seeded database and record request count, concurrency, duration, throughput, latency percentiles, error rate, database CPU, connection-pool utilization, and JVM memory. Repeat the same scenario after indexing or caching changes.
 
-A release record should include the exact environment, commit, Java/MySQL versions, request target, test parameters, and result. Do not present local sandbox throughput as a production SLA.
+A release record should include the exact environment, commit, Java/MySQL versions, request target, test parameters, and result. The latest CI repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) passed the build, test, coverage, container-build, and workflow checks. Do not present local sandbox throughput as a production SLA.
 
 ## Release gates
 

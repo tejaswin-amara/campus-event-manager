@@ -11,7 +11,7 @@ The design uses the following logical layers:
 | Presentation | Thymeleaf views, static assets, public student routes, and admin routes | `src/main/resources/templates`, `EventController`, `AdminController` |
 | Security | Authentication, role checks, CSRF, session policy, rate limiting, security headers | `SecurityConfig`, `RateLimitingFilter`, `SecurityAuditLogger` |
 | Application services | Event lifecycle, user authentication, session state, interest tracking, analytics, media handling, and derived recommendations | `EventService`, `UserService`, `SessionService`, `RecommendationService` |
-| Persistence | Repositories, JPA mappings, Flyway migrations, database-backed image storage | `repository/`, `model/`, `db/migration/` |
+| Persistence | Repositories, JPA mappings, Flyway V1–V3 migrations, `flyway-mysql` support, and database-backed image storage | `repository/`, `model/`, `db/migration/` |
 | Operations | Health, metrics, structured logs, resilience fallback, container/runtime configuration | Actuator, Micrometer, Resilience4j, Dockerfile, Compose |
 
 ## C4 context view
@@ -37,7 +37,7 @@ flowchart TB
     UserModule[Identity and session module]
     AdminModule[Administration and analytics module]
     Persistence[Spring Data JPA repositories]
-    DB[(MySQL + Flyway schema)]
+    DB[(MySQL 8.4 + Flyway V1–V3 schema)]
     Media[(Event image BLOB storage)]
     Ops[Actuator / Micrometer / structured logs]
 
@@ -94,7 +94,7 @@ flowchart TB
 | Administration and analytics | `AdminController`, analytics queries | Read models over event/registration data | Extract reporting asynchronously if dashboards become expensive |
 | Activity/notification/search | Not yet a separate runtime module | No separate store | Candidate for Node.js/MongoDB or FastAPI/vector adapter |
 
-The handout’s polyglot and microservices outcomes are represented honestly as an evolution path. A future FastAPI gateway may aggregate public search and forward tokens; a Node.js service may own flexible activity/notification documents; and a Spring Boot transactional service may own internal registrations. The current release does not claim those services are deployed.
+The handout’s polyglot and microservices outcomes are represented honestly as an evolution path. The current CI path is verified against MySQL 8.4, and the Flyway MySQL support module is required for clean-database startup. A future FastAPI gateway may aggregate public search and forward tokens; a Node.js service may own flexible activity/notification documents; and a Spring Boot transactional service may own internal registrations. The current release does not claim those services are deployed.
 
 ## Resilience and distributed-workflow decision
 

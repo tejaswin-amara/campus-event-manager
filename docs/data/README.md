@@ -2,7 +2,7 @@
 
 ## Relational source of truth
 
-MySQL is the authoritative store for CampusConnect’s current transactional data. JPA entity mappings describe the application model, while Flyway migrations define the database schema. Production uses `DDL_AUTO=validate`, so Hibernate cannot silently mutate the schema.
+MySQL 8.4 is the authoritative store for CampusConnect’s current transactional data. JPA entity mappings describe the application model, while Spring Boot’s Flyway starter plus `org.flywaydb:flyway-mysql` 12.4.0 define the database migration runtime. Production uses `DDL_AUTO=validate`, so Hibernate cannot silently mutate the schema.
 
 The core model is normalized around users, events, and registrations. Users and events are independent entities; registrations resolve the many-to-many relationship between them and carry relationship-specific attributes such as registration date and interest status.
 
@@ -97,6 +97,6 @@ A production deployment must back up MySQL and the uploads volume, test restores
 ## References
 
 [1]: https://documentation.red-gate.com/flyway/reference "Flyway reference"
-[2]: https://dev.mysql.com/doc/refman/8.0/en/ "MySQL 8.0 reference manual"
+[2]: https://dev.mysql.com/doc/refman/8.4/en/ "MySQL 8.4 reference manual"
 [3]: https://www.postgresql.org/docs/current/ddl-constraints.html "Relational constraint concepts"
 [4]: https://github.com/prisma/prisma "Schema-first ORM comparison reference"

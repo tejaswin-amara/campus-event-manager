@@ -2,7 +2,7 @@
 
 ## Current modules
 
-CampusConnect is deployed as one Spring Boot application, but its code is already organized into separable responsibilities. The current modules are logical boundaries, not independently deployed services.
+CampusConnect is deployed as one Java 25 / Spring Boot 4.1.0 application backed by MySQL 8.4, but its code is already organized into separable responsibilities. The current modules are logical boundaries, not independently deployed services. Flyway 12.4.0 with `flyway-mysql` owns migration startup before Hibernate validation.
 
 | Module | Owns | Public entry points | Persistence |
 | --- | --- | --- | --- |
@@ -10,6 +10,7 @@ CampusConnect is deployed as one Spring Boot application, but its code is alread
 | Event catalogue | Event create/read/update/delete, filtering, images, external registration links | `EventController`, `AdminController`, `EventService` | `events` and image columns |
 | Interest tracking | Idempotent student interest record and analytics counts | `EventController`, `EventService` | `registrations` |
 | Administration | Dashboard metrics, event moderation, CSV export | `AdminController` | Read/write access to current relational model |
+| Recommendations | Deterministic derived event ranking and explanation text | `RecommendationService`, `RecommendedEvent` | Read-only event and interest queries |
 | Security and resilience | CSRF, RBAC, headers, login throttling, circuit-breaker fallback, audit logging | filters/configuration and cross-cutting services | Operational logs |
 
 ## Extraction principles
@@ -43,3 +44,10 @@ The first likely extraction candidate is activity/notification/search because it
 ## Current decision
 
 The current release remains a modular monolith. This is an explicit architecture decision, not a missing implementation. It reduces deployment complexity while providing the C4, bounded-context, resilience, and polyglot-evolution evidence required by the handout.
+
+## References
+
+[1]: https://c4model.com/ "C4 model"
+[2]: https://github.com/donnemartin/system-design-primer "System Design Primer"
+[3]: https://fastapi.tiangolo.com/ "FastAPI reference"
+[4]: https://kafka.apache.org/documentation/ "Apache Kafka documentation"

@@ -14,7 +14,7 @@ CampusConnect is already a relatively small Spring Boot website. The audit found
 
 | Check | Result |
 | --- | --- |
-| Baseline commit | `ada6689` previous Ponytail cleanup commit |
+| Baseline commit | `39d5e6a` current main after Flyway/MySQL CI repair |
 | Tracked files | Full Java application, templates, static assets, migrations, tests, CI, Docker/Compose, scripts, and documentation present |
 | Test command | `./mvnw -B test` executed |
 | Test result | 63 tests discovered; 28 application-context errors because the local environment supplied no MySQL credentials and Flyway attempted `ubuntu@localhost` with no password |
@@ -22,6 +22,7 @@ CampusConnect is already a relatively small Spring Boot website. The audit found
 | Environment limitation | Runtime-backed tests require MySQL configuration; this is not a cleanup regression |
 | Ignored output | `target/` is generated and ignored; it is not part of the proposed GitHub cleanup |
 | Ponytail source | Official `ponytail-audit` instructions were reviewed; the workflow explicitly produces findings and applies no fixes |
+| CI repair evidence | GitHub Actions run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) passed after adding `flyway-mysql` 12.4.0 |
 
 ## Candidate register
 
@@ -62,9 +63,9 @@ The audit adopts the following practices from the supplied references without in
 5. **UI/UX review:** keep screenshots and visual assets only when they improve product comprehension, accessibility review, or evaluator evidence. [5] [6]
 6. **Rust/ImGui/open-design boundaries:** retain a focused Java website rather than adding native, desktop, or alternate-language infrastructure without a concrete requirement. [7] [8] [9]
 
-## Planned implementation
+## Final disposition
 
-The second pass removed the three stale remediation notes and machine-specific CodeRabbit rule from the first commit, then removed the optional PowerShell wrappers, local editor settings, orphaned screenshots, stale standalone QA plan, and unused Spring Boot DevTools dependency. Migrations, tests, CI, security controls, runtime assets, and all behavior-bearing dependencies remain.
+The cleanup removed the three stale remediation notes and machine-specific CodeRabbit rule from the first cleanup commit, then removed the optional PowerShell wrappers, local editor settings, orphaned screenshots, stale standalone QA plan, and unused Spring Boot DevTools dependency. The later CI repair added the required `flyway-mysql` 12.4.0 module. Migrations, tests, CI, security controls, runtime assets, and all other behavior-bearing dependencies remain.
 
 ## References
 

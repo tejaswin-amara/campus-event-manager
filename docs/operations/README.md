@@ -21,7 +21,7 @@ The supplied [Docker Awesome Compose](https://github.com/docker/awesome-compose)
 
 ## Database operations
 
-Production startup follows this order: provision the database and least-privilege application user; configure the JDBC URL and credentials; run the application with `SPRING_PROFILES_ACTIVE=prod`; let Flyway validate and apply pending migrations; allow Hibernate to validate the resulting schema; then verify `/actuator/health` and the smoke script. Do not use schema auto-update in production.
+Production startup follows this order: provision the database and least-privilege application user; configure the JDBC URL and credentials; run the application with `SPRING_PROFILES_ACTIVE=prod`; let the Spring Boot Flyway starter and `flyway-mysql` 12.4.0 validate and apply pending migrations; allow Hibernate to validate the resulting schema; then verify `/actuator/health` and the smoke script. Do not use schema auto-update in production.
 
 Back up both MySQL and the uploads volume. Restore testing must include migration replay, representative event images, users, event interest records, and application startup against the restored database. Define retention and deletion rules for personally identifiable data and audit records before operating at institutional scale.
 
@@ -39,7 +39,7 @@ Protect metrics and detailed actuator endpoints at the network or authentication
 
 ## CI/CD pipeline
 
-The GitHub Actions workflow performs checkout, Java 25 setup, Maven verification against a MySQL 8.4 service, JaCoCo artifact upload, container image build, and dependency review for pull requests. The workflow is intentionally build-and-verify only; publishing requires a separately approved release workflow with registry credentials, signed artifacts, deployment credentials, and rollback policy.
+The GitHub Actions workflow performs checkout, Java 25 setup, Maven verification against a MySQL 8.4 service, JaCoCo artifact upload, container image build, and dependency review for pull requests. This path is verified by the successful repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649). The workflow is intentionally build-and-verify only; publishing requires a separately approved release workflow with registry credentials, signed artifacts, deployment credentials, and rollback policy.
 
 The workflow structure is informed by [GitHub starter workflows](https://github.com/actions/starter-workflows) and [GitHub Actions documentation](https://docs.github.com/en/actions). A production extension should add immutable image tags, SBOM generation, vulnerability thresholds, environment approvals, database migration policy, deployment smoke checks, and automatic rollback criteria.
 

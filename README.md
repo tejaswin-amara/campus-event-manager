@@ -28,7 +28,7 @@ CampusConnect helps universities publish events, give students a fast way to dis
 | --- | --- |
 | Runtime | Java 25; Eclipse Temurin 25 JDK/JRE container images |
 | Backend | Spring Boot 4.1.0, Spring Framework 7, Spring MVC, Thymeleaf, Spring Security, Spring Data JPA |
-| Database | MySQL 8.4 LTS with Flyway V1–V3 migrations |
+| Database | MySQL 8.4 LTS with `spring-boot-starter-flyway`, `flyway-mysql` 12.4.0, and Flyway V1–V3 migrations |
 | Build | Maven Wrapper using Maven 3.9.11 |
 | Quality | JaCoCo 0.8.15, Surefire 3.5.4, 63 automated tests, line and branch gates |
 | Resilience and observability | Resilience4j 2.4.0 Boot 4 adapter, Bucket4j 8.10.1, Actuator, Micrometer Prometheus registry |
@@ -63,7 +63,7 @@ docker compose down
 
 ## Local Maven workflow
 
-For a local MySQL installation, export the required variables before invoking the Maven Wrapper. Production uses Flyway as the schema authority and Hibernate `validate`; do not use `DDL_AUTO=update` in production.
+For a local MySQL installation, export the required variables before invoking the Maven Wrapper. The build includes Flyway’s MySQL database support module so MySQL 8.4 is recognized correctly. Production uses Flyway as the schema authority and Hibernate `validate`; do not use `DDL_AUTO=update` in production.
 
 ```bash
 export MYSQLHOST=localhost
@@ -78,7 +78,7 @@ export DDL_AUTO=validate
 ./mvnw spring-boot:run
 ```
 
-The committed CI and Compose configurations use MySQL 8.4. A local MySQL 8.0 installation may not be accepted by Flyway 12; follow [`docs/operations/README.md`](docs/operations/README.md) for the safe local verification alternative.
+The committed CI and Compose configurations use MySQL 8.4. A local MySQL 8.0 installation may not be accepted by Flyway 12; follow [`docs/operations/README.md`](docs/operations/README.md) for the safe local verification alternative. The Flyway fix was verified by GitHub Actions in [`run 32272882649`](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649).
 
 ## Configuration contract
 

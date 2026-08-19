@@ -4,12 +4,12 @@ The attached handout emphasizes relational engineering, SQL/NoSQL/vector concept
 
 | CO | Outcome focus | Implemented evidence | Design/documentation evidence | Status |
 | --- | --- | --- | --- | --- |
-| CO1 | Normalized relational schema, optimized SQL, transactions, and backend integration | `V1__Initial_Schema.sql`, V2/V3 migrations, JPA models/repositories, Flyway startup, `EventService` transaction, pessimistic event-row lock, indexes/checks, analytics queries, 63 automated tests | [`docs/data/README.md`](data/README.md) and ER diagram | **Implemented** |
+| CO1 | Normalized relational schema, optimized SQL, transactions, and backend integration | `V1__Initial_Schema.sql`, V2/V3 migrations, JPA models/repositories, Spring Boot Flyway startup with `flyway-mysql` 12.4.0, `EventService` transaction, pessimistic event-row lock, indexes/checks, analytics queries, 63 automated tests | [`docs/data/README.md`](data/README.md) and ER diagram | **Implemented** |
 | CO2 | SQL/NoSQL comparison, polyglot persistence, vector/semantic search | MySQL relational core, indexed lexical search, and Firebase-inspired derived recommendation scoring are implemented in `RecommendationService` with unit tests | SQL/NoSQL/vector decision table, Firestore/activity boundary, pgvector/vector adapter with lexical fallback, authorization-aware derived data, and [`docs/hybrid-integration-decision.md`](hybrid-integration-decision.md) | **Partially implemented; design evidence complete** |
 | CO3 | Production-quality APIs, validation, authentication, JWT/OAuth2 concepts, OpenAPI, testing | Spring MVC routes, Bean Validation, Spring Security, CSRF, RBAC, rate limiting, session handling, Springdoc `/v3/api-docs`, controller/security tests | [`docs/api/README.md`](api/README.md) describes current HTML/API mix and future JSON contract | **Implemented for current Spring MVC architecture** |
 | CO4 | Node.js/Express and Spring Boot services, SOA and architectural thinking | Spring Boot modular service layer, controller/service/repository separation, Resilience4j | Bounded-context and future Node.js/Express/FastAPI extraction options in [`docs/services/README.md`](services/README.md) and architecture C4 views | **Spring implemented; polyglot evolution documented** |
 | CO5 | Microservice decomposition, REST and asynchronous messaging, distributed concepts | Current single deployment has explicit logical modules, transaction boundaries, resilience fallback, and external integration boundary | Service ownership, future gateway, outbox/Kafka, idempotency, Saga/compensating-action strategy in architecture/services docs | **Architecture evidence complete; distributed runtime deferred** |
-| CO6 | Containerized delivery, C4 documentation, CI/CD, observability, security, load test, showcase | Dockerfile, secret-required Compose, health check, Prometheus registry, Actuator, GitHub Actions, JaCoCo gate, dependency review, smoke/load scripts, README | C4 context/container/component/deployment diagrams, operations/runbook, security guide, showcase script, repository-reference register | **Implemented for a production-oriented modular monolith** |
+| CO6 | Containerized delivery, C4 documentation, CI/CD, observability, security, load test, showcase | Dockerfile, secret-required Compose, health check, Prometheus registry, Actuator, GitHub Actions, MySQL 8.4 CI, JaCoCo gate, dependency review, smoke/load scripts, README | C4 context/container/component/deployment diagrams, operations/runbook, security guide, showcase script, repository-reference register | **Implemented for a production-oriented modular monolith** |
 
 ## Evidence index
 
@@ -30,9 +30,16 @@ The attached handout emphasizes relational engineering, SQL/NoSQL/vector concept
 | Firebase hybrid decision | [`docs/hybrid-integration-decision.md`](hybrid-integration-decision.md) |
 | Runtime smoke test | [`scripts/smoke-test.sh`](../scripts/smoke-test.sh) |
 | Runtime load check | [`scripts/load-test.sh`](../scripts/load-test.sh) |
-| CI/CD | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) |
+| CI/CD | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) and successful run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) |
 | Schema migrations | [`src/main/resources/db/migration/`](../src/main/resources/db/migration/) |
 
 ## Honest limitations
 
 The matrix intentionally distinguishes implementation from design. The current codebase does not contain a MongoDB service, vector index, Kafka broker, FastAPI gateway, Node.js service, Kubernetes deployment, React frontend, or Firebase runtime dependency. The Firebase-Addition recommendation concept has been rewritten as derived Java/MySQL logic, while its ticketing, waitlist, mock-payment, and notification flows remain future bounded contexts. Those technologies are represented through bounded-context decisions, contract guidance, and a prioritized evolution path. Adding them without a product requirement would increase deployment risk and slow the production path.
+
+## References
+
+[1]: https://documentation.red-gate.com/flyway/reference "Flyway reference"
+[2]: https://c4model.com/ "C4 model"
+[3]: https://docs.github.com/en/actions "GitHub Actions documentation"
+[4]: https://owasp.org/API-Security/editions/2023/en/0x00-header/ "OWASP API Security Top 10"

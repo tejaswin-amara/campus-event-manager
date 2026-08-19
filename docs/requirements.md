@@ -29,12 +29,13 @@ CampusConnect addresses this problem with a public discovery experience, an admi
 | FR-08 | The system shall apply versioned database migrations before JPA validation. | Flyway V1–V3 and `DDL_AUTO=validate` production contract |
 | FR-09 | The system shall expose an unauthenticated health check and generated OpenAPI document for operational and review purposes. | `/actuator/health`, `/v3/api-docs`, and smoke script |
 | FR-10 | The system shall provide structured logs, audit events, and Prometheus-compatible metrics for operational analysis. | Logback configuration, audit logger, Micrometer registry, and operations guide |
+| FR-11 | The system shall provide explainable upcoming-event recommendations without allowing the client to control ranking or authorization. | `RecommendationService`, `RecommendedEvent`, recommendation unit tests, and dashboard view |
 
 ## Non-functional requirements
 
 The application shall start reproducibly from documented environment variables and shall fail fast when required production secrets are absent. Schema changes shall be migration-controlled, application containers shall run as a non-root user, and state-changing requests shall preserve CSRF and RBAC protections. The system shall keep error responses free of stack traces and shall default to informational application logging rather than debug verbosity.
 
-The delivery pipeline shall compile on Java 25, run the existing integration-backed test suite against MySQL 8.4, enforce line and branch coverage thresholds, upload a JaCoCo artifact, build the container image, and review dependency changes on pull requests. Runtime validation shall include health, OpenAPI, smoke, and lightweight load checks.
+The delivery pipeline shall compile on Java 25, run the existing integration-backed test suite against MySQL 8.4 using the Spring Boot Flyway starter and `flyway-mysql` 12.4.0, enforce line and branch coverage thresholds, upload a JaCoCo artifact, build the container image, and review dependency changes on pull requests. Runtime validation shall include health, OpenAPI, smoke, and lightweight load checks.
 
 ## Scope boundaries
 

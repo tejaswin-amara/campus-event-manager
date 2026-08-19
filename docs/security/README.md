@@ -2,6 +2,8 @@
 
 ## Security posture
 
+The current verified baseline is Java 25, Spring Boot 4.1.0, Spring Security 7.1.0, MySQL 8.4, and Flyway 12.4.0 with the `flyway-mysql` database module. The latest repair run [32272882649](https://github.com/tejaswin-amara/campus-connect/actions/runs/32272882649) passed the CI build, tests, coverage, and container-build path.
+
 CampusConnect uses a defense-in-depth web security model: BCrypt password hashing, Spring Security role checks, CSRF protection, session-fixation mitigation, secure headers, login rate limiting, validated uploads, safe external redirect schemes, audit logging, database constraints, and resilience fallback. These controls reduce common risks but do not replace deployment-level TLS, secret management, patching, backups, or monitoring.
 
 The security checklist is organized using the supplied [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries) and the OWASP API Security reference [6].
@@ -26,7 +28,7 @@ The security checklist is organized using the supplied [OWASP Cheat Sheet Series
 | Event mutation | Unauthorized create/edit/delete | Spring Security role check and CSRF | Deployment misconfiguration could bypass TLS or expose sessions |
 | Registration URL | Open redirect or unsafe scheme | HTTP/HTTPS scheme allow-list | External destination may still be malicious; administrators must review links |
 | Uploaded media | Path traversal, spoofed file types, oversized input | MIME/extension/size validation, UUID paths, upload limits | Malware scanning and object-storage isolation are future work |
-| Database | Credential theft or destructive writes | Environment secrets, least-privilege target, Flyway, constraints | Managed database network/TLS/backup configuration is environment-specific |
+| Database | Credential theft or destructive writes | Environment secrets, least-privilege target, Flyway plus `flyway-mysql`, constraints, and MySQL 8.4 CI verification | Managed database network/TLS/backup configuration is environment-specific |
 | Metrics/operations | Information disclosure | Health details hidden by default; metrics should be private | Ingress/network policy must be enforced in deployment |
 | Student data | Excess retention or unintended exposure | Role boundaries, audit logging, documented retention responsibility | Institutional privacy policy and deletion workflow are future work |
 

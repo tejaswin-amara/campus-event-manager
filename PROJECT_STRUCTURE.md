@@ -91,7 +91,7 @@ The Java package is `com.tejaswin.campus`.
 
 | Path | Responsibility |
 | --- | --- |
-| `src/main/resources/application.properties` | Default environment-variable-driven configuration, Flyway, JPA validation, session, uploads, resilience, logging, and Actuator settings |
+| `src/main/resources/application.properties` | Default environment-variable-driven configuration, Flyway plus `flyway-mysql`, JPA validation, session, uploads, resilience, logging, and Actuator settings |
 | `src/main/resources/application-prod.properties` | Stricter production profile with HTTPS cookies, MySQL TLS, no database creation, and hidden health details |
 | `src/main/resources/logback-spring.xml` | Console and structured Logstash logging configuration |
 
@@ -153,7 +153,7 @@ Run the complete suite with `./mvnw -B verify`. Runtime-backed tests require the
 | `.github/PULL_REQUEST_TEMPLATE.md` | Review, test, security, and documentation checklist |
 | `scripts/smoke-test.sh` | Health/OpenAPI runtime smoke checks |
 | `scripts/load-test.sh` | Repeatable lightweight concurrency sanity check |
-| `docs/` | Requirements, C4 architecture, data, API, services, operations, security, testing, compliance, showcase, cleanup audit, and reference provenance |
+| `docs/` | Requirements, C4 architecture, data, API, services, operations, security, testing, compliance, showcase, cleanup audit, version record, and reference provenance |
 
 ## Cleanup boundary
 

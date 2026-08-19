@@ -1,32 +1,42 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
+about: Report a reproducible CampusConnect problem
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Summary
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Describe the observed behavior and the user or operational impact. Do not include passwords, private keys, production credentials, or unredacted personal data.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Reproduction
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+1. Start the documented Java 25 / MySQL 8.4 environment, or describe the deviation.
+2. Navigate to the affected route or administrative workflow.
+3. Provide the smallest sequence of actions that reproduces the issue.
+4. State whether the behavior is deterministic.
 
-**Environment (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Expected behavior
 
-**Additional context**
-Add any other context about the problem here.
+Describe what should have happened, including the expected page, redirect, status, validation response, or database effect.
+
+## Actual behavior
+
+Describe what happened. Include a sanitized error message, status code, relevant log excerpt, or screenshot when useful.
+
+## Environment
+
+| Field | Value |
+| --- | --- |
+| Commit or branch | |
+| Operating system | |
+| Browser and version | |
+| Java version | |
+| MySQL version or CI/Compose | |
+| Docker/Maven command | |
+| Affected route or component | |
+
+## Additional context
+
+Explain whether the issue affects authentication, authorization, CSRF, uploads, external redirects, migrations, data integrity, health/metrics, or only presentation. For suspected vulnerabilities, do not use this template; follow [`SECURITY.md`](../../SECURITY.md).
