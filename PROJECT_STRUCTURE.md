@@ -14,7 +14,6 @@ CampusConnect is organized as a **layered modular monolith**. Spring component s
 | `Dockerfile` | Multi-stage Java 25 build and non-root runtime image |
 | `docker-compose.yml` | MySQL 8.4 plus application local stack with health-gated startup |
 | `.env.example` | Configuration contract with placeholders only; never add real secrets |
-| `run_app.ps1`, `stop_app.ps1` | Optional Windows developer convenience scripts; Docker Compose remains the canonical local path |
 | `README.md` | Product overview, quick start, configuration, architecture, and compliance entry point |
 | `TECHNICAL_GUIDE.md` | Implementation-oriented architecture and change guide |
 | `PROJECT_STRUCTURE.md` | This source-tree map |
@@ -155,11 +154,10 @@ Run the complete suite with `./mvnw -B verify`. Runtime-backed tests require the
 | `scripts/smoke-test.sh` | Health/OpenAPI runtime smoke checks |
 | `scripts/load-test.sh` | Repeatable lightweight concurrency sanity check |
 | `docs/` | Requirements, C4 architecture, data, API, services, operations, security, testing, compliance, showcase, cleanup audit, and reference provenance |
-| `images/` | Optional repository-level showcase assets; not runtime media storage |
 
 ## Cleanup boundary
 
-The Ponytail cleanup audit is documented in [`docs/cleanup-audit.md`](docs/cleanup-audit.md). High-confidence stale remediation notes and a machine-specific CodeRabbit rule were removed. Windows helpers, editor settings, runtime dependencies, migrations, tests, CI, screenshots, and QA material remain because each has a documented developer, runtime, visual, or handout-evidence role.
+The Ponytail cleanup audit is documented in [`docs/cleanup-audit.md`](docs/cleanup-audit.md). The cleanup removed stale remediation notes, a machine-specific CodeRabbit rule, optional Windows wrappers, local editor settings, orphaned screenshots, an obsolete standalone QA plan, and the unused Spring Boot DevTools dependency. Runtime dependencies, migrations, tests, CI, security controls, and application assets remain because they have documented behavior or handout-evidence value.
 
 ## References
 

@@ -14,7 +14,7 @@ CampusConnect is already a relatively small Spring Boot website. The audit found
 
 | Check | Result |
 | --- | --- |
-| Baseline commit | `6bceb7c` before the documentation-only working-tree edits |
+| Baseline commit | `ada6689` previous Ponytail cleanup commit |
 | Tracked files | Full Java application, templates, static assets, migrations, tests, CI, Docker/Compose, scripts, and documentation present |
 | Test command | `./mvnw -B test` executed |
 | Test result | 63 tests discovered; 28 application-context errors because the local environment supplied no MySQL credentials and Flyway attempted `ubuntu@localhost` with no password |
@@ -30,13 +30,13 @@ CampusConnect is already a relatively small Spring Boot website. The audit found
 | `delete` | `docs/remediation/completion_report.md` | Claims Spring Boot 3.4.2-era state, includes stale “enterprise-grade” language, and duplicates current security, operations, testing, and showcase documents | **REMOVE** | Superseded by current documentation and contains inaccurate version/verification claims |
 | `delete` | `docs/remediation/remediation_roadmap.md` | References old dependency versions and unfinished tasks that are now either implemented or represented elsewhere | **REMOVE** | Historical working notes are not authoritative evidence; current docs preserve the final controls and remaining gaps |
 | `delete` | `docs/remediation/security_design.md` | Contains machine-local `file:///d:/...` links and a proposal-only README plan | **REMOVE** | Obsolete planning note with no unique security evidence |
-| `yagni` | `run_app.ps1`, `stop_app.ps1` | Only referenced by `PROJECT_STRUCTURE.md`; they support Windows local development and are not runtime code | **DEFER** | Useful developer convenience; removal would reduce supported local workflows without a documented replacement |
-| `yagni` | `.vscode/settings.json` | Only contains Java language-server settings; no runtime consumer | **DEFER** | Small, harmless contributor convenience; retain unless repository policy requires editor-neutral trees |
+| `delete` | `run_app.ps1`, `stop_app.ps1` | Only referenced by the project-structure guide; Docker Compose is the canonical local path and the scripts add no runtime or CI capability | **REMOVE** | Optional platform-specific wrappers are unnecessary for the website and duplicated the documented Maven/Compose workflow |
+| `delete` | `.vscode/settings.json` | Contains only local Java editor settings and no build, CI, or runtime configuration | **REMOVE** | Editor preferences do not belong in the application repository when the build already provides the Maven Wrapper |
 | `delete` | `.agents/rules/coderabbit-pro-autofix.md` | Contains a local Windows/WSL path, obsolete “13 comments/74 files” context, and an instruction to invoke a non-repository CLI | **REMOVE** | Stale machine-specific automation rule; it is not a reliable repository governance control |
 | `native` | Maven dependencies | `dependency:analyze` reports starters as unused because usage is annotation/configuration/auto-configuration driven | **KEEP** | Removing them would break runtime or tests; verify by application context and package-level usage instead |
 | `delete` | `target/` | Build output is ignored by `.gitignore` and absent from `git ls-files` | **KEEP-IGNORED** | No GitHub deletion required; clean locally when needed |
-| `defer` | `images/hero.png`, `images/student_view.png` | Reference search did not establish that they are required by runtime; they may support a visual showcase | **DEFER** | Keep until visual inspection and documentation asset policy are completed |
-| `defer` | `docs/StudentDashboard_QA_TestPlan.md` | Standalone QA plan may provide evidence not duplicated elsewhere | **KEEP** | Preserve as a testing artifact unless a content comparison proves complete duplication |
+| `delete` | `images/hero.png`, `images/student_view.png` | No active README or documentation link and no runtime consumer; runtime branding lives under `src/main/resources/static/images/` | **REMOVE** | Orphaned repository-level screenshots add size without contributing to the current website or evidence package |
+| `delete` | `docs/StudentDashboard_QA_TestPlan.md` | Standalone plan describes behavior not present in the current UI, including modal/QR/ICS flows, and duplicates the maintained testing/showcase guides | **REMOVE** | Stale manual test plan is not executable evidence and contains obsolete product claims |
 
 ## Framework reachability checks
 
@@ -64,7 +64,7 @@ The audit adopts the following practices from the supplied references without in
 
 ## Planned implementation
 
-The only high-confidence deletions from this audit are the three stale remediation notes and the machine-specific CodeRabbit rule. The PowerShell helpers, editor settings, screenshots, QA plan, migrations, tests, CI, and all runtime dependencies remain until a later evidence-based review proves otherwise.
+The second pass removed the three stale remediation notes and machine-specific CodeRabbit rule from the first commit, then removed the optional PowerShell wrappers, local editor settings, orphaned screenshots, stale standalone QA plan, and unused Spring Boot DevTools dependency. Migrations, tests, CI, security controls, runtime assets, and all behavior-bearing dependencies remain.
 
 ## References
 
