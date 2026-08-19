@@ -16,7 +16,7 @@ This document records the version policy for the handout-compliant production we
 | Maven Surefire | 3.5.2 | **3.5.4** | Upgraded to the latest stable patch line; the newer 3.6.0-M1 milestone is intentionally not used |
 | Maven Wrapper distribution | 3.9.6 | **3.9.11** | Upgraded the reproducible build tool distribution |
 | MySQL | 8.0.36 | **8.4 LTS** | Upgraded Compose and CI to the current long-term-support database line |
-| Flyway integration | Direct Flyway libraries | **Spring Boot 4 `spring-boot-starter-flyway`** | Uses Boot 4’s modular auto-configuration so clean databases migrate before Hibernate validation |
+| Flyway integration | Direct Flyway libraries | **Spring Boot 4 `spring-boot-starter-flyway` + `flyway-mysql` 12.4.0** | Uses Boot 4’s modular auto-configuration plus the MySQL database module so MySQL 8.4 is recognized before Hibernate validation |
 | GitHub Actions | checkout/setup/artifact/dependency-review/container majors 4/4/4/4/6 | **7/5/7/5/7** | Upgraded to the current stable action majors reported by GitHub releases |
 | Container runtime | Eclipse Temurin Java 21 JDK/JRE Alpine | **Eclipse Temurin Java 25 JDK/JRE Alpine** | Keeps the build and runtime image aligned with the compiler target |
 

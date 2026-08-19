@@ -47,7 +47,7 @@ flowchart TB
 | Application framework | Spring Boot 4.1.0 / Spring Framework 7 |
 | Web layer | Spring MVC, Thymeleaf, Springdoc OpenAPI 3.1.0 |
 | Persistence | Spring Data JPA / Hibernate with MySQL 8.4 |
-| Schema authority | Spring Boot 4 Flyway starter with V1–V3 migrations; Hibernate runs in `validate` mode in production |
+| Schema authority | Spring Boot 4 Flyway starter plus `flyway-mysql` 12.4.0 with V1–V3 migrations; Hibernate runs in `validate` mode in production |
 | Security | Spring Security 7 session authentication, CSRF, RBAC, BCrypt, secure headers |
 | Resilience | Resilience4j 2.4.0 Boot 4 adapter and Bucket4j 8.10.1 |
 | Observability | Spring Boot Actuator, Micrometer Prometheus registry, structured Logback encoder |
