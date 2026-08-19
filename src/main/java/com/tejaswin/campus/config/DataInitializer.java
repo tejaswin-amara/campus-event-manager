@@ -15,44 +15,47 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Base64;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String adminPassword;
+    private final String configuredAdminPassword;
 
     @Autowired
     private Environment environment;
 
     public DataInitializer(UserRepository userRepository, EventRepository eventRepository,
             PasswordEncoder passwordEncoder,
-            @Value("${app.admin-password:admin123}") String adminPassword) {
+            @Value("${app.admin-password:}") String adminPassword) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.passwordEncoder = passwordEncoder;
-        this.adminPassword = adminPassword;
+        this.configuredAdminPassword = adminPassword == null ? "" : adminPassword.trim();
     }
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // Fail fast if using default admin password in production
-        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")
-                && "admin123".equals(adminPassword)) {
+        boolean production = Arrays.asList(environment.getActiveProfiles()).contains("prod");
+        if (production && configuredAdminPassword.isBlank()) {
             throw new IllegalStateException(
-                    "SECURITY: Default admin password detected in production! Set ADMIN_PASSWORD env var.");
+                    "SECURITY: ADMIN_PASSWORD must be set when the prod profile is active.");
         }
-        if ("admin123".equals(adminPassword)) {
-            logger.warn("⚠️  SECURITY: Using default admin password. Set ADMIN_PASSWORD env var for production.");
+        if (configuredAdminPassword.isBlank()) {
+            logger.warn("ADMIN_PASSWORD is not set. A new admin account will receive an undisclosed bootstrap hash; set ADMIN_PASSWORD before production use.");
         }
 
-        // 1. Ensure Guest User Exists (CRITICAL: Required for auto-login on /)
+        // 1. Ensure Guest User Exists (required for the public browsing experience)
         User guest = userRepository.findByUsernameForUpdate("guest").orElse(null);
         if (guest == null) {
             guest = new User();
@@ -60,35 +63,35 @@ public class DataInitializer implements CommandLineRunner {
             guest.setPassword(passwordEncoder.encode("guest"));
             guest.setRole("STUDENT");
             userRepository.save(guest);
-            logger.info("✅ Guest user created (auto-login enabled)");
+            logger.info("Guest user created for public browsing");
         } else if (guest.getPassword() != null && !isBCryptHash(guest.getPassword())) {
-            // Assumes pre-migration passwords are stored as plaintext. Risk of irreversible
-            // double-hashing if prior schemes existed.
             guest.setPassword(passwordEncoder.encode(guest.getPassword()));
             userRepository.save(guest);
-            logger.info("✅ Guest password migrated to BCrypt");
+            logger.info("Guest password migrated to BCrypt");
         }
 
-        // 2. Ensure Admin User Exists
+        // 2. Ensure Admin User Exists without shipping a known default password
         User admin = userRepository.findByUsernameForUpdate("admin").orElse(null);
         if (admin == null) {
             admin = new User();
             admin.setUsername("admin");
-            admin.setPassword(passwordEncoder.encode(adminPassword));
+            String bootstrapPassword = configuredAdminPassword.isBlank()
+                    ? generateUndisclosedBootstrapPassword()
+                    : configuredAdminPassword;
+            admin.setPassword(passwordEncoder.encode(bootstrapPassword));
             admin.setRole("ADMIN");
             userRepository.save(admin);
-            logger.info("✅ Admin user created");
+            logger.info("Admin user created; configure ADMIN_PASSWORD before attempting administrative login");
         } else if (admin.getPassword() != null && !isBCryptHash(admin.getPassword())) {
-            // Assumes pre-migration passwords are stored as plaintext. Risk of irreversible
-            // double-hashing if prior schemes existed.
             admin.setPassword(passwordEncoder.encode(admin.getPassword()));
             userRepository.save(admin);
-            logger.info("✅ Admin password migrated to BCrypt");
-        } else if (admin.getPassword() != null && !passwordEncoder.matches(adminPassword, admin.getPassword())) {
-            // Admin password env var changed — sync hash
-            admin.setPassword(passwordEncoder.encode(adminPassword));
+            logger.info("Admin password migrated to BCrypt");
+        } else if (!configuredAdminPassword.isBlank()
+                && admin.getPassword() != null
+                && !passwordEncoder.matches(configuredAdminPassword, admin.getPassword())) {
+            admin.setPassword(passwordEncoder.encode(configuredAdminPassword));
             userRepository.save(admin);
-            logger.info("✅ Admin password updated to match configured ADMIN_PASSWORD");
+            logger.info("Admin password updated to match configured ADMIN_PASSWORD");
         }
 
         // 3. Ensure Sample Event Exists
@@ -104,8 +107,14 @@ public class DataInitializer implements CommandLineRunner {
             welcomeEvent.setMaxCapacity(100);
 
             eventRepository.save(welcomeEvent);
-            logger.info("✅ Sample 'Welcome' event created.");
+            logger.info("Sample welcome event created");
         }
+    }
+
+    private String generateUndisclosedBootstrapPassword() {
+        byte[] randomBytes = new byte[32];
+        SECURE_RANDOM.nextBytes(randomBytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 
     /**

@@ -26,7 +26,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/", "/student/**", "/uploads/**", "/css/**", "/js/**",
                                                                 "/images/**", "/favicon.ico", "/favicon.svg",
-                                                                "/manifest.json",
+                                                                "/manifest.json", "/actuator/health", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
                                                                 "/admin/login",
                                                                 "/test/**")
                                                 .permitAll()

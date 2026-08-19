@@ -32,7 +32,7 @@ public class AdminControllerSecurityTest {
     public void csrfProtectionEnforcedOnPostRequests() throws Exception {
         mockMvc.perform(post("/admin/login")
                 .param("username", "admin")
-                .param("password", "admin123"))
+                .param("password", "test-admin-password"))
                 .andExpect(status().isForbidden()); // 403 Forbidden without CSRF token
     }
 

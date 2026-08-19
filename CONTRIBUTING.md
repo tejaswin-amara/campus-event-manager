@@ -59,3 +59,19 @@ Once you are finished with your changes:
 By participating in this project, you agree to abide by our community standards and treat all contributors with respect and professionalism.
 
 Thank you for making **CampusConnect** better for everyone! ❤️
+
+## Commit and review conventions
+
+Use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format for commit subjects, such as `feat: add event capacity validation`, `fix: prevent duplicate interests`, `docs: map CO1 evidence`, or `ci: publish coverage artifact`. Keep commits focused so reviewers can distinguish behavior changes, operational changes, and documentation changes.
+
+Pull requests should explain the user or operational problem, identify database and security impact, link the relevant requirement or issue, and include test evidence. Reviewers should verify migration safety, authorization boundaries, validation behavior, error handling, observability, rollback considerations, and documentation accuracy. The review checklist is informed by the supplied [Google Engineering Practices](https://github.com/google/eng-practices) and [GitHub Open Source Guide](https://github.com/github/opensource.guide).
+
+Before opening a pull request, run:
+
+```bash
+./mvnw -B verify
+BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
+REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
+```
+
+Never commit `.env`, passwords, private keys, generated uploads, or production database URLs. Use `.env.example` for placeholders and repository/environment secrets for actual deployments.

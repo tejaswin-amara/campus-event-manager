@@ -47,11 +47,11 @@ class AuthControllerTest {
 
     @Test
     void adminLogin_WithValidCredentials_ShouldRedirectToDashboard() throws Exception {
-        when(userService.authenticate("admin", "admin123")).thenReturn(adminUser);
+        when(userService.authenticate("admin", "test-admin-password")).thenReturn(adminUser);
 
         mockMvc.perform(post("/admin/login")
                 .param("username", "admin")
-                .param("password", "admin123")
+                .param("password", "test-admin-password")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/dashboard"));

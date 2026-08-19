@@ -179,15 +179,16 @@ public class EventService {
     @Transactional
     @CircuitBreaker(name = "registrationService", fallbackMethod = "registrationFallback")
     public boolean registerStudent(@NonNull Long eventId, @NonNull Long userId) {
-        // Just track unique interest/clicks for analytics
+        // Fast-path duplicate requests, then re-check after locking the event row.
         if (registrationRepository.existsByUserIdAndEventId(userId, eventId)) {
             return false;
         }
 
-        Event event = eventRepository.findById(eventId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
+        // Serialize the user-event write to protect the unique interest record under concurrency.
+        Event event = eventRepository.findById(eventId).orElse(null);
 
-        if (event == null || user == null) {
+        if (event == null || user == null || registrationRepository.existsByUserIdAndEventId(userId, eventId)) {
             return false;
         }
 
@@ -195,7 +196,7 @@ public class EventService {
         registration.setUser(user);
         registration.setEvent(event);
         registration.setRegistrationDate(LocalDateTime.now());
-        registration.setStatus("INTERESTED"); // Changed from CONFIRMED
+        registration.setStatus("INTERESTED");
 
         registrationRepository.save(registration);
         return true;

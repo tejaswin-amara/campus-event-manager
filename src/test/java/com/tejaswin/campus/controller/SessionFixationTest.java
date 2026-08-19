@@ -43,7 +43,7 @@ public class SessionFixationTest {
     public void validLoginRedirectsToDashboard() throws Exception {
         mockMvc.perform(post("/admin/login")
                 .param("username", "admin")
-                .param("password", "admin123")
+                .param("password", "test-admin-password")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/dashboard"));
@@ -65,7 +65,7 @@ public class SessionFixationTest {
     public void loginWithoutCsrfIsForbidden() throws Exception {
         mockMvc.perform(post("/admin/login")
                 .param("username", "admin")
-                .param("password", "admin123"))
+                .param("password", "test-admin-password"))
                 .andExpect(status().isForbidden());
     }
 }

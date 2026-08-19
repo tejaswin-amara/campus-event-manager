@@ -1,242 +1,139 @@
-# 🎓 CampusConnect
+# CampusConnect
 
-<p align="center">
-  <img src="images/hero.png" alt="CampusConnect Hero" width="100%">
-</p>
+CampusConnect is a university event-management platform for publishing campus events, discovering upcoming activities, tracking student interest, and giving administrators a secure operational dashboard. The repository is implemented as a **Spring Boot modular monolith** with Thymeleaf, MySQL, Flyway, Spring Security, Resilience4j, Actuator, Prometheus metrics, and JaCoCo coverage.
 
-> *A premium, full-stack event management ecosystem engineered for high-performance university communities.*
+> **Production posture:** the application is suitable for a production-oriented demonstration and a controlled deployment after environment-specific secrets, TLS, persistent storage, backups, and operational ownership are configured. This repository does not claim that MongoDB, pgvector, Kafka, or independently deployable Node.js/FastAPI services are already implemented; those are documented as bounded evolution paths where the course handout calls for them.
 
-<p align="center">
-  <a href="https://www.oracle.com/java/technologies/downloads/"><img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java Version"></a>
-  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring_Boot-3.4.13-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot"></a>
-  <a href="#%EF%B8%8F-security--reliability"><img src="https://img.shields.io/badge/Security-Zero--Trust-E11D48?style=for-the-badge&logo=spring-security&logoColor=white" alt="Security Hardened"></a>
-  <a href="https://flywaydb.org/"><img src="https://img.shields.io/badge/DB-Flyway-CC0201?style=for-the-badge&logo=flyway&logoColor=white" alt="Flyway Migrations"></a>
-  <a href="#architecture-resilience"><img src="https://img.shields.io/badge/Resilience-Resilience4j-F7DF1E?style=for-the-badge&logo=blueprint&logoColor=black" alt="Resilience4j"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"></a>
-</p>
+## What the product does
 
----
+CampusConnect provides a public student experience for event discovery and event details, including category/search filtering and an external registration redirect. Administrators can create, update, delete, filter, analyze, and export events. Event images are validated and stored as database-backed media. The current registration record represents **student interest in an event**, while the authoritative registration transaction remains with the external link configured by an administrator.
 
-## 📖 Table of Contents
+| Capability | Current implementation |
+| --- | --- |
+| Event catalogue | Spring MVC and Thymeleaf with paginated discovery, search, category filtering, and event details |
+| Administration | Role-protected dashboard for event lifecycle management, analytics, and CSV export |
+| Authentication | Spring Security session authentication, BCrypt password hashing, CSRF protection, session-fixation mitigation, and admin RBAC |
+| Database | MySQL 8 with JPA/Hibernate and Flyway migrations V1–V3 |
+| Integrity | Unique user-event interests, foreign keys, event date checks, status checks, query-aware indexes, and transaction boundaries |
+| Resilience | Bucket4j login rate limiting and Resilience4j registration fallback |
+| Observability | Actuator health/info, Prometheus registry, structured logging, and audit logging |
+| Delivery | Maven Wrapper, Dockerfile, Docker Compose, GitHub Actions verification, JaCoCo gate, dependency review, and container build |
 
-- [Project Overview](#-project-overview)
-- [Key Features](#-key-features)
-- [Technical Architecture](#%EF%B8%8F-technical-architecture)
-- [Security & Reliability](#%EF%B8%8F-security--reliability)
-- [Getting Started](#-getting-started)
-- [Docker Deployment](#-docker-deployment)
-- [Environment Variables](#%EF%B8%8F-environment-variables)
-- [Default Accounts](#-default-accounts)
-- [API Documentation](#-api-documentation)
-- [Contributing](#-contributing)
-- [License](#-license)
+## Quick start
 
----
+The fastest reproducible local path uses Docker Compose. Copy `.env.example` to `.env`, replace every placeholder, and then start the stack.
 
-## 🎯 Project Overview
+```bash
+cp .env.example .env
+docker compose up --build -d
+./scripts/smoke-test.sh
+```
 
-**CampusConnect** is a sophisticated university middleware designed with a **mobile-first** philosophy. It bridges the communication gap between student organizations and university administrations, leveraging modern UI/UX design principles—like glassmorphism and micro-animations—coupled with enterprise-grade backend stability to provide a cohesive, scalable, and secure campus experience.
+The application is then available at `http://localhost:9090`. The health endpoint is `http://localhost:9090/actuator/health`, and the generated OpenAPI document is available at `http://localhost:9090/v3/api-docs`. Prometheus metrics are exposed at `/actuator/prometheus`; protect this endpoint at the network or ingress layer in a real deployment.
 
-### 📱 Preview
+For a local MySQL installation, set `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, `MYSQLPASSWORD`, and `ADMIN_PASSWORD` in the shell before running the Maven Wrapper. Production startup uses Flyway as the schema authority and sets Hibernate to `validate`; do not use `DDL_AUTO=update` in production.
 
-<p align="center">
-  <img src="images/student_view.png" alt="Student Dashboard" width="80%">
-</p>
+```bash
+export MYSQLHOST=localhost
+export MYSQLPORT=3306
+export MYSQLDATABASE=campus_events
+export MYSQLUSER=campus_app
+export MYSQLPASSWORD='replace-with-a-local-password'
+export ADMIN_PASSWORD='replace-with-a-unique-admin-secret'
+export DDL_AUTO=validate
+./mvnw -B verify
+./mvnw spring-boot:run
+```
 
----
+## Configuration contract
 
-## ✨ Key Features
+Production credentials are intentionally not shipped as usable defaults. Compose fails fast when `MYSQLPASSWORD`, `MYSQL_ROOT_PASSWORD`, or `ADMIN_PASSWORD` is absent. The `.env.example` file contains placeholders only.
 
-### 🧑‍🎓 For Students
+| Variable | Required | Purpose | Safe production guidance |
+| --- | :---: | --- | --- |
+| `MYSQLHOST` / `MYSQLPORT` | Yes | Database network location | Use a private managed database endpoint |
+| `MYSQLDATABASE` | Yes | Database name | Provision it before startup |
+| `MYSQLUSER` / `MYSQLPASSWORD` | Yes | Application database account | Use a least-privilege non-root account |
+| `MYSQL_ROOT_PASSWORD` | Compose only | Local database initialization | Keep it out of source control and rotate it |
+| `ADMIN_PASSWORD` | Yes | Admin bootstrap/synchronization secret | Supply through a secret manager, never README or image layers |
+| `SPRING_PROFILES_ACTIVE` | Recommended | Runtime profile selection | Use `prod` for TLS and strict production overrides |
+| `DDL_AUTO` | Recommended | Hibernate schema behavior | Use `validate` with Flyway-controlled migrations |
+| `COOKIE_SECURE` | Recommended | HTTPS-only session cookies | Set `true` behind HTTPS |
+| `MYSQL_USE_SSL` | Recommended | MySQL TLS flag | Set `true` with certificate verification in production |
+| `UPLOAD_DIR` | Recommended | Persistent media path | Mount durable storage and back it up |
+| `LOG_LEVEL` | Optional | Application log level | Prefer `INFO` or `WARN` in production |
 
-- **Mobile-First & Glassmorphism UI** — Highly responsive, premium, translucent interface.
-- **Micro-Animations** — Fluid transitions and interactive elements for an engaging experience.
-- **Dynamic QR Integration** — Automatic registration QR codes for instant, contactless event enrollment.
-- **Calendar Sync** — Export events directly to Google / Outlook with a single click.
-- **Smart Filtering** — Categorize events by *Technical*, *Cultural*, *Sports*, and *Workshop*.
-
-### 👨‍💼 For Administrators
-
-- **Interactive Analytics** — Dashboard powered by Chart.js with real-time engagement tracking.
-- **Lifecycle Management** — Robust administrative controls for event creation, modification, and automated lifecycle handling.
-- **Data Export** — One-click CSV export for university-wide event statistics and audits.
-- **System Health Monitoring** — Real-time server resource tracking from the admin panel.
-
----
-
-## 🏗️ Technical Architecture
-
-CampusConnect follows a clean, highly modular architecture with strictly defined boundaries for core logic, web security, and data persistence.
+## Architecture at a glance
 
 ```mermaid
-graph TD
-    User((User / Client)) -->|HTTPS| WebLayer[Spring Boot Web Layer]
-    WebLayer -->|Filter| RateLimit[Bucket4j Rate Limiter]
-    RateLimit -->|Context| Security[Spring Security / CSRF]
-    Security -->|Service| CoreLogic[Core Event Business Logic]
-    CoreLogic -->|JPA| DB[(MySQL Database)]
-    CoreLogic -.->|Circuit Breaker| ExtAPI[External Services Integration]
-    CoreLogic -->|Filesystem| Storage[Uploads & Media Storage]
+flowchart LR
+    Browser[Student or Admin Browser] --> Web[Spring Boot Web Layer]
+    Web --> Security[Spring Security + CSRF + RBAC]
+    Security --> Services[Event and User Services]
+    Services --> Repositories[Spring Data JPA Repositories]
+    Repositories --> MySQL[(MySQL 8)]
+    Services --> Media[(Event image BLOBs)]
+    Services -.-> Resilience[Resilience4j fallback]
+    AppOps[Actuator + Prometheus] --> Ops[Monitoring / Scraping Layer]
 ```
 
-### 🛠️ Technology Stack
+The current architecture is intentionally a modular monolith. The documented bounded-context evolution path separates identity/access, event catalogue, registration/capacity, and activity/notification/search concerns without pretending that extraction has already happened. See [Architecture and C4 documentation](docs/architecture/README.md).
 
-| Layer | Technology |
-| :--- | :--- |
-| **Backend** | Java 21, Spring Boot 3.4.13 |
-| **Security** | Spring Security 6.x, Bucket4j, Session Management |
-| **Resilience** | Resilience4j (Circuit Breaker) |
-| **Frontend** | Thymeleaf, Vanilla CSS (Glassmorphism), JavaScript (ES6) |
-| **Database** | MySQL 8.x (InnoDB), Flyway Migrations, Spring Data JPA / Hibernate |
-| **Observability** | Logstash Encoder (MDC), SLF4J, Logback |
-| **Build** | Maven (Wrapper), JaCoCo Code Coverage |
+## Course-handout compliance
 
----
+The attached DBSE&DBD handout expects concrete evidence across relational engineering, polyglot persistence, backend API design, architectural evolution, microservices concepts, deployment, observability, CI/CD, security, load testing, C4 diagrams, README quality, and final showcase. The compliance matrix maps each course outcome to source files, migrations, tests, scripts, and documentation.
 
-## 🛡️ Security & Reliability
+| Outcome | Evidence status in this repository |
+| --- | --- |
+| CO1 | Implemented through MySQL/JPA/Flyway, normalized core entities, constraints, transaction boundaries, a pessimistic event-row lock, and V3 indexes/checks; documented in `docs/data/` |
+| CO2 | SQL/NoSQL/vector trade-offs and a semantic-search evolution design are documented; the active implementation remains relational and does not falsely claim MongoDB or pgvector is live |
+| CO3 | Implemented through Spring MVC/Spring Security validation and Springdoc OpenAPI; the API contract and security boundary are documented in `docs/api/` |
+| CO4 | Spring Boot service architecture is implemented; Node.js/Express and FastAPI are documented as bounded evolution options rather than unimplemented claims |
+| CO5 | Bounded contexts, REST/event-flow options, resilience, and Saga/compensation design are documented; the current release remains a modular monolith |
+| CO6 | Dockerfile, Compose, health checks, Prometheus support, GitHub Actions, JaCoCo gate, dependency review, smoke test, load test, C4 diagrams, and showcase script are included |
 
-### Security Hardening (Zero-Trust)
+## Documentation map
 
-- **BCrypt Authentication** — Atomic BCrypt hashing (Strength 12) with constant-time dummy execution to negate timing side-channel attacks.
-- **Session & CSRF Protection** — Hardened CSRF tokens with `SameSite=Strict`, `HttpOnly`, `Secure` cookie policies.
-- **Concurrency Control** — Pessimistic Write Locking (`PESSIMISTIC_WRITE`) on critical registration paths to prevent race conditions.
-- **Upload Protection** — Strict symbolic link validation, MIME checking, and UUID-based filename sanitization.
-- **Rate Limiting** — Bucket4j interceptors throttling login attempts to 5 requests per 15 minutes per IP.
+| Document | Purpose |
+| --- | --- |
+| [`docs/requirements.md`](docs/requirements.md) | Problem statement, actors, scope, functional and non-functional requirements |
+| [`docs/compliance-matrix.md`](docs/compliance-matrix.md) | CO1–CO6 traceability to implementation evidence |
+| [`docs/architecture/README.md`](docs/architecture/README.md) | C4 views, request flows, bounded contexts, and evolution path |
+| [`docs/data/README.md`](docs/data/README.md) | Relational model, normalization, constraints, indexes, transactions, and polyglot search strategy |
+| [`docs/api/README.md`](docs/api/README.md) | OpenAPI access, route conventions, security, validation, and error behavior |
+| [`docs/services/README.md`](docs/services/README.md) | Current modules and future service boundaries |
+| [`docs/operations/README.md`](docs/operations/README.md) | Docker, configuration, migrations, health, metrics, backups, and release operations |
+| [`docs/security/README.md`](docs/security/README.md) | Threat model, RBAC, OWASP API checklist, and secret handling |
+| [`docs/testing/README.md`](docs/testing/README.md) | Test strategy, coverage, smoke checks, load-test method, and release gates |
+| [`docs/showcase.md`](docs/showcase.md) | A five-to-ten-minute demonstration mapped to CO1–CO6 |
+| [`docs/reference-repositories.md`](docs/reference-repositories.md) | Full register of supplied repositories and their safe reuse decisions |
+| [`TECHNICAL_GUIDE.md`](TECHNICAL_GUIDE.md) | Existing implementation-oriented technical reference |
+| [`SECURITY.md`](SECURITY.md) | Vulnerability reporting policy |
 
-### Architecture Resilience
-
-- **Fail-Safe Processing** — External calls are wrapped in a Resilience4j Circuit Breaker to prevent cascading failures.
-- **Database Migrations** — Flyway ensures deterministic, transactional schema versioning.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Java 21+** (JDK)
-- **MySQL Server 8.x**
-- **Maven 3.9+** (or use the included wrapper)
-
-### Quick Start
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/tejaswin-amara/campus-connect.git
-   cd campus-connect
-   ```
-
-2. **Initialize Database**
-
-   Ensure MySQL is running. The application will auto-create the `campus_events` database if it doesn't exist.
-
-3. **Run the Application**
-
-   ```bash
-   # Using Maven Wrapper (recommended)
-   ./mvnw spring-boot:run
-
-   # Windows PowerShell
-   .\run_app.ps1
-   ```
-
-4. **Open the App**
-
-   Navigate to [`http://localhost:9090`](http://localhost:9090).
-
-### Stopping the Application
-
-```powershell
-.\stop_app.ps1
-```
-
----
-
-## 🐳 Docker Deployment
-
-### Using Docker Compose (Recommended)
-
-Spin up the full stack (MySQL + App) with a single command:
+## Verification commands
 
 ```bash
-docker compose up -d
+# Unit, integration, packaging, coverage gate
+./mvnw -B verify
+
+# Runtime health and OpenAPI smoke checks
+BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
+
+# Lightweight concurrent health load test
+REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
 ```
 
-The app will be accessible at [`http://localhost:9090`](http://localhost:9090).
+The CI workflow runs the Maven verification lifecycle against MySQL, uploads the JaCoCo report, builds the container image, and performs dependency review on pull requests. The repository’s current local baseline is 58 passing tests with line and branch coverage gates defined in `pom.xml`.
 
-### Manual Docker Build
+## License and security
 
-```bash
-docker build -t campus-connect .
-docker run -p 9090:9090 \
-  -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/campus_events \
-  -e MYSQLUSER=root \
-  -e MYSQLPASSWORD=root \
-  campus-connect
-```
+See [`LICENSE`](LICENSE) for licensing terms and [`SECURITY.md`](SECURITY.md) for responsible vulnerability reporting. Never commit `.env`, credentials, production database URLs, private keys, or generated uploads.
 
-### Railway Deployment
+## References
 
-1. Push your code to GitHub.
-2. Go to the [Railway Dashboard](https://railway.app/dashboard) → **New Project** → **Deploy from GitHub repo**.
-3. Select the `campus-connect` repository.
-4. Railway will auto-detect the `Dockerfile` and deploy.
-
----
-
-## ⚙️ Environment Variables
-
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `PORT` | Application server port | `9090` |
-| `MYSQLHOST` | Database host | `localhost` |
-| `MYSQLPORT` | Database port | `3306` |
-| `MYSQLDATABASE` | Database name | `campus_events` |
-| `MYSQLUSER` | Database user | `root` |
-| `MYSQLPASSWORD` | Database password | `root` |
-| `ADMIN_PASSWORD` | Bootstrap admin password | `admin123` |
-| `LOG_LEVEL` | Application logging verbosity | `DEBUG` *(use `INFO` or `WARN` in production)* |
-| `UPLOAD_DIR` | Upload directory path | `uploads` |
-
----
-
-## 🔑 Default Accounts
-
-On first start, the database is populated via Flyway migrations with the following defaults:
-
-| Role | Portal | Username | Password |
-| :--- | :--- | :--- | :--- |
-| **Administrator** | `/admin/dashboard` | `admin` | *Set via `ADMIN_PASSWORD` env var* |
-| **Student** | `/` | — | *No login required (seamless access)* |
-
-> **⚠️ Important:** Change the default admin password in production by setting the `ADMIN_PASSWORD` environment variable.
-
----
-
-## 📚 API Documentation
-
-Interactive API documentation is available via **Swagger UI** when the application is running:
-
-- **Swagger UI:** [`http://localhost:9090/swagger-ui.html`](http://localhost:9090/swagger-ui.html)
-- **OpenAPI JSON:** [`http://localhost:9090/v3/api-docs`](http://localhost:9090/v3/api-docs)
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) and the [Technical Guide](TECHNICAL_GUIDE.md) before submitting a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  <br>
-  Created and maintained by <strong>Tejaswin Amara</strong> <br>
-  <i>Integrated as per university guidelines.</i>
-</p>
+[1]: https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html "Spring Boot Actuator reference"
+[2]: https://documentation.red-gate.com/flyway/reference "Flyway documentation"
+[3]: https://docs.docker.com/compose/ "Docker Compose documentation"
+[4]: https://docs.github.com/en/actions "GitHub Actions documentation"
+[5]: https://micrometer.io/docs/registry/prometheus "Micrometer Prometheus registry"
+[6]: https://owasp.org/API-Security/editions/2023/en/0x00-header/ "OWASP API Security Top 10"

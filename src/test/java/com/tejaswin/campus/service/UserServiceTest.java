@@ -38,9 +38,9 @@ public class UserServiceTest {
         user.setRole("ADMIN");
 
         when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches("admin123", "hashedpassword")).thenReturn(true);
+        when(passwordEncoder.matches("test-admin-password", "hashedpassword")).thenReturn(true);
 
-        User result = userService.authenticate("admin", "admin123");
+        User result = userService.authenticate("admin", "test-admin-password");
 
         assertNotNull(result);
         assertEquals("admin", result.getUsername());
@@ -79,7 +79,7 @@ public class UserServiceTest {
 
         when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
 
-        User result = userService.authenticate("admin", "admin123");
+        User result = userService.authenticate("admin", "test-admin-password");
 
         assertNull(result);
     }

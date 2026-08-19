@@ -39,8 +39,8 @@ This project implements the following security measures:
 - CSRF protection on all state-changing operations
 - Rate limiting on login endpoints (Bucket4j)
 - Session fixation prevention
-- Strict cookie policies (`HttpOnly`, `Secure`, `SameSite=Strict`)
+- Strict production cookie policies (`HttpOnly`, `Secure`, `SameSite=Strict`); local development may set `COOKIE_SECURE=false` for plain HTTP
 - File upload validation (MIME check, extension whitelist, UUID filenames)
 - Pessimistic locking for concurrent data access
 
-For full details, see the [Technical Guide](TECHNICAL_GUIDE.md#4-security-architecture-%EF%B8%8F).
+For full details, see the [Technical Guide](TECHNICAL_GUIDE.md#4-security-architecture-%EF%B8%8F), [security guide](docs/security/README.md), and [compliance matrix](docs/compliance-matrix.md).

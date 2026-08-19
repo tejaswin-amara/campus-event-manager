@@ -1,47 +1,89 @@
-name: Java CI with Maven
+name: CampusConnect CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
 
 jobs:
-  build:
+  verify:
+    name: Build, test, coverage, and dependency review
     runs-on: ubuntu-latest
-
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:8.0.36
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: campus_events
+          MYSQL_USER: campus_app
+          MYSQL_PASSWORD: campus_app_password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=12
+          --health-start-period=30s
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-        
-    - name: Make Maven Wrapper executable
-      run: chmod +x ./mvnw
-      
-    - name: Build with Maven
-      env:
-        SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/campus_events?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=10000
-        MYSQLHOST: 127.0.0.1
-        MYSQLPORT: 3306
-        MYSQLUSER: root
-        MYSQLPASSWORD: root
-      run: ./mvnw -B package --file pom.xml
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+
+      - name: Make Maven wrapper executable
+        run: chmod +x ./mvnw
+
+      - name: Build and verify
+        env:
+          SPRING_PROFILES_ACTIVE: default
+          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/campus_events?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=10000
+          MYSQLHOST: 127.0.0.1
+          MYSQLPORT: 3306
+          MYSQLDATABASE: campus_events
+          MYSQLUSER: campus_app
+          MYSQLPASSWORD: campus_app_password
+          # Test fixture only; production deployments must provide a unique secret.
+          ADMIN_PASSWORD: test-admin-password
+          DDL_AUTO: validate
+          COOKIE_SECURE: false
+          LOG_LEVEL: INFO
+        run: ./mvnw -B verify
+
+      - name: Upload JaCoCo report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+          if-no-files-found: warn
+
+      - name: Build container image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: campus-connect:${{ github.sha }}
+
+  dependency-review:
+    name: Review dependency changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@v4

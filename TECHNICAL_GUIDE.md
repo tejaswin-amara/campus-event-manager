@@ -18,7 +18,7 @@ The application follows a standard **Model-View-Controller (MVC)** architecture 
 
 | Component | Technology | Version |
 | :--- | :--- | :--- |
-| **Backend Framework** | Spring Boot | 3.4.2 |
+| **Backend Framework** | Spring Boot | 3.4.13 |
 | **Language** | Java | 21 (LTS) |
 | **Database** | MySQL | 8.0+ |
 | **ORM** | Hibernate (via Spring Data JPA) | — |
@@ -38,7 +38,7 @@ The application follows a standard **Model-View-Controller (MVC)** architecture 
   - *Student Dashboard:* Displays events with filtering by category and status (Upcoming/Ongoing/Past).
   - *Admin Dashboard:* Comprehensive table view with search, filter, and pagination.
 - **Update:** Full edit capability for event details and images.
-- **Delete:** Hard delete removes the event and its associated image file from disk.
+- **Delete:** Hard delete removes the event and its registrations; database-backed image data is removed with the event record.
 
 ### 3.2 Image Handling
 
@@ -76,7 +76,7 @@ The application implements a "Security by Design" approach following a comprehen
 ### 4.3 Database & Concurrency
 
 - **Schema Migrations:** Managed via Flyway for consistent environments.
-- **Race Condition Prevention:** Pessimistic write locks during critical data initialization.
+- **Race Condition Prevention:** Pessimistic write locking protects startup account initialization and the transactional event-interest write path.
 - **Transactional Integrity:** Strict `@Transactional` boundaries ensure atomic updates and snapshot isolation.
 
 ## 5. Database Schema 🗄️
@@ -133,7 +133,8 @@ This spins up both MySQL and the application. See the [README](README.md) for fu
 
 ### Production Considerations
 
-- Override `ADMIN_PASSWORD` with a strong password.
-- Set `LOG_LEVEL=INFO` or `WARN` for production.
-- Configure `useSSL=true` and `allowPublicKeyRetrieval=false` for database connections.
-- Use a persistent volume for the `uploads/` directory.
+- Set `ADMIN_PASSWORD` through a secret manager; there is no usable production default.
+- Set `SPRING_PROFILES_ACTIVE=prod`, `DDL_AUTO=validate`, `COOKIE_SECURE=true`, and `MYSQL_USE_SSL=true` for a TLS-backed deployment.
+- Use a least-privilege database user rather than MySQL root.
+- Use a persistent volume for the `uploads/` directory and back it up with the database.
+- Review the detailed [operations guide](docs/operations/README.md), [security guide](docs/security/README.md), and [compliance matrix](docs/compliance-matrix.md).
