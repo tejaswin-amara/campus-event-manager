@@ -3,6 +3,7 @@ package com.tejaswin.campus.controller;
 import com.tejaswin.campus.model.Event;
 import com.tejaswin.campus.model.User;
 import com.tejaswin.campus.service.EventService;
+import com.tejaswin.campus.service.RecommendationService;
 import com.tejaswin.campus.service.SessionService;
 import com.tejaswin.campus.security.SecurityAuditLogger;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -31,11 +32,14 @@ public class EventController {
     private final EventService eventService;
     private final SessionService sessionService;
     private final SecurityAuditLogger auditLogger;
+    private final RecommendationService recommendationService;
 
-    public EventController(EventService eventService, SessionService sessionService, SecurityAuditLogger auditLogger) {
+    public EventController(EventService eventService, SessionService sessionService,
+            SecurityAuditLogger auditLogger, RecommendationService recommendationService) {
         this.eventService = eventService;
         this.sessionService = sessionService;
         this.auditLogger = auditLogger;
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/dashboard")
@@ -78,6 +82,7 @@ public class EventController {
         model.addAttribute("totalPages", eventsPage.getTotalPages());
         model.addAttribute("totalItems", eventsPage.getTotalElements());
         model.addAttribute("user", user);
+        model.addAttribute("recommendedEvents", recommendationService.recommendForUser(user.getId(), 3));
         model.addAttribute("now", java.time.LocalDateTime.now());
         return "dashboard";
     }

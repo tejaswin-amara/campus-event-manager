@@ -143,6 +143,35 @@
                 </div>
             </div>
 
+            <!-- Firebase-inspired recommendation feed, backed by Spring/MySQL derived scoring -->
+            <section th:if="${recommendedEvents != null && !recommendedEvents.isEmpty()}" class="mb-5"
+                aria-labelledby="recommendationsHeading">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2 id="recommendationsHeading" class="h5 fw-bold mb-1">Recommended for you</h2>
+                        <p class="text-muted small mb-0">Suggestions based on your event interests and current demand.</p>
+                    </div>
+                    <i class="bi bi-stars text-warning fs-4" aria-hidden="true"></i>
+                </div>
+                <div class="row g-3">
+                    <article th:each="recommendation : ${recommendedEvents}" class="col-12 col-md-4">
+                        <div class="glass-card h-100 p-3 d-flex flex-column">
+                            <span class="badge-pill align-self-start mb-2" th:text="${recommendation.event.category}">Category</span>
+                            <h3 class="h6 fw-bold text-white mb-2" th:text="${recommendation.event.title}">Event title</h3>
+                            <p class="small text-muted mb-2"
+                                th:text="${#temporals.format(recommendation.event.dateTime, 'EEE, MMM dd · h:mm a')}">Date</p>
+                            <p class="small text-muted mb-3" th:text="${recommendation.event.venue}">Venue</p>
+                            <ul class="small text-muted ps-3 mb-3" aria-label="Recommendation reasons">
+                                <li th:each="reason : ${recommendation.reasons}" th:text="${reason}">Reason</li>
+                            </ul>
+                            <a class="btn btn-outline-light btn-sm mt-auto" th:href="@{/student/event/{id}(id=${recommendation.event.id})}">
+                                View details <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
             <!-- Server-Side Empty State -->
             <div th:if="${#lists.isEmpty(events)}" class="text-center py-5 animate-in animate-float">
                 <div class="glass p-5 rounded-4 d-inline-block shadow-lg">

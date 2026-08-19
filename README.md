@@ -13,8 +13,9 @@ CampusConnect provides a public student experience for event discovery and event
 | Event catalogue | Spring MVC and Thymeleaf with paginated discovery, search, category filtering, and event details |
 | Administration | Role-protected dashboard for event lifecycle management, analytics, and CSV export |
 | Authentication | Spring Security session authentication, BCrypt password hashing, CSRF protection, session-fixation mitigation, and admin RBAC |
-| Database | MySQL 8 with JPA/Hibernate and Flyway migrations V1–V3 |
+| Database | MySQL 8.4 LTS with JPA/Hibernate and Flyway migrations V1–V3 |
 | Integrity | Unique user-event interests, foreign keys, event date checks, status checks, query-aware indexes, and transaction boundaries |
+| Recommendations | Explainable server-side recommendations based on prior interests and event demand, adapted from the Firebase-Addition matchmaker concept |
 | Resilience | Bucket4j login rate limiting and Resilience4j registration fallback |
 | Observability | Actuator health/info, Prometheus registry, structured logging, and audit logging |
 | Delivery | Maven Wrapper, Dockerfile, Docker Compose, GitHub Actions verification, JaCoCo gate, dependency review, and container build |
@@ -86,7 +87,7 @@ The attached DBSE&DBD handout expects concrete evidence across relational engine
 | Outcome | Evidence status in this repository |
 | --- | --- |
 | CO1 | Implemented through MySQL/JPA/Flyway, normalized core entities, constraints, transaction boundaries, a pessimistic event-row lock, and V3 indexes/checks; documented in `docs/data/` |
-| CO2 | SQL/NoSQL/vector trade-offs and a semantic-search evolution design are documented; the active implementation remains relational and does not falsely claim MongoDB or pgvector is live |
+| CO2 | SQL/NoSQL/vector trade-offs and a semantic-search evolution design are documented; the active implementation remains relational, and the Firebase-inspired recommendation scorer is implemented as derived Java/MySQL logic without falsely claiming Firestore or pgvector is live |
 | CO3 | Implemented through Spring MVC/Spring Security validation and Springdoc OpenAPI; the API contract and security boundary are documented in `docs/api/` |
 | CO4 | Spring Boot service architecture is implemented; Node.js/Express and FastAPI are documented as bounded evolution options rather than unimplemented claims |
 | CO5 | Bounded contexts, REST/event-flow options, resilience, and Saga/compensation design are documented; the current release remains a modular monolith |
@@ -107,6 +108,8 @@ The attached DBSE&DBD handout expects concrete evidence across relational engine
 | [`docs/testing/README.md`](docs/testing/README.md) | Test strategy, coverage, smoke checks, load-test method, and release gates |
 | [`docs/showcase.md`](docs/showcase.md) | A five-to-ten-minute demonstration mapped to CO1–CO6 |
 | [`docs/reference-repositories.md`](docs/reference-repositories.md) | Full register of supplied repositories and their safe reuse decisions |
+| [`docs/hybrid-integration-decision.md`](docs/hybrid-integration-decision.md) | Feature comparison, Firebase provenance, data ownership, and handout-first hybrid decisions |
+| [`docs/stable-versions.md`](docs/stable-versions.md) | Stable version targets, compatibility policy, upgrade evidence, and intentional pins |
 | [`TECHNICAL_GUIDE.md`](TECHNICAL_GUIDE.md) | Existing implementation-oriented technical reference |
 | [`SECURITY.md`](SECURITY.md) | Vulnerability reporting policy |
 
@@ -123,7 +126,7 @@ BASE_URL=http://localhost:9090 ./scripts/smoke-test.sh
 REQUESTS=100 CONCURRENCY=10 BASE_URL=http://localhost:9090 ./scripts/load-test.sh
 ```
 
-The CI workflow runs the Maven verification lifecycle against MySQL, uploads the JaCoCo report, builds the container image, and performs dependency review on pull requests. The repository’s current local baseline is 58 passing tests with line and branch coverage gates defined in `pom.xml`.
+The CI workflow runs the Maven verification lifecycle against MySQL, uploads the JaCoCo report, builds the container image, and performs dependency review on pull requests. The repository’s current local baseline is 61 passing tests with line and branch coverage gates defined in `pom.xml`; the stable-version matrix is maintained in [`docs/stable-versions.md`](docs/stable-versions.md).
 
 ## License and security
 

@@ -38,10 +38,11 @@ The repository metadata was checked with GitHub CLI on 19 August 2026. The sourc
 | [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) | Learning sequence for full-stack, DevOps, and production skills | Used in `docs/showcase.md` and follow-up backlog |
 | [practical-tutorials/project-based-learning](https://github.com/practical-tutorials/project-based-learning) | Evidence-driven practice and end-to-end project learning structure | Used to shape the handout evidence trail and showcase flow |
 | [anthropics/skills](https://github.com/anthropics/skills) | Modular skill/documentation approach for repeatable agent-assisted work | Used as a process reference only; no external skill code is vendored |
+| [tejaswin-amara/Campus-Connect-Firebase-Addition](https://github.com/tejaswin-amara/Campus-Connect-Firebase-Addition) | React/Firebase feature prototype: recommendation scoring, QR pass/calendar UX, waitlist/attendance/notification concepts, and feature-level comparison | Adopted the recommendation concept as a server-side Spring/MySQL service; retained existing calendar/QR behavior; rejected direct Firebase/client-auth/mock-payment duplication; details in `docs/hybrid-integration-decision.md` |
 
 ## Directly integrated patterns
 
-The current release directly incorporates the highest-value patterns that fit the existing codebase: conventional commit and review guidance; a source-linked documentation register; health-gated Compose startup; explicit environment configuration; Flyway-first schema control; JaCoCo verification; GitHub Actions artifact/dependency gates; OWASP-oriented security review; reproducible smoke/load scripts; and an architecture evolution record that distinguishes implemented behavior from future service extraction.
+The current release directly incorporates the highest-value patterns that fit the existing codebase: the Firebase-Addition recommendation concept rewritten as a tested server-side Spring service; conventional commit and review guidance; a source-linked documentation register; health-gated Compose startup; explicit environment configuration; Flyway-first schema control; JaCoCo verification; GitHub Actions artifact/dependency gates; OWASP-oriented security review; reproducible smoke/load scripts; and an architecture evolution record that distinguishes implemented behavior from future service extraction.
 
 ## Deliberately not vendored
 

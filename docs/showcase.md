@@ -27,3 +27,8 @@ The project should explicitly state that student “registration” currently me
 ## Final proof points
 
 A clean checkout is the proof of reproducibility. The reviewer should be able to follow the README, configure placeholders, start the stack, see health become available, run the smoke test, inspect the OpenAPI document, execute the Maven verification lifecycle, and read a source-linked compliance matrix. Every production claim should point to an implementation artifact, a test, or a measured result.
+
+
+## Hybrid feature proof point
+
+After the student dashboard loads, show the **Recommended for you** section. Explain that the idea came from the Firebase-Addition matchmaker, but the final implementation is a server-side `RecommendationService` over MySQL events and registrations. The score is derived, explainable, limited to three upcoming events, covered by unit tests, and does not create a second data store or trust client-supplied roles or scores. The existing calendar and registration-link QR behavior remains available, while Firebase’s attendance pass, waitlist, mock payment, and notification features remain explicitly documented as future bounded contexts.

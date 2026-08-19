@@ -30,6 +30,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Page<Event> findByDateTimeAfterOrderByDateTimeAsc(LocalDateTime dateTime, Pageable pageable);
 
+    List<Event> findByDateTimeAfterOrderByDateTimeAsc(LocalDateTime dateTime);
+
     List<Event> findByTitleContainingIgnoreCaseOrVenueContainingIgnoreCase(String title, String venue);
 
     Page<Event> findByTitleContainingIgnoreCaseOrVenueContainingIgnoreCase(String title, String venue,
