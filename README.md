@@ -1,61 +1,96 @@
-# CampusConnect — Campus Event Aggregator & Manager
+# 🎓 CampusConnect
 
-> **Academic Subject:** 25CS1302E — Database Systems Engineering And Distributed Backend Development  
-> **Repository Branch:** `feat/complete-dbms-pbl-hardening`  
-> **Runtime Environment:** Java 25 LTS, Spring Boot 4.1.0, MySQL 8.4 LTS (InnoDB Engine), Flyway 10.20, Docker
+<div align="center">
 
-[![Build & Test Status](https://img.shields.io/badge/tests-65%2F65%20passing-brightgreen)](src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java)
-[![Database](https://img.shields.io/badge/database-MySQL%208.4%20LTS-blue?logo=mysql&logoColor=white)](database/schema.sql)
-[![Migrations](https://img.shields.io/badge/flyway-V1--V4-red?logo=flyway&logoColor=white)](src/main/resources/db/migration/)
-[![Java](https://img.shields.io/badge/Java-25%20LTS-orange?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-green?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+**Enterprise-Grade Campus Event Aggregator & Student Registration Platform**
 
----
+[![Tests](https://img.shields.io/badge/tests-65%2F65%20passing-brightgreen?style=for-the-badge&logo=checkmarx&logoColor=white)](src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-25%20LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4%20LTS-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](database/schema.sql)
+[![Flyway](https://img.shields.io/badge/Flyway-V1--V4-CC0200?style=for-the-badge&logo=flyway&logoColor=white)](src/main/resources/db/migration/)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-## 1. System Overview
+<br />
 
-**CampusConnect** is an enterprise-grade campus event aggregator and student registration management platform engineered for strict ACID transactional consistency, high-throughput concurrency safety, and sub-millisecond query performance.
+*ACID-safe registration with pessimistic locking · BCNF-normalized schema · 51.7% query cost reduction · Transactional outbox pattern · Dark glassmorphism UI*
 
-### Key Capabilities
-* **ACID Registration & Race Condition Protection:** Pessimistic row-level locking (`SELECT ... FOR UPDATE`) paired with database-level composite unique constraints (`uk_user_event`), verified under 10-thread simultaneous contention.
-* **Boyce-Codd Normal Form (BCNF) Schema:** Fully normalized 4-table relational architecture with mathematical lossless join and dependency preservation proofs.
-* **Exhaustive SQL Portfolio:** 12 executable SQL modules covering multi-way joins, aggregations, correlated subqueries, chained CTEs, recursive taxonomy trees, and analytical window functions.
-* **Empirical Query Optimization:** Secondary composite B-Tree indexes yielding measured **51.7% query cost reductions** and **100% filesort elimination**, backed by real `EXPLAIN ANALYZE` evidence.
-* **Distributed Scalability & Outbox Pattern:** Decoupled asynchronous event publishing via table `outbox_events` (Flyway V4), alongside documented high-availability replication, read-write routing, and tenant sharding designs.
+<br />
+
+**Academic Subject:** `25CS1302E` — Database Systems Engineering & Distributed Backend Development
+
+</div>
 
 ---
 
-## 2. Architecture & Data Flow
+## ✨ Highlights
+
+<table>
+<tr>
+<td width="50%">
+
+### 🔒 Race-Condition Proof Registration
+10-thread concurrent stress test: exactly **1 success, 9 rejected** via MySQL Error 1062. Pessimistic row locking + composite unique constraint.
+
+</td>
+<td width="50%">
+
+### ⚡ Measured Query Optimization
+Composite B-Tree indexes yield **51.7% cost reduction** and **100% filesort elimination**, backed by real `EXPLAIN ANALYZE` evidence.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📐 Formally Proven BCNF Schema
+4-table architecture with mathematical proofs for lossless join and dependency preservation across all normal forms.
+
+</td>
+<td width="50%">
+
+### 🌐 Distributed-Ready Architecture
+Transactional outbox pattern (`outbox_events`), semi-synchronous GTID replication design, and hash-sharded tenant isolation.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🏗️ Architecture
 
 ```mermaid
 flowchart TD
-    Client[Web Browser / Postman] -->|HTTP / Form POST| SpringSec[Spring Security 6.4\nCSRF + BCrypt + Session]
-    SpringSec --> Ctrl[StudentController / AdminController]
-    Ctrl --> Svc[EventService\n@Transactional REPEATABLE_READ]
-    
-    subgraph Data Access Layer
-        Svc -->|Pessimistic Lock| RepoE[EventRepository\nfindByIdForUpdate]
-        Svc -->|Unique Constraint uk_user_event| RepoR[RegistrationRepository\nsave & findByUserIdWithEvent]
-        Svc -->|Decoupled Async Events| Outbox[OutboxRepository\nsave OutboxEvent]
+    Client["🌐 Web Browser / Postman"] -->|HTTP / Form POST| SpringSec["🔐 Spring Security 6.4<br/>CSRF + BCrypt + Session"]
+    SpringSec --> Ctrl["🎮 StudentController / AdminController"]
+    Ctrl --> Svc["⚙️ EventService<br/>@Transactional REPEATABLE_READ"]
+
+    subgraph DAL ["Data Access Layer"]
+        Svc -->|"🔒 Pessimistic Lock"| RepoE["EventRepository<br/>findByIdForUpdate"]
+        Svc -->|"🔑 Unique Constraint"| RepoR["RegistrationRepository<br/>save & findByUserIdWithEvent"]
+        Svc -->|"📤 Async Events"| Outbox["OutboxRepository<br/>save OutboxEvent"]
     end
 
-    RepoE & RepoR & Outbox --> Hikari[HikariCP Connection Pool\nMax: 10]
-    Hikari --> MySQL[(MySQL 8.4 LTS InnoDB\nPort 3307 / 3306)]
-    
-    subgraph Storage Engine
-        MySQL --> Clustered[Clustered B+ Tree Primary Keys]
-        MySQL --> BTreeIdx[Composite B-Tree Indexes\nidx_events_category_date]
-        MySQL --> WAL[Write-Ahead Logging\nib_logfile0 Redo/Undo]
+    RepoE & RepoR & Outbox --> Hikari["🏊 HikariCP Pool<br/>Max: 10 connections"]
+    Hikari --> MySQL[("💾 MySQL 8.4 LTS<br/>InnoDB Engine")]
+
+    subgraph Storage ["Storage Engine Internals"]
+        MySQL --> Clustered["🌳 Clustered B+ Tree<br/>Primary Keys"]
+        MySQL --> BTreeIdx["📊 Composite B-Tree<br/>Secondary Indexes"]
+        MySQL --> WAL["📝 Write-Ahead Log<br/>Redo / Undo"]
     end
 ```
 
 ---
 
-## 3. Quickstart & Local Execution
+## 🚀 Quickstart
 
-### 3.1 Start MySQL 8.4 Database Container
-The project includes a ready-to-run MySQL 8.4 container pre-configured on host port **3307** (to avoid conflicts with local port 3306):
+### Prerequisites
+- **Java 25 LTS** (or compatible JDK)
+- **Docker** (for MySQL 8.4 container)
+
+### 1. Start the Database
 
 ```bash
 docker run -d \
@@ -68,104 +103,126 @@ docker run -d \
   mysql:8.4
 ```
 
-### 3.2 Initialize Seed Dataset
-Load the authoritative 11-user, 12-event master demonstration dataset:
+### 2. Load Seed Data
 
 ```bash
 mysql -h 127.0.0.1 -P 3307 -u campus_app -pcampus_app_password campus_events < database/seed.sql
 ```
 
-### 3.3 Run Automated Test Suite (65/65 Passing)
-```bash
-# Set environment coordinates
-export MYSQLHOST=127.0.0.1
-export MYSQLPORT=3307
-export MYSQLDATABASE=campus_events
-export MYSQLUSER=campus_app
-export MYSQLPASSWORD=campus_app_password
+### 3. Run Tests (65/65 ✅)
 
+```bash
+export MYSQLHOST=127.0.0.1 MYSQLPORT=3307 MYSQLDATABASE=campus_events
+export MYSQLUSER=campus_app MYSQLPASSWORD=campus_app_password
 ./mvnw test
 ```
 
-### 3.4 Launch Application
+### 4. Launch
+
 ```bash
 ./mvnw spring-boot:run
 ```
-Access the application at `http://localhost:9090` (default port 9090 prevents host proxy collisions).
-* **Student Login:** `aarav.sharma@campus.edu` / `password123`
-* **Admin Login:** `admin@campus.edu` / `admin123`
-* **OpenAPI Docs:** `http://localhost:9090/v3/api-docs`
+
+| Portal | URL | Credentials |
+|--------|-----|-------------|
+| 🎓 Student Dashboard | [`localhost:9090`](http://localhost:9090) | `aarav.sharma@campus.edu` / `password123` |
+| 🔧 Admin Console | [`localhost:9090/admin`](http://localhost:9090/admin/login) | `admin@campus.edu` / `admin123` |
+| 📄 OpenAPI Docs | [`localhost:9090/v3/api-docs`](http://localhost:9090/v3/api-docs) | — |
 
 ---
 
-## 4. Course Outcome (CO1–CO6) Evidence Index
+## 📊 Course Outcome Evidence Matrix
 
-| Course Outcome | Academic Domain | Artifact / Evidence Link | Status |
-|---|---|---|---|
-| **CO1** | Backend Service Architecture & DB Flow | [`docs/request-to-database-flow.md`](docs/request-to-database-flow.md)<br>End-to-end trace from HTTP POST down to InnoDB page buffer pool. | **PASS (Runtime)** |
-| **CO2** | ER Modeling & Normalization | [`database/er-diagram.md`](database/er-diagram.md), [`docs/normalization.md`](docs/normalization.md)<br>Formal proofs for 1NF, 2NF, 3NF, BCNF, lossless join, and dependency preservation. | **PASS (Runtime)** |
-| **CO3** | Advanced SQL Fluency | [`database/sql/`](database/sql/)<br>12 SQL modules: Joins, Aggregations, Subqueries, Chained CTEs, Recursive CTEs, Window Functions, Analytics. | **PASS (Runtime)** |
-| **CO4** | Transactions, ACID & Concurrency Stress Test | [`database/transactions.sql`](database/transactions.sql), [`docs/concurrency-test.md`](docs/concurrency-test.md)<br>10-thread race test: exactly 1 succeeds, 9 fail with MySQL Error 1062. | **PASS (Runtime)** |
-| **CO5** | Indexing Theory & EXPLAIN Optimization | [`database/indexes.sql`](database/indexes.sql), [`database/explain/README.md`](database/explain/README.md), [`docs/query-optimization.md`](docs/query-optimization.md)<br>51.7% cost reduction, filesort elimination, JPQL `JOIN FETCH` N+1 fix. | **PASS (Runtime)** |
-| **CO6** | Distributed Databases & Outbox Pattern | [`src/main/resources/db/migration/V4__Hardening_and_audit.sql`](src/main/resources/db/migration/V4__Hardening_and_audit.sql), [`docs/distributed-database.md`](docs/distributed-database.md)<br>Flyway V4 `outbox_events` table, Primary-Replica GTID, read scaling, tenant sharding. | **PASS (Runtime + Design)** |
+| CO | Domain | Evidence | Verdict |
+|:---:|--------|----------|:-------:|
+| **CO1** | Backend Architecture & DB Flow | [`request-to-database-flow.md`](docs/request-to-database-flow.md) — HTTP POST → Spring Security → JPA → InnoDB buffer pool | ✅ **PASS** |
+| **CO2** | ER Modeling & Normalization | [`er-diagram.md`](database/er-diagram.md) · [`normalization.md`](docs/normalization.md) — 1NF → BCNF proofs, lossless join | ✅ **PASS** |
+| **CO3** | SQL Fluency Portfolio | [`database/sql/`](database/sql/) — 12 modules: joins, CTEs, recursive CTEs, window functions, analytics | ✅ **PASS** |
+| **CO4** | ACID & Concurrency | [`transactions.sql`](database/transactions.sql) · [`concurrency-test.md`](docs/concurrency-test.md) — 10-thread race test | ✅ **PASS** |
+| **CO5** | Indexing & Optimization | [`indexes.sql`](database/indexes.sql) · [`explain/`](database/explain/README.md) · [`query-optimization.md`](docs/query-optimization.md) | ✅ **PASS** |
+| **CO6** | Distributed & Outbox | [`V4 migration`](src/main/resources/db/migration/V4__Hardening_and_audit.sql) · [`distributed-database.md`](docs/distributed-database.md) | ✅ **PASS** |
 
 ---
 
-## 5. Concurrency Stress Test Results
+## 🧪 Concurrency Stress Test
 
-CampusConnect implements a real multi-threaded integration stress test in [`EventServiceConcurrencyTest.java`](src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java) utilizing a dual `CountDownLatch` barrier:
-
-```text
-[pool-2-thread-1] INFO EventService - Registration committed successfully. ID: 29
-[pool-2-thread-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '1-1' for key 'registrations.uk_user_event'
-[pool-2-thread-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '1-1' for key 'registrations.uk_user_event'
+```
+[pool-2-thread-1]  INFO  ✅ Registration committed successfully. ID: 29
+[pool-2-thread-2]  ERROR ❌ Duplicate entry '1-1' for key 'registrations.uk_user_event'
+[pool-2-thread-3]  ERROR ❌ Duplicate entry '1-1' for key 'registrations.uk_user_event'
 ...
-[pool-2-thread-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '1-1' for key 'registrations.uk_user_event'
+[pool-2-thread-10] ERROR ❌ Duplicate entry '1-1' for key 'registrations.uk_user_event'
 ```
 
-* **Simultaneous Threads:** 10
-* **Expected Result:** Exactly 1 Success, 9 Duplicate Rejections
-* **Actual Result:** **1 Success, 9 Rejected (MySQL Error 1062, SQLState 23000)**
-* **Multi-User Throughput Test:** 8 distinct users simultaneously registering for the same event $\rightarrow$ **8/8 Success, 0 Deadlocks**.
+| Metric | Result |
+|--------|--------|
+| Simultaneous threads | **10** |
+| Successful registrations | **1** ✅ |
+| Rejected (Error 1062) | **9** 🛡️ |
+| Multi-user throughput (8 users) | **8/8 success, 0 deadlocks** |
 
 ---
 
-## 6. Query Optimization & EXPLAIN ANALYZE Evidence
-
-Query performance was benchmarked directly on MySQL 8.4 using `scripts/run_explain.py`:
+## 📈 Query Optimization Evidence
 
 ```sql
 SELECT id, title, category, date_time, venue, status
-FROM events
-WHERE category = 'Technical'
-ORDER BY date_time ASC;
+FROM events WHERE category = 'Technical' ORDER BY date_time ASC;
 ```
 
-* **Before Indexing:** Full Table Scan (`type: ALL`), `Using filesort`, Cost = `1.45`, Execution = `0.0768 ms`.
-* **After Indexing (`idx_events_category_date`):** Index Lookup (`type: ref`), **filesort eliminated**, Cost = `0.70`, Execution = `0.0384 ms`.
-* **Improvement:** **51.7% query cost reduction, 50% latency drop, 100% external filesort elimination**.
+| Metric | Before Index | After `idx_events_category_date` | Improvement |
+|--------|:-----------:|:-------------------------------:|:-----------:|
+| Access Type | `ALL` (full scan) | `ref` (index lookup) | — |
+| Filesort | ⚠️ Yes | ✅ Eliminated | **100%** |
+| Query Cost | 1.45 | 0.70 | **51.7% ↓** |
+| Execution Time | 0.0768 ms | 0.0384 ms | **50% ↓** |
 
 ---
 
-## 7. Documentation Directory Guide
+## 📁 Documentation
 
-* **Comprehensive Design Report (20 Sections):** [`docs/design-report.md`](docs/design-report.md)
-* **DBMS Compliance Matrix:** [`docs/dbms-compliance.md`](docs/dbms-compliance.md)
-* **Data Dictionary:** [`docs/data-dictionary.md`](docs/data-dictionary.md)
-* **Normalization Theory:** [`docs/normalization.md`](docs/normalization.md)
-* **Request-to-Database Flow (CO1):** [`docs/request-to-database-flow.md`](docs/request-to-database-flow.md)
-* **Transaction & ACID Analysis (CO4):** [`docs/transaction-analysis.md`](docs/transaction-analysis.md)
-* **Concurrency Stress Test Report (CO4):** [`docs/concurrency-test.md`](docs/concurrency-test.md)
-* **Query Optimization Report (CO5):** [`docs/query-optimization.md`](docs/query-optimization.md)
-* **Distributed Database Architecture (CO6):** [`docs/distributed-database.md`](docs/distributed-database.md)
-* **Data Architecture Decision (ADR):** [`docs/data-architecture-decision.md`](docs/data-architecture-decision.md)
-* **Disaster Recovery & PITR Runbook:** [`docs/backup-recovery.md`](docs/backup-recovery.md)
-* **Event Lifecycle State Machine:** [`docs/event-lifecycle.md`](docs/event-lifecycle.md)
-* **Live Faculty Demo Script:** [`docs/demo-script.md`](docs/demo-script.md)
-* **Postman Collection:** [`postman/CampusConnect.postman_collection.json`](postman/CampusConnect.postman_collection.json)
+| Document | Description |
+|----------|-------------|
+| 📋 [`design-report.md`](docs/design-report.md) | Comprehensive 20-section design report |
+| ✅ [`dbms-compliance.md`](docs/dbms-compliance.md) | Course outcome compliance matrix |
+| 📖 [`data-dictionary.md`](docs/data-dictionary.md) | Complete schema attributes, domains & keys |
+| 🔬 [`normalization.md`](docs/normalization.md) | Formal 1NF → BCNF proofs |
+| 🔄 [`transaction-analysis.md`](docs/transaction-analysis.md) | ACID & MVCC analysis |
+| 🧪 [`concurrency-test.md`](docs/concurrency-test.md) | Race condition stress test report |
+| ⚡ [`query-optimization.md`](docs/query-optimization.md) | EXPLAIN ANALYZE evidence |
+| 🌐 [`distributed-database.md`](docs/distributed-database.md) | Replication, sharding & outbox |
+| 🏛️ [`data-architecture-decision.md`](docs/data-architecture-decision.md) | MySQL vs PostgreSQL ADR |
+| 💾 [`backup-recovery.md`](docs/backup-recovery.md) | PITR disaster recovery runbook |
+| 🔁 [`event-lifecycle.md`](docs/event-lifecycle.md) | Event state machine |
+| 🎬 [`demo-script.md`](docs/demo-script.md) | Live faculty demo walkthrough |
+| 📬 [`Postman Collection`](postman/CampusConnect.postman_collection.json) | Complete API test suite |
 
 ---
 
-## 8. License
+## 🛠️ Tech Stack
+
+<div align="center">
+
+| Layer | Technology |
+|-------|-----------|
+| **Language** | Java 25 LTS (Microsoft OpenJDK) |
+| **Framework** | Spring Boot 4.1.0, Spring Security 6.4, Spring Data JPA |
+| **Database** | MySQL 8.4 LTS (InnoDB), Flyway 10.20 migrations |
+| **Resilience** | Resilience4j (Circuit Breaker, Rate Limiter via Bucket4j) |
+| **Frontend** | Thymeleaf 3 + Bootstrap 5.3 + Custom Dark Design System |
+| **Testing** | JUnit 5, Mockito, JaCoCo (70%+ coverage gate) |
+| **Containerization** | Docker, Docker Compose |
+
+</div>
+
+---
+
+## 📜 License
 
 Released under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+<sub>Built with 💜 for academic excellence in database systems engineering</sub>
+</div>
