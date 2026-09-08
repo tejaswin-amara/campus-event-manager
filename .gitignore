@@ -68,8 +68,13 @@ application-local.properties
 application-local.yml
 
 # ==============================================================================
-# Agent tools / Temporary
+# Agent tools / Temporary / Node
 # ==============================================================================
+node_modules/
+**/node_modules/
+dist/
+**/dist/
 .qodo/
+.tools/
 hs_err_pid*
 replay_pid*

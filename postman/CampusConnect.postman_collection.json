@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "c62e5b74-3250-4cb5-9c88-12d458bc0835",
+		"name": "CampusConnect — API Collection & Integration Suite",
+		"description": "Comprehensive API & Web Endpoint collection for CampusConnect (25CS1302E - Database Systems Engineering And Distributed Backend Development). Covers authentication, catalog filtering, student registration, admin workflows, and security boundaries.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01. System Health & Observability",
+			"item": [
+				{
+					"name": "Actuator Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Verifies backend service liveness and database connectivity status."
+					},
+					"response": []
+				},
+				{
+					"name": "OpenAPI Specification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v3/api-docs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						},
+						"description": "Fetches generated OpenAPI documentation contract."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02. Student Catalog & Discovery",
+			"item": [
+				{
+					"name": "Browse All Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"dashboard"
+							]
+						},
+						"description": "Loads student dashboard with paginated active campus events."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Events by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/dashboard?category=Technical",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"dashboard"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Technical",
+									"description": "Filter by Technical category (uses idx_events_category_date)"
+								}
+							]
+						},
+						"description": "Optimized category filtering query verified by EXPLAIN ANALYZE (cost 0.70)."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Events by Keyword",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/dashboard?search=Hackathon",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"dashboard"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Hackathon",
+									"description": "Keyword search across title and description"
+								}
+							]
+						},
+						"description": "Searches events matching keyword."
+					},
+					"response": []
+				},
+				{
+					"name": "View Event Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/event/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"event",
+								"1"
+							]
+						},
+						"description": "Retrieves comprehensive event detail page by primary key."
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Event Poster Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/api/public/events/image/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"api",
+								"public",
+								"events",
+								"image",
+								"1"
+							]
+						},
+						"description": "Returns raw cached binary image bytes with ETag and Cache-Control headers."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. Student Registration & Concurrency",
+			"item": [
+				{
+					"name": "Register for Event (Interest & Redirect)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/register-external/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"register-external",
+								"1"
+							]
+						},
+						"description": "Executes transactional registration under pessimistic lock and redirects to external ticketing link."
+					},
+					"response": []
+				},
+				{
+					"name": "Duplicate Registration Attempt",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/register-external/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"register-external",
+								"1"
+							]
+						},
+						"description": "Submits identical registration for user already enrolled; verified duplicate protection."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04. Administrative Workflows",
+			"item": [
+				{
+					"name": "Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"login"
+							]
+						},
+						"description": "Authenticates administrative user, establishes session and Spring Security context."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"dashboard"
+							]
+						},
+						"description": "Renders admin metrics, category counts, attendee rosters, and system health."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event Workflow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Campus Cyber Defense Challenge 2026",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Annual inter-collegiate CTF cyber security challenge.",
+									"type": "text"
+								},
+								{
+									"key": "dateTime",
+									"value": "2026-11-20T09:00:00",
+									"type": "text"
+								},
+								{
+									"key": "venue",
+									"value": "Cybersecurity Lab 304",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Technical",
+									"type": "text"
+								},
+								{
+									"key": "registrationLink",
+									"value": "https://cyber.campus.edu/register",
+									"type": "text"
+								},
+								{
+									"key": "maxCapacity",
+									"value": "150",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/add-event",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"add-event"
+							]
+						},
+						"description": "Creates a new campus event with validation, inserting into events table with status PUBLISHED."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05. Security & Negative Edge Cases",
+			"item": [
+				{
+					"name": "Admin Login - Bad Credentials",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "wrongpassword999",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"login"
+							]
+						},
+						"description": "Attempts authentication with wrong credentials; triggers security audit log and redirect with error."
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized Admin Access (Student Role)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"dashboard"
+							]
+						},
+						"description": "Accessing protected admin dashboard without ROLE_ADMIN triggers HTTP 403 Forbidden or login redirect."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Event - Validation Failure (Past Date)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Past Event Violation",
+									"type": "text"
+								},
+								{
+									"key": "dateTime",
+									"value": "2020-01-01T09:00:00",
+									"type": "text"
+								},
+								{
+									"key": "venue",
+									"value": "Main Hall",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Technical",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/add-event",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"add-event"
+							]
+						},
+						"description": "Submits event with past start date; triggers validation failure and error flash attribute."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
