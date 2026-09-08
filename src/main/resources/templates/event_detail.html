@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${event.title} + ' - CampusConnect'">CampusConnect Event</title>
+    <title th:text="${event.title} + ' — CampusConnect'">CampusConnect Event</title>
 
     <!-- Essential dynamic Open Graph Tags for Social Media Sharing -->
-    <meta property="og:title" th:content="${event.title}">
+    <meta property="og:title" th:content="${event.title} + ' — CampusConnect'">
     <meta property="og:description" th:content="${event.description}">
-    <!-- Absolute URL for social crawlers -->
     <meta property="og:image" th:if="${event.imageData != null}"
         th:content="${baseUrl + '/student/api/public/events/image/' + event.id}">
     <meta property="og:url" th:content="${baseUrl + '/student/event/' + event.id}">
@@ -22,36 +21,138 @@
     <meta name="twitter:image" th:if="${event.imageData != null}"
         th:content="${baseUrl + '/student/api/public/events/image/' + event.id}">
 
-    <link rel="stylesheet" th:href="@{/css/style.css?v=13}">
+    <!-- Fonts & CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/style.css?v=20}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <script th:src="@{/js/main.js?v=20}" defer></script>
+
     <style>
         body {
+            background-color: #09090b;
+            min-height: 100vh;
+            color: #f8fafc;
+            padding: 2rem 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            background: var(--bg-0);
+        }
+        .event-detail-container {
+            max-width: 840px;
+            width: 100%;
+            background: rgba(18, 18, 24, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+        .banner-container {
+            width: 100%;
+            height: 320px;
+            background: #14141e;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
 
 <body>
-    <div class="glass-card text-center p-5">
-        <div class="spinner-border text-primary mb-3" role="status"></div>
-        <h3 class="fw-bold mb-2 text-white">Loading Event...</h3>
-        <p class="text-muted">Redirecting you to the dashboard.</p>
+    <div class="event-detail-container animate-in">
+        <!-- Banner Image / Header -->
+        <div class="banner-container">
+            <img th:if="${event.imageData != null}"
+                th:src="@{/student/api/public/events/image/{id}(id=${event.id})}"
+                class="banner-img" alt="Event Banner">
+            <div th:if="${event.imageData == null}" class="d-flex align-items-center justify-content-center h-100 text-muted fs-1 opacity-25">
+                <i class="bi bi-image"></i>
+            </div>
+            
+            <div class="position-absolute top-0 start-0 p-4">
+                <span class="badge-pill shadow-sm"
+                    th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : 'badge-seminar')))"
+                    th:text="${event.category}">Category</span>
+            </div>
 
-        <!-- Redirect automatically to the dashboard with the specific event open -->
-        <script th:inline="javascript">
-            const eventId = /*[[${event.id}]]*/ '0';
-            setTimeout(() => {
-                window.location.href = '/student/dashboard?open=' + eventId;
-            }, 800);
-        </script>
+            <div class="position-absolute top-0 end-0 p-4">
+                <a th:href="@{/student/dashboard}" class="btn btn-sm glass rounded-circle p-2 text-white" aria-label="Back to Catalogue" title="Return to Catalogue">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+        </div>
 
-        <noscript>
-            <p>If you are not redirected, <a th:href="@{/student/dashboard(open=${event.id})}">click here</a>.</p>
-        </noscript>
+        <!-- Content -->
+        <div class="p-4 p-md-5">
+            <h1 class="fw-bold mb-3 text-white" style="font-size: 1.85rem; letter-spacing: -0.02em;" th:text="${event.title}">Event Title</h1>
+
+            <!-- Meta Badges -->
+            <div class="d-flex flex-wrap gap-4 py-3 border-top border-bottom border-secondary border-opacity-20 mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar3 text-primary fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.68rem;">Date</small>
+                        <span class="text-white fw-semibold small" th:text="${#temporals.format(event.dateTime, 'EEEE, MMM dd, yyyy')}">Date</span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-clock text-blue fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.68rem;">Time</small>
+                        <span class="text-white fw-semibold small" th:text="${#temporals.format(event.dateTime, 'h:mm a')}">Time</span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-geo-alt text-orange fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.68rem;">Venue</small>
+                        <span class="text-white fw-semibold small" th:text="${event.venue}">Venue</span>
+                    </div>
+                </div>
+
+                <div th:if="${event.maxCapacity != null}" class="d-flex align-items-center gap-2">
+                    <i class="bi bi-people text-green fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.68rem;">Capacity</small>
+                        <span class="text-white fw-semibold small" th:text="${event.maxCapacity} + ' Seats Max'">Capacity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-5">
+                <h2 class="h6 text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.08em;">Event Overview</h2>
+                <p class="text-secondary" style="font-size: 1rem; line-height: 1.7; white-space: pre-wrap;" th:text="${event.description}">Event details and rules...</p>
+            </div>
+
+            <!-- CTAs -->
+            <div class="d-flex flex-wrap gap-3 align-items-center pt-3 border-top border-secondary border-opacity-20">
+                <a th:if="${event.registrationLink != null && !event.registrationLink.isEmpty()}"
+                   th:href="@{/student/register-external/{id}(id=${event.id})}"
+                   class="btn btn-primary px-4 py-3 fw-bold rounded-3 flex-grow-1 text-center" target="_blank" rel="noopener noreferrer">
+                    <span>Register on Official Portal</span>
+                    <i class="bi bi-box-arrow-up-right ms-2"></i>
+                </a>
+                
+                <a th:href="@{/student/dashboard(open=${event.id})}" class="btn btn-outline-light px-4 py-3 rounded-3">
+                    <i class="bi bi-grid me-2"></i> Open in Catalogue
+                </a>
+
+                <a th:href="@{/student/dashboard}" class="btn btn-link text-muted px-2">
+                    Back to All Events
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 

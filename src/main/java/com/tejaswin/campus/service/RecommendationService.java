@@ -59,6 +59,7 @@ public class RecommendationService {
             }
         }
 
+        // ponytail: in-memory linear heuristic ceiling, upgrade to SQL materialized view or vector search if catalog exceeds 10,000 events
         List<RecommendedEvent> recommendations = new ArrayList<>();
         for (Event event : eventRepository.findByDateTimeAfterOrderByDateTimeAsc(LocalDateTime.now())) {
             if (event.getId() == null || registeredEventIds.contains(event.getId())) {

@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final Path uploadBaseDir;
     private final int bcryptStrength;
 
-    public WebMvcConfig(com.tejaswin.campus.config.AppConfig appConfig) {
+    public WebMvcConfig(AppConfig appConfig) {
         this.uploadBaseDir = Paths.get(appConfig.getUploadDir()).toAbsolutePath().normalize();
         this.bcryptStrength = appConfig.getBcryptStrength();
     }

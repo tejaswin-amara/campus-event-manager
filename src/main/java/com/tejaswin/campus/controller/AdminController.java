@@ -6,7 +6,6 @@ import com.tejaswin.campus.service.EventService;
 import com.tejaswin.campus.service.SessionService;
 import com.tejaswin.campus.exception.EventNotFoundException;
 import com.tejaswin.campus.exception.InvalidImageException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 import org.slf4j.Logger;
@@ -114,8 +113,7 @@ public class AdminController {
             @RequestParam(required = false) MultipartFile imageFile,
             @RequestParam(required = false) String responsesLink,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime,
-            RedirectAttributes redirectAttributes,
-            HttpServletRequest request) {
+            RedirectAttributes redirectAttributes) {
 
         if (endDateTime != null && endDateTime.isBefore(dateTime)) {
             redirectAttributes.addFlashAttribute("error", "End date cannot be before start date!");
@@ -185,8 +183,7 @@ public class AdminController {
             @RequestParam(required = false) MultipartFile imageFile,
             @RequestParam(required = false) String responsesLink,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime,
-            RedirectAttributes redirectAttributes,
-            HttpServletRequest request) {
+            RedirectAttributes redirectAttributes) {
 
         if (endDateTime != null && endDateTime.isBefore(dateTime)) {
             redirectAttributes.addFlashAttribute("error", "End date cannot be before start date!");

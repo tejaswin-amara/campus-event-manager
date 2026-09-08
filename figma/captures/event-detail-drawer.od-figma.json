@@ -1,0 +1,507 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev",
+    "title": "CampusConnect - Event Detail Drawer",
+    "capturedAt": 1773000000000,
+    "viewport": {
+      "width": 1440,
+      "height": 1024
+    },
+    "dpr": 2
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "styles": [
+        "Regular",
+        "Medium",
+        "Semi Bold",
+        "Bold",
+        "Extra Bold"
+      ]
+    }
+  ],
+  "root": {
+    "type": "FRAME",
+    "name": "Event Detail View (Desktop 1440x1024)",
+    "x": 3200,
+    "y": 0,
+    "width": 1440,
+    "height": 1024,
+    "clipsContent": true,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 0.035,
+          "g": 0.035,
+          "b": 0.043
+        },
+        "opacity": 0.85
+      }
+    ],
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "EventDetailModal",
+        "x": 370,
+        "y": 152,
+        "width": 700,
+        "height": 720,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            },
+            "opacity": 0.5
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 18,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "ModalBanner",
+            "x": 370,
+            "y": 152,
+            "width": 700,
+            "height": 200,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.25
+              }
+            ],
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "ModalCat",
+                "x": 394,
+                "y": 176,
+                "width": 100,
+                "height": 24,
+                "clipsContent": true,
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.388,
+                      "g": 0.4,
+                      "b": 0.945
+                    },
+                    "opacity": 0.16
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.388,
+                      "g": 0.4,
+                      "b": 0.945
+                    },
+                    "opacity": 0.35
+                  }
+                ],
+                "strokeWeight": 1,
+                "cornerRadius": 999,
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "TECHNICAL",
+                    "x": 402,
+                    "y": 181,
+                    "width": 84,
+                    "height": 14,
+                    "characters": "TECHNICAL",
+                    "fontFamily": "Inter",
+                    "fontStyle": "Semi Bold",
+                    "fontSize": 11,
+                    "textAlign": "CENTER",
+                    "color": {
+                      "r": 1.0,
+                      "g": 1.0,
+                      "b": 1.0
+                    },
+                    "opacity": 1
+                  }
+                ]
+              },
+              {
+                "type": "FRAME",
+                "name": "ModalStatus",
+                "x": 960,
+                "y": 176,
+                "width": 86,
+                "height": 24,
+                "clipsContent": true,
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.063,
+                      "g": 0.725,
+                      "b": 0.506
+                    },
+                    "opacity": 0.16
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.063,
+                      "g": 0.725,
+                      "b": 0.506
+                    },
+                    "opacity": 0.35
+                  }
+                ],
+                "strokeWeight": 1,
+                "cornerRadius": 999,
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "Upcoming",
+                    "x": 968,
+                    "y": 181,
+                    "width": 70,
+                    "height": 14,
+                    "characters": "Upcoming",
+                    "fontFamily": "Inter",
+                    "fontStyle": "Semi Bold",
+                    "fontSize": 11,
+                    "textAlign": "CENTER",
+                    "color": {
+                      "r": 1.0,
+                      "g": 1.0,
+                      "b": 1.0
+                    },
+                    "opacity": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "ModalTitle",
+            "x": 398,
+            "y": 376,
+            "width": 644,
+            "height": 32,
+            "characters": "AI & Autonomous Agents Hackathon 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 22,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "ModalDateTime",
+            "x": 398,
+            "y": 420,
+            "width": 644,
+            "height": 20,
+            "characters": "Friday, March 14, 2026 \u2022 10:00 AM \u2013 06:00 PM EST",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "ModalVenue",
+            "x": 398,
+            "y": 448,
+            "width": 644,
+            "height": 20,
+            "characters": "Turing Innovation Hall, Room 301, North Campus",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "ModalCapacity",
+            "x": 398,
+            "y": 476,
+            "width": 644,
+            "height": 20,
+            "characters": "Capacity: 120 / 150 Registered (30 spots remaining)",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "DescHead",
+            "x": 398,
+            "y": 512,
+            "width": 644,
+            "height": 20,
+            "characters": "About This Event",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "DescBody",
+            "x": 398,
+            "y": 540,
+            "width": 644,
+            "height": 120,
+            "characters": "Join top university researchers, students, and engineers for an intensive 24-hour hackathon focused on building autonomous agent pipelines, tool-calling frameworks, and reliable coding copilots. Free mentorship, compute credits, and hardware prizes provided.",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1,
+            "lineHeight": 22
+          },
+          {
+            "type": "FRAME",
+            "name": "RegisterCTA",
+            "x": 398,
+            "y": 782,
+            "width": 300,
+            "height": 48,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945,
+                  "a": 0.25
+                },
+                "offset": {
+                  "x": 0,
+                  "y": 0
+                },
+                "radius": 24,
+                "spread": 0
+              }
+            ],
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "RegCTAText",
+                "x": 410,
+                "y": 796,
+                "width": 276,
+                "height": 20,
+                "characters": "Register on External Portal \u2197",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 13,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "CalendarCTA",
+            "x": 714,
+            "y": 782,
+            "width": 180,
+            "height": 48,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.149,
+                  "g": 0.149,
+                  "b": 0.22
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "CalText",
+                "x": 724,
+                "y": 796,
+                "width": 160,
+                "height": 20,
+                "characters": "Add to Calendar",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "CloseBtn",
+            "x": 908,
+            "y": 782,
+            "width": 134,
+            "height": 48,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.133,
+                  "g": 0.133,
+                  "b": 0.196
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "CloseText",
+                "x": 918,
+                "y": 796,
+                "width": 114,
+                "height": 20,
+                "characters": "Close",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

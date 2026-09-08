@@ -1,0 +1,320 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev",
+    "title": "CampusConnect - User-Safe Error Fallback",
+    "capturedAt": 1773000000000,
+    "viewport": {
+      "width": 1440,
+      "height": 1024
+    },
+    "dpr": 2
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "styles": [
+        "Regular",
+        "Medium",
+        "Bold"
+      ]
+    }
+  ],
+  "root": {
+    "type": "FRAME",
+    "name": "User-Safe Error Fallback (Desktop 1440x1024)",
+    "x": 6400,
+    "y": 0,
+    "width": 1440,
+    "height": 1024,
+    "clipsContent": true,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 0.035,
+          "g": 0.035,
+          "b": 0.043
+        }
+      }
+    ],
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "ErrorCard",
+        "x": 480,
+        "y": 302,
+        "width": 480,
+        "height": 420,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 18,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "ErrorBadge",
+            "x": 665,
+            "y": 334,
+            "width": 110,
+            "height": 24,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "ERROR 404",
+                "x": 673,
+                "y": 339,
+                "width": 94,
+                "height": 14,
+                "characters": "ERROR 404",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "ErrorTitle",
+            "x": 504,
+            "y": 376,
+            "width": 432,
+            "height": 30,
+            "characters": "Page or Event Not Found",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 20,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "ErrorSub",
+            "x": 504,
+            "y": 416,
+            "width": 432,
+            "height": 44,
+            "characters": "The event you requested could not be located. It may have expired, been deleted, or the URL might be mistyped.",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 13,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1,
+            "lineHeight": 20
+          },
+          {
+            "type": "FRAME",
+            "name": "DiagBox",
+            "x": 516,
+            "y": 478,
+            "width": 408,
+            "height": 80,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.078,
+                  "g": 0.078,
+                  "b": 0.118
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "DiagTitle",
+                "x": 530,
+                "y": 492,
+                "width": 360,
+                "height": 16,
+                "characters": "SYSTEM DIAGNOSTIC",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 10,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "DiagCode",
+                "x": 530,
+                "y": 514,
+                "width": 360,
+                "height": 18,
+                "characters": "Status: 404 NOT_FOUND \u2022 Handler: GlobalExceptionHandler",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "HomeCTA",
+            "x": 516,
+            "y": 582,
+            "width": 408,
+            "height": 46,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "HomeCTAText",
+                "x": 516,
+                "y": 596,
+                "width": 408,
+                "height": 18,
+                "characters": "Return to Events Catalogue",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 13,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "SupportLink",
+            "x": 516,
+            "y": 650,
+            "width": 408,
+            "height": 18,
+            "characters": "Need assistance? Contact Campus Support",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          }
+        ]
+      }
+    ]
+  }
+}

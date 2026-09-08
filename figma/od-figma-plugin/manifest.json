@@ -1,0 +1,18 @@
+{
+  "name": "CampusConnect - OpenDesign Figma Importer",
+  "id": "campus-connect-od-figma-import",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma",
+    "dev"
+  ],
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  }
+}

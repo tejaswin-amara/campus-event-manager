@@ -6,7 +6,6 @@ import com.tejaswin.campus.repository.EventRepository;
 import com.tejaswin.campus.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
@@ -29,17 +28,17 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Environment environment;
     private final String configuredAdminPassword;
-
-    @Autowired
-    private Environment environment;
 
     public DataInitializer(UserRepository userRepository, EventRepository eventRepository,
             PasswordEncoder passwordEncoder,
+            Environment environment,
             @Value("${app.admin-password:}") String adminPassword) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.passwordEncoder = passwordEncoder;
+        this.environment = environment;
         this.configuredAdminPassword = adminPassword == null ? "" : adminPassword.trim();
     }
 

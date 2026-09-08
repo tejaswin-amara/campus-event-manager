@@ -24,6 +24,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(RateLimitingFilter.class);
 
+    // ponytail: single-node in-memory rate limiting ceiling, switch to distributed Redis/Bucket4j when multi-instance cluster deployed
     private final Cache<String, Bucket> buckets = Caffeine.newBuilder()
             .maximumSize(10_000)
             .expireAfterAccess(java.time.Duration.ofMinutes(20))

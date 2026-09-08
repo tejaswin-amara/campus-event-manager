@@ -7,15 +7,22 @@
    1. VARIABLES & DESIGN TOKENS
    ------------------------------------------------------------------------- */
 :root {
-    /* ─── Surface Elevation Ladder (Zinc-blue family) ─────────────────────
-       Each step is ~3-4% luminance apart. Avoids pure-black OLED smearing
-       while keeping the premium dark aesthetic.                           */
-    --bg-base: #0C0C14;
-    --bg-surface: #13131E;
-    --bg-card: #1A1A26;
-    --bg-elevated: #222230;
-    --bg-input: #161622;
-    --bg-modal: #13131E;
+    /* ─── Surface Layers (Deep zinc-slate palette) ───────────────────── */
+    --background: #09090b;
+    --foreground: #f8fafc;
+    --bg-base: #09090b;
+    --bg-surface: #121218;
+    --bg-card: #181824;
+    --bg-card-hover: #222232;
+    --bg-elevated: #262638;
+    --bg-input: #14141e;
+    --bg-modal: #13131f;
+
+    /* Card & Popover Tokens */
+    --card: #181824;
+    --card-foreground: #f8fafc;
+    --popover: #181824;
+    --popover-foreground: #f8fafc;
 
     /* Backward-compat aliases for legacy --bg-N references */
     --bg-0: var(--bg-base);
@@ -24,47 +31,66 @@
     --bg-3: var(--bg-elevated);
 
     /* ─── Borders ─────────────────────────────────────────────────────── */
-    --border: #1E1E32;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
     --border-2: #2A2A42;
-    --border-glass: rgba(255, 255, 255, 0.07);
+    --border-glass: rgba(255, 255, 255, 0.10);
+    --input: rgba(255, 255, 255, 0.10);
+    --ring: #6366f1;
+    --ring-offset: #09090b;
 
     /* ─── Elevation Shadows (primary depth system — replaces hard borders) */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
-    --shadow-glow: 0 0 20px rgba(123, 111, 255, 0.12);
+    --shadow-glow: 0 0 24px -4px rgba(99, 102, 241, 0.25);
     --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
     /* ─── Text (WCAG 2.1 AA compliant on all surface levels) ──────────── */
-    --text-primary: #E2E2F0;
-    /* 14.8:1 on --bg-base */
-    --text-secondary: #A0A0C0;
+    --text-primary: #f8fafc;
+    /* 15.2:1 on --bg-base */
+    --text-secondary: #94a3b8;
     /* 7.2:1 on --bg-surface */
     --text-muted: #7A7A9A;
     /* 4.56:1 on --bg-surface ✅ AA */
     --text-label: #8A8AAA;
     --text-main: var(--text-primary);
 
-    /* ─── Accents ─────────────────────────────────────────────────────── */
-    --accent: #7B6FFF;
-    --accent-light: #A09CFF;
-    --accent-glow: rgba(123, 111, 255, 0.15);
-    --primary: #7C3AED;
-    --primary-glow: rgba(124, 58, 237, 0.35);
-    --secondary: #06B6D4;
-    --success: #0FD97A;
-    --danger: #FF5C5C;
-    --warning: #FF9F43;
+    /* ─── Accents & Brand (OpenDesign Indigo + Coral Accent) ───────────── */
+    --primary: #6366f1;
+    --primary-foreground: #ffffff;
+    --primary-hover: #4f46e5;
+    --primary-light: #818cf8;
+    --primary-glow: rgba(99, 102, 241, 0.25);
+    --secondary: #262638;
+    --secondary-foreground: #f1f5f9;
+    --accent: #f97316;
+    --accent-foreground: #ffffff;
+    --accent-hover: #ea580c;
+    --accent-light: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --success: #10b981;
+    --success-foreground: #ffffff;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #38bdf8;
     --accent-green: var(--success);
     --accent-red: var(--danger);
 
-    /* ─── Category Colors ─────────────────────────────────────────────── */
-    --cat-technical: #7B6FFF;
-    --cat-tech: #7C3AED;
-    --cat-cultural: #06B6D4;
-    --cat-sports: #14B8A6;
-    --cat-workshop: #FF9F43;
-    --cat-seminar: #EC4899;
+    /* ─── Category Colors (OpenDesign Taxonomy) ───────────────────────── */
+    --cat-technical: #6366f1;
+    --cat-technical-text: #a5b4fc;
+    --cat-tech: #6366f1;
+    --cat-cultural: #ec4899;
+    --cat-cultural-text: #f472b6;
+    --cat-sports: #10b981;
+    --cat-sports-text: #6ee7b7;
+    --cat-workshop: #f59e0b;
+    --cat-workshop-text: #fcd34d;
+    --cat-seminar: #06b6d4;
+    --cat-seminar-text: #67e8f9;
 
     /* ─── Animation System ────────────────────────────────────────────── */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -817,6 +843,113 @@ table.table-custom {
     background: var(--danger);
     color: #fff !important;
     transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FILTER PILLS & HERO BANNER
+   ───────────────────────────────────────────────────────────────────────── */
+.category-pills-bar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 2px;
+}
+
+.category-pills-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.btn-filter-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-pill);
+    transition: all var(--dur-fast) var(--ease-standard);
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.btn-filter-pill:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.35);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-filter-pill.active {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    font-weight: 600;
+}
+
+.hero-banner {
+    position: relative;
+    border-radius: var(--radius-lg);
+    transition: box-shadow var(--dur-normal) var(--ease-standard);
+}
+
+.hero-banner:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PAGINATION (Glassmorphism & Admin Variant)
+   ───────────────────────────────────────────────────────────────────────── */
+.pagination-glass .page-link,
+.custom-pagination .page-link {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    border-radius: var(--r-md);
+    margin: 0 4px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all var(--dur-fast) var(--ease);
+}
+
+.pagination-glass .page-link:hover,
+.custom-pagination .page-link:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: var(--primary);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.pagination-glass .page-item.active .page-link,
+.custom-pagination .page-item.active .page-link {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+.pagination-glass .page-item.disabled .page-link,
+.custom-pagination .page-item.disabled .page-link {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-muted);
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.hover-primary {
+    transition: color var(--dur-micro) var(--ease);
+}
+
+.hover-primary:hover {
+    color: var(--primary-light) !important;
 }
 
 /* Event Grid (Student Dashboard) */

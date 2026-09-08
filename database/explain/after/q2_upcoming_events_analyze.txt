@@ -1,0 +1,2 @@
+EXPLAIN
+-> Index range scan on events using idx_events_date_time over ('2026-01-01 00:00:00' <= date_time), with index condition: (`events`.date_time >= TIMESTAMP'2026-01-01 00:00:00')  (cost=0.71 rows=1) (actual time=0.0196..0.0486 rows=9 loops=1)\n

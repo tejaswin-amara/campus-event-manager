@@ -74,9 +74,6 @@ public class AuthController {
             oldSession.invalidate();
         }
         jakarta.servlet.http.HttpSession newSession = request.getSession(true);
-        newSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
-
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
         SecurityContextHolder.getContext().setAuthentication(authToken);

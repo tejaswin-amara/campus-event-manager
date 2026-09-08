@@ -4,169 +4,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusConnect - Student</title>
+    <title>CampusConnect — Discover Campus Events</title>
+    
+    <!-- Design System Typography & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css?v=13}">
-    <script th:src="@{/js/main.js?v=6}" defer></script>
-    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    
+    <!-- OpenDesign System Tokens & Styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css?v=20}">
+    <script th:src="@{/js/main.js?v=20}" defer></script>
+    <script th:src="@{/js/dashboard.js?v=20}" defer></script>
+    
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-    <link rel="manifest" th:href="@{/manifest.json?v=6}" crossorigin="use-credentials">
+    <link rel="manifest" th:href="@{/manifest.json?v=20}" crossorigin="use-credentials">
+    
     <!-- SEO & Social Meta Tags -->
-    <meta property="og:title" content="CampusConnect - Discover Events">
-    <meta property="og:description"
-        content="Stay updated with the latest workshops, seminars, and cultural events on campus.">
+    <meta property="og:title" content="CampusConnect — Student Event Catalogue">
+    <meta property="og:description" content="Discover verified technical hackathons, cultural galas, sports leagues, and workshops across campus.">
     <meta property="og:type" content="website">
-    <meta name="theme-color" content="#0C0C14">
+    <meta name="theme-color" content="#09090B">
     <meta name="twitter:card" content="summary_large_image">
-
 </head>
 
 <body>
-    <!-- Hidden inputs for Premium Toast Notifications -->
+    <!-- Hidden inputs for Toast Notifications -->
     <input type="hidden" id="flashSuccessMsg" th:value="${success}">
     <input type="hidden" id="flashErrorMsg" th:value="${error}">
 
     <!-- 📱 Mobile Header (Visible < 992px) -->
-    <header class="mobile-header d-lg-none glass">
+    <header class="mobile-header d-lg-none glass d-flex align-items-center justify-content-between px-3">
         <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-link text-white p-0" onclick="toggleSidebar()" aria-label="Open Navigation Menu">
-                <i class="bi bi-list fs-1" aria-hidden="true"></i>
+            <button class="btn btn-link text-white p-1" onclick="toggleSidebar()" aria-label="Open Navigation Menu">
+                <i class="bi bi-list fs-2" aria-hidden="true"></i>
             </button>
-            <span class="fs-5 fw-bold text-white tracking-wide ms-2">CampusConnect</span>
+            <div class="d-flex align-items-center gap-2 ms-1">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span class="fs-5 fw-bold text-white tracking-wide">CampusConnect</span>
+            </div>
         </div>
-        <!-- Optional: Profile Icon or simple placeholder -->
-        <div class="rounded-circle bg-gradient d-flex align-items-center justify-content-center"
-            style="width: 32px; height: 32px; background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
-            <i class="bi bi-person-fill"></i>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge rounded-pill bg-primary bg-opacity-20 text-primary-light border border-primary border-opacity-30 px-2 py-1 small">Student</span>
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                style="width: 34px; height: 34px; background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4);">
+                <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'S'}">S</span>
+            </div>
         </div>
     </header>
 
     <!-- 🌑 Sidebar Overlay (Mobile) -->
-    <div class="sidebar-overlay" onclick="toggleSidebar()" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()" id="sidebarOverlay" aria-hidden="true"></div>
 
     <div class="app-container">
         <!-- 🧊 Sidebar (Fixed Desktop / Offcanvas Mobile) -->
-        <nav class="sidebar" id="sidebar">
+        <nav class="sidebar" id="sidebar" aria-label="Main Navigation">
             <!-- Brand (Desktop) -->
-            <div class="mb-5 d-none d-lg-block px-2 text-center text-lg-start">
-                <img th:src="@{/images/logo.png}" alt="CampusConnect" class="brand-logo d-block">
+            <div class="mb-4 d-none d-lg-block px-2 text-start">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-mortarboard-fill text-primary fs-3"></i>
+                    <span class="fs-5 fw-bold text-white tracking-wide">CampusConnect</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill bg-primary bg-opacity-20 text-primary-light border border-primary border-opacity-30 px-2 py-1" style="font-size: 0.7rem;">STUDENT PORTAL</span>
+                    <span class="badge rounded-pill bg-success bg-opacity-20 text-success border border-success border-opacity-30 px-2 py-1" style="font-size: 0.7rem;">LIVE</span>
+                </div>
             </div>
 
             <!-- Nav Links (Student Filters) -->
             <ul class="nav flex-column mb-auto">
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link active" onclick="filterCategory('all', this)"
                         aria-label="Show all events">
-                        <i class="bi bi-grid-fill"></i> All Events
+                        <i class="bi bi-grid-fill me-2"></i> All Events
                     </a>
                 </li>
 
                 <!-- Time Filters -->
-                <li class="nav-item">
-                    <span class="text-muted small text-uppercase px-3 fw-bold mt-4 mb-2 d-block"
-                        style="font-size: 0.7rem;">Time</span>
+                <li class="nav-item mt-3 mb-1">
+                    <span class="text-muted text-uppercase px-3 fw-bold d-block"
+                        style="font-size: 0.68rem; letter-spacing: 0.08em;">Event Status</span>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterStatus('Upcoming', this)"
                         aria-label="Filter upcoming events">
-                        <i class="bi bi-calendar-check text-green"></i> Upcoming
+                        <i class="bi bi-calendar-check text-green me-2"></i> Upcoming
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterStatus('Ongoing', this)"
                         aria-label="Filter ongoing events">
-                        <i class="bi bi-broadcast text-blue"></i> Ongoing
+                        <i class="bi bi-broadcast text-blue me-2"></i> Ongoing
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterStatus('Past', this)"
                         aria-label="Filter past events">
-                        <i class="bi bi-clock-history text-muted"></i> Past
+                        <i class="bi bi-clock-history text-muted me-2"></i> Past Events
                     </a>
                 </li>
-                <li class="nav-item">
-                    <span class="text-muted small text-uppercase px-3 fw-bold mt-4 mb-2 d-block"
-                        style="font-size: 0.7rem;">Categories</span>
+
+                <!-- Categories -->
+                <li class="nav-item mt-3 mb-1">
+                    <span class="text-muted text-uppercase px-3 fw-bold d-block"
+                        style="font-size: 0.68rem; letter-spacing: 0.08em;">Categories</span>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterCategory('Technical', this)"
                         aria-label="Filter technical events">
-                        <i class="bi bi-cpu text-blue"></i> Technical
+                        <i class="bi bi-cpu text-purple me-2"></i> Technical
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterCategory('Cultural', this)"
                         aria-label="Filter cultural events">
-                        <i class="bi bi-palette text-pink"></i> Cultural
+                        <i class="bi bi-palette text-pink me-2"></i> Cultural
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterCategory('Sports', this)"
                         aria-label="Filter sports events">
-                        <i class="bi bi-trophy text-orange"></i> Sports
+                        <i class="bi bi-trophy text-green me-2"></i> Sports
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterCategory('Workshop', this)"
                         aria-label="Filter workshop events">
-                        <i class="bi bi-tools text-green"></i> Workshop
+                        <i class="bi bi-tools text-orange me-2"></i> Workshops
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a href="javascript:void(0)" class="nav-link" onclick="filterCategory('Seminar', this)"
                         aria-label="Filter seminar events">
-                        <i class="bi bi-mic text-purple"></i> Seminar
+                        <i class="bi bi-mic text-blue me-2"></i> Seminars
                     </a>
                 </li>
             </ul>
 
-
+            <!-- Sidebar User Profile Footer -->
+            <div class="mt-auto border-top pt-3" style="border-color: var(--border-glass) !important;">
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255, 255, 255, 0.03);">
+                    <div class="d-flex align-items-center gap-2 overflow-hidden">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
+                            style="width: 32px; height: 32px; background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
+                            <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'S'}">S</span>
+                        </div>
+                        <div class="overflow-hidden">
+                            <span class="text-white fw-semibold small d-block text-truncate" th:text="${user != null ? user.username : 'Student'}">student</span>
+                            <span class="text-muted d-block" style="font-size: 0.7rem;">Campus Member</span>
+                        </div>
+                    </div>
+                    <a th:href="@{/admin/login}" class="btn btn-sm btn-link text-muted p-0" title="Admin Portal" aria-label="Admin Portal">
+                        <i class="bi bi-shield-lock"></i>
+                    </a>
+                </div>
+            </div>
         </nav>
 
-        <!-- 🚀 Main Content -->
+        <!-- 🚀 Main Content Area -->
         <main class="main-content">
-            <!-- Header Area -->
-            <div
-                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 gap-3 animate-in">
+            <!-- Top Search & Quick Stats Bar -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-in">
                 <div>
-                    <h2 class="fw-bold mb-1">Discover Events</h2>
-                    <p class="text-muted small mb-0">What's happening on campus today</p>
+                    <h1 class="fw-bold mb-1 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;">Discover Events</h1>
+                    <p class="text-muted small mb-0">What's happening across campus clubs, departments, and sports facilities</p>
                 </div>
 
-                <!-- Search (Responsive) -->
-                <div class="position-relative w-100" style="max-width: 350px;">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                    <input type="text" id="searchInput" class="form-control ps-5 rounded-pill"
-                        placeholder="Search events..." aria-label="Search campus events">
+                <!-- Modern Search Bar with Command+K -->
+                <div class="position-relative w-100" style="max-width: 380px;">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" aria-hidden="true"></i>
+                    <input type="text" id="searchInput" class="form-control ps-5 pe-5 rounded-pill shadow-sm"
+                        placeholder="Search events, venues, topics..." aria-label="Search campus events">
+                    <div class="position-absolute top-50 end-0 translate-middle-y me-3 d-none d-md-block pointer-events-none">
+                        <span class="badge rounded-pill bg-dark text-muted border border-secondary border-opacity-30" style="font-family: var(--font-mono); font-size: 11px;">⌘K</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Firebase-inspired recommendation feed, backed by Spring/MySQL derived scoring -->
-            <section th:if="${recommendedEvents != null && !recommendedEvents.isEmpty()}" class="mb-5"
+            <!-- Hero Feature Banner -->
+            <section class="hero-banner mb-4 p-4 rounded-4 position-relative overflow-hidden animate-in"
+                style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(9, 9, 11, 0.8) 100%); border: 1px solid rgba(99, 102, 241, 0.35); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-20 border border-primary border-opacity-30 text-primary-light mb-2" style="font-size: 0.75rem; font-weight: 600;">
+                            <span class="spinner-grow spinner-grow-sm text-primary" style="width: 8px; height: 8px;" role="status"></span>
+                            <span>CAMPUS EVENT CALENDAR 2026</span>
+                        </div>
+                        <h2 class="text-white fw-bold mb-2" style="font-size: 1.45rem; letter-spacing: -0.02em;">Stay Connected with University Life</h2>
+                        <p class="text-secondary small mb-3 mb-lg-0" style="max-width: 580px; line-height: 1.6;">
+                            Never miss an opportunity to compete, network, or showcase your talents. Filter events by category below, or search directly for workshops, seminars, and team championships.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end d-none d-lg-block">
+                        <div class="d-inline-flex gap-3 text-start bg-black bg-opacity-40 p-3 rounded-3 border border-secondary border-opacity-20">
+                            <div>
+                                <span class="text-muted d-block small" style="font-size: 0.7rem;">TOTAL LISTINGS</span>
+                                <span class="text-white fw-bold fs-4" th:text="${totalItems != null ? totalItems : (#lists.size(events))}">24</span>
+                            </div>
+                            <div class="vr bg-secondary opacity-25"></div>
+                            <div>
+                                <span class="text-muted d-block small" style="font-size: 0.7rem;">FEATURED THIS WEEK</span>
+                                <span class="text-primary-light fw-bold fs-4" th:text="${#lists.size(recommendedEvents)}">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Filter Chips Strip (Desktop & Mobile) -->
+            <div class="d-flex align-items-center gap-2 overflow-x-auto pb-2 mb-4 category-pills-bar" style="scrollbar-width: none;">
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill active" onclick="filterCategory('all', this)">
+                    All Events
+                </button>
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill" onclick="filterCategory('Technical', this)">
+                    <i class="bi bi-cpu text-purple me-1"></i> Technical
+                </button>
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill" onclick="filterCategory('Cultural', this)">
+                    <i class="bi bi-palette text-pink me-1"></i> Cultural
+                </button>
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill" onclick="filterCategory('Sports', this)">
+                    <i class="bi bi-trophy text-green me-1"></i> Sports
+                </button>
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill" onclick="filterCategory('Workshop', this)">
+                    <i class="bi bi-tools text-orange me-1"></i> Workshops
+                </button>
+                <button type="button" class="btn btn-sm rounded-pill px-3 py-1 btn-filter-pill" onclick="filterCategory('Seminar', this)">
+                    <i class="bi bi-mic text-blue me-1"></i> Seminars
+                </button>
+            </div>
+
+            <!-- 🌟 AI-Derived Smart Recommendation Feed -->
+            <section th:if="${recommendedEvents != null && !recommendedEvents.isEmpty()}" class="mb-5 animate-in"
                 aria-labelledby="recommendationsHeading">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h2 id="recommendationsHeading" class="h5 fw-bold mb-1">Recommended for you</h2>
-                        <p class="text-muted small mb-0">Suggestions based on your event interests and current demand.</p>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-stars text-warning fs-4"></i>
+                        <div>
+                            <h2 id="recommendationsHeading" class="h6 fw-bold mb-0 text-white">Recommended For You</h2>
+                            <p class="text-muted small mb-0">Tailored suggestions derived from your participation and interest history</p>
+                        </div>
                     </div>
-                    <i class="bi bi-stars text-warning fs-4" aria-hidden="true"></i>
+                    <span class="badge rounded-pill bg-primary bg-opacity-15 text-primary border border-primary border-opacity-30 px-3 py-1 small">
+                        Smart Score Match
+                    </span>
                 </div>
+
                 <div class="row g-3">
                     <article th:each="recommendation : ${recommendedEvents}" class="col-12 col-md-4">
-                        <div class="glass-card h-100 p-3 d-flex flex-column">
-                            <span class="badge-pill align-self-start mb-2" th:text="${recommendation.event.category}">Category</span>
-                            <h3 class="h6 fw-bold text-white mb-2" th:text="${recommendation.event.title}">Event title</h3>
-                            <p class="small text-muted mb-2"
-                                th:text="${#temporals.format(recommendation.event.dateTime, 'EEE, MMM dd · h:mm a')}">Date</p>
-                            <p class="small text-muted mb-3" th:text="${recommendation.event.venue}">Venue</p>
-                            <ul class="small text-muted ps-3 mb-3" aria-label="Recommendation reasons">
-                                <li th:each="reason : ${recommendation.reasons}" th:text="${reason}">Reason</li>
-                            </ul>
-                            <a class="btn btn-outline-light btn-sm mt-auto" th:href="@{/student/event/{id}(id=${recommendation.event.id})}">
-                                View details <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
-                            </a>
+                        <div class="glass-card h-100 p-4 d-flex flex-column position-relative overflow-hidden"
+                            style="border-color: rgba(99, 102, 241, 0.3); background: linear-gradient(180deg, rgba(24, 24, 36, 0.9) 0%, rgba(18, 18, 24, 0.9) 100%);">
+                            <!-- Category accent strip -->
+                            <div class="position-absolute top-0 start-0 w-100" style="height: 3px; background: linear-gradient(90deg, var(--primary), var(--cat-cultural));"></div>
+
+                            <div class="d-flex justify-content-between align-items-start mb-2 pt-1">
+                                <span class="badge-pill"
+                                    th:classappend="${recommendation.event.category == 'Technical'} ? 'badge-tech' : (${recommendation.event.category == 'Cultural'} ? 'badge-cultural' : (${recommendation.event.category == 'Sports'} ? 'badge-sports' : (${recommendation.event.category == 'Workshop'} ? 'badge-workshop' : 'badge-seminar')))"
+                                    th:text="${recommendation.event.category}">Category</span>
+                                <span class="badge rounded-pill bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30" style="font-size: 0.7rem;">
+                                    ★ Recommended
+                                </span>
+                            </div>
+
+                            <h3 class="h6 fw-bold text-white mb-2" th:text="${recommendation.event.title}" style="line-height: 1.4;">Event title</h3>
+                            
+                            <div class="small text-secondary mb-2 d-flex align-items-center gap-2">
+                                <i class="bi bi-calendar3 text-primary"></i>
+                                <span th:text="${#temporals.format(recommendation.event.dateTime, 'EEE, MMM dd · h:mm a')}">Date</span>
+                            </div>
+
+                            <div class="small text-muted mb-3 d-flex align-items-center gap-2">
+                                <i class="bi bi-geo-alt text-muted"></i>
+                                <span class="text-truncate" th:text="${recommendation.event.venue}">Venue</span>
+                            </div>
+
+                            <!-- Reasons Pills -->
+                            <div class="mb-3">
+                                <span th:each="reason : ${recommendation.reasons}" class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary border-opacity-20 me-1 mb-1" style="font-size: 0.7rem; font-weight: normal;" th:text="${reason}">Reason</span>
+                            </div>
+
+                            <div class="mt-auto pt-2 border-top border-secondary border-opacity-20 d-flex gap-2">
+                                <a class="btn btn-outline-light btn-sm flex-grow-1 text-center" th:href="@{/student/event/{id}(id=${recommendation.event.id})}">
+                                    View Details <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                                </a>
+                                <a th:if="${recommendation.event.registrationLink != null && !recommendation.event.registrationLink.isEmpty()}"
+                                   th:href="@{/student/register-external/{id}(id=${recommendation.event.id})}"
+                                   class="btn btn-primary btn-sm px-3" title="Register External Interest" aria-label="Register External Interest" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -174,20 +300,27 @@
 
             <!-- Server-Side Empty State -->
             <div th:if="${#lists.isEmpty(events)}" class="text-center py-5 animate-in animate-float">
-                <div class="glass p-5 rounded-4 d-inline-block shadow-lg">
-                    <i class="bi bi-calendar-x fs-1 text-muted opacity-50 mb-3 d-block"></i>
-                    <h3 class="h5 fw-bold text-white">No Events Found</h3>
-                    <p class="text-muted mb-0">There are no events scheduled at the moment.</p>
+                <div class="glass p-5 rounded-4 d-inline-block shadow-lg" style="max-width: 440px;">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-20 mb-3" style="width: 64px; height: 64px;">
+                        <i class="bi bi-calendar-x fs-2 text-muted"></i>
+                    </div>
+                    <h3 class="h5 fw-bold text-white mb-2">No Events Found</h3>
+                    <p class="text-muted small mb-0">There are no events matching this category or search filter at the moment.</p>
                 </div>
             </div>
 
             <!-- Client-Side Search No Results (Hidden by default) -->
             <div id="noResults" class="text-center py-5 d-none">
-                <i class="bi bi-search fs-1 text-muted opacity-25"></i>
-                <p class="mt-2 text-muted">No events found matching your search.</p>
+                <div class="glass p-5 rounded-4 d-inline-block shadow-lg" style="max-width: 440px;">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-20 mb-3" style="width: 64px; height: 64px;">
+                        <i class="bi bi-search fs-2 text-muted"></i>
+                    </div>
+                    <h3 class="h5 fw-bold text-white mb-2">No Matches Found</h3>
+                    <p class="text-muted small mb-0">Try searching for broader keywords like "hackathon", "workshop", or "sports".</p>
+                </div>
             </div>
 
-            <!-- Skeleton Loader Grid (visible until real content loads) -->
+            <!-- Skeleton Loader Grid -->
             <div class="event-grid skeleton-grid" id="skeletonGrid" th:unless="${#lists.isEmpty(events)}">
                 <div class="skeleton-card" th:each="i : ${#numbers.sequence(1, 6)}">
                     <div class="skeleton skeleton-img"></div>
@@ -199,11 +332,12 @@
                 </div>
             </div>
 
-            <!-- Event Grid (hidden until DOMContentLoaded) -->
+            <!-- Event Grid (Thymeleaf Loop) -->
             <div th:unless="${#lists.isEmpty(events)}" class="event-grid loading" id="eventsGrid">
                 <div th:each="event, stat : ${events}" th:data-category="${event.category}"
                     class="event-item animate-in"
-                    th:style="'animation-delay: ' + (${stat.index < 12 ? stat.index * 0.05 : 0.55}) + 's;'">
+                    th:style="'animation-delay: ' + (${stat.index < 12 ? stat.index * 0.04 : 0.48}) + 's;'">
+                    
                     <!-- Event Card -->
                     <div class="event-card" onclick="openDetailModal(this)"
                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetailModal(this);}"
@@ -216,16 +350,18 @@
                         th:data-endtime="${event.endDateTime != null ? #temporals.format(event.endDateTime, 'h:mm a') : ''}"
                         th:data-venue="${event.venue}" th:data-cat="${event.category}"
                         th:data-img="${event.imageData != null ? '/student/api/public/events/image/' + event.id : ''}"
-                        th:data-link="${event.registrationLink}">
+                        th:data-link="${event.registrationLink}"
+                        th:data-capacity="${event.maxCapacity != null ? event.maxCapacity : ''}">
 
                         <div class="card-banner">
                             <img th:if="${event.imageData != null}"
                                 th:src="@{/student/api/public/events/image/{id}(id=${event.id})}" class="card-img"
                                 loading="lazy" decoding="async"
-                                onerror="this.onerror=null; this.src='/images/logo.png'; this.classList.add('opacity-25');">
+                                onerror="this.onerror=null; this.src='/images/logo.png'; this.classList.add('opacity-25');"
+                                alt="Event poster">
                             <div th:if="${event.imageData == null}"
                                 class="d-flex align-items-center justify-content-center h-100 bg-dark text-muted fs-1 opacity-25">
-                                <i class="bi bi-image"></i>
+                                <i class="bi bi-image" aria-hidden="true"></i>
                             </div>
 
                             <!-- Floating Badges -->
@@ -234,6 +370,7 @@
                                     th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
                                     th:text="${event.category}">Category</span>
                             </div>
+
                             <!-- Status Badge -->
                             <span class="status-badge status-badge-target"
                                 th:data-status="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')"
@@ -243,27 +380,32 @@
 
                         <div class="card-content d-flex flex-column h-100">
                             <h5 class="event-title mb-2" th:text="${event.title}">Title</h5>
+                            
                             <div class="event-meta-info text-muted small mb-3">
                                 <div class="d-flex align-items-center gap-2 mb-1">
-                                    <i class="bi bi-calendar3"></i>
+                                    <i class="bi bi-calendar3 text-primary"></i>
                                     <span class="text-white fw-medium"
                                         th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Date</span>
                                     <span
                                         th:if="${event.endDateTime != null && !event.endDateTime.toLocalDate().isEqual(event.dateTime.toLocalDate())}"
-                                        th:text="' - ' + ${#temporals.format(event.endDateTime, 'MMM dd')}">to
-                                        Date</span>
+                                        th:text="' - ' + ${#temporals.format(event.endDateTime, 'MMM dd')}">to Date</span>
+                                    <span class="text-muted" th:text="'• ' + ${#temporals.format(event.dateTime, 'h:mm a')}">Time</span>
                                 </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-geo-alt"></i>
-                                    <span th:text="${event.venue}">Venue</span>
+                                <div class="d-flex align-items-center gap-2 text-truncate">
+                                    <i class="bi bi-geo-alt text-secondary"></i>
+                                    <span class="text-truncate" th:text="${event.venue}">Venue</span>
+                                </div>
+                                <div th:if="${event.maxCapacity != null}" class="d-flex align-items-center gap-2 mt-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-people text-muted"></i>
+                                    <span class="text-muted" th:text="'Capacity: ' + ${event.maxCapacity} + ' max seats'">Capacity</span>
                                 </div>
                             </div>
 
                             <!-- Action Area -->
                             <div class="mt-auto pt-2">
-                                <button class="btn-action w-100 justify-content-center d-flex align-items-center gap-2">
+                                <button class="btn-action w-100 justify-content-center d-flex align-items-center gap-2" type="button">
                                     <span>View Details</span>
-                                    <i class="bi bi-arrow-right"></i>
+                                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                 </button>
                             </div>
                         </div>
@@ -294,42 +436,40 @@
                     </ul>
                 </nav>
             </div>
-
         </main>
     </div>
 
-    <!-- Event Detail Modal (Refined Split View) -->
+    <!-- Event Detail Modal (Split View Dialog) -->
     <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel"
         aria-hidden="true" role="dialog">
-        <!-- Changed to modal-xl for better split view, removed scrollable to handle internal scrolling -->
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content glass overflow-hidden"
-                style="border: 1px solid var(--border-glass); height: 85vh;">
+                style="border: 1px solid var(--border-glass); height: 85vh; border-radius: 20px;">
                 <button type="button"
                     class="btn position-absolute top-0 end-0 m-3 z-3 glass rounded-circle p-0 d-flex align-items-center justify-content-center"
-                    data-bs-dismiss="modal" aria-label="Close" style="width: 40px; height: 40px;">
-                    <i class="bi bi-x-lg fs-5"></i>
+                    data-bs-dismiss="modal" aria-label="Close" style="width: 40px; height: 40px; border: 1px solid var(--border-glass);">
+                    <i class="bi bi-x-lg fs-6 text-white" aria-hidden="true"></i>
                 </button>
 
                 <div class="modal-body p-0 h-100 d-flex flex-column flex-lg-row" style="overflow: hidden;">
-                    <!-- Left Column: Poster Image (NO SCROLL) -->
+                    <!-- Left Column: Poster Image -->
                     <div id="modalPosterCol" class="bg-black position-relative modal-poster-col"
                         style="display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 100%;">
-                        <!-- Loading Placeholder or Fallback icon -->
                         <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center z-0">
-                            <i class="bi bi-image text-muted opacity-25 fs-1"></i>
+                            <i class="bi bi-image text-muted opacity-25 fs-1" aria-hidden="true"></i>
                         </div>
                         <img id="detailImg" src="" class="position-relative z-1"
-                            style="display: none; max-width: 100%; max-height: 100%; width: auto; height: auto; min-height: 0; object-fit: contain; background-color: #ffffff;"
-                            onerror="this.onerror=null; this.style.display='none'; document.getElementById('modalPosterCol').style.setProperty('display', 'none', 'important'); document.getElementById('modalDetailsCol').className='flex-grow-1 overflow-y-auto custom-scrollbar';">
+                            style="display: none; max-width: 100%; max-height: 100%; width: auto; height: auto; min-height: 0; object-fit: contain; background-color: #09090b;"
+                            onerror="this.onerror=null; this.style.display='none'; document.getElementById('modalPosterCol').style.setProperty('display', 'none', 'important'); document.getElementById('modalDetailsCol').className='flex-grow-1 overflow-y-auto custom-scrollbar';"
+                            alt="Event Poster Detail">
                     </div>
 
-                    <!-- Right Column: Details (SCROLLABLE) -->
+                    <!-- Right Column: Details -->
                     <div id="modalDetailsCol" class="flex-grow-1 overflow-y-auto custom-scrollbar"
-                        style="background: var(--bg-1);">
-                        <div class="p-5 d-flex flex-column h-100">
+                        style="background: var(--bg-surface);">
+                        <div class="p-4 p-md-5 d-flex flex-column h-100">
                             <div class="flex-shrink-0 mb-4">
-                                <span id="detailCat" class="badge-pill mb-3 d-inline-block">Category</span>
+                                <span id="detailCat" class="badge-pill mb-2 d-inline-block">Category</span>
                                 <h2 id="detailTitle"
                                     style="font-size: 24px; font-weight: 700; color: var(--text-primary); line-height: 1.3;">
                                     Event Title</h2>
@@ -341,12 +481,12 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="rounded-circle glass d-flex align-items-center justify-content-center"
                                         style="width: 40px; height: 40px;">
-                                        <i class="bi bi-calendar3 text-pink"></i>
+                                        <i class="bi bi-calendar3 text-primary"></i>
                                     </div>
                                     <div>
                                         <small class="text-muted text-uppercase fw-bold d-block"
                                             style="font-size: 0.65rem;">Date</small>
-                                        <span id="detailDate" class="fw-semibold small">Date</span>
+                                        <span id="detailDate" class="fw-semibold small text-white">Date</span>
                                     </div>
                                 </div>
 
@@ -358,7 +498,7 @@
                                     <div>
                                         <small class="text-muted text-uppercase fw-bold d-block"
                                             style="font-size: 0.65rem;">Time</small>
-                                        <span id="detailTime" class="fw-semibold small">Time</span>
+                                        <span id="detailTime" class="fw-semibold small text-white">Time</span>
                                     </div>
                                 </div>
 
@@ -370,38 +510,32 @@
                                     <div>
                                         <small class="text-muted text-uppercase fw-bold d-block"
                                             style="font-size: 0.65rem;">Venue</small>
-                                        <span id="detailVenue" class="fw-semibold small">Venue</span>
+                                        <span id="detailVenue" class="fw-semibold small text-white">Venue</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- About Section -->
                             <div class="mb-4 flex-grow-1">
-                                <h5 class="fw-bold mb-2 small text-uppercase"
-                                    style="letter-spacing: 0.1em; color: var(--text-muted);">About this Event</h5>
-                                <p id="detailDesc" class="text-muted"
-                                    style="font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap;">
+                                <h3 class="fw-bold mb-2 small text-uppercase"
+                                    style="letter-spacing: 0.1em; color: var(--text-muted); font-size: 0.75rem;">About this Event</h3>
+                                <p id="detailDesc" class="text-secondary"
+                                    style="font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap;">
                                     Description...</p>
                             </div>
 
                             <!-- Action Footer -->
                             <div class="d-flex flex-column gap-3 mt-auto pt-4 border-top flex-shrink-0"
                                 style="border-color: rgba(255, 255, 255, 0.08) !important;">
-                                <div class="d-flex gap-2">
+                                <div class="d-flex flex-wrap gap-2">
                                     <button id="calendarBtn" class="btn btn-calendar flex-grow-0 px-4">
-                                        <i class="bi bi-calendar-plus me-2"></i> Add to Calendar
+                                        <i class="bi bi-calendar-plus me-2" aria-hidden="true"></i> Add to Calendar
                                     </button>
                                     <a id="detailLink" href="#" class="btn btn-action flex-grow-1 d-none text-center">
-                                        Register Now <i class="bi bi-arrow-right ms-2"></i>
+                                        Register Interest <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
                                     </a>
                                 </div>
-
-                                <div id="qrCodeContainer" class="mt-2 text-center" style="display: none;">
-                                    <div class="qr-container d-inline-block p-2 bg-white rounded-3"
-                                        style="border: 4px solid var(--bg-3);">
-                                        <!-- QR Code Canvas will be appended here -->
-                                    </div>
-                                </div>
+                                <div id="qrCodeContainer" class="mt-3 text-center" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -411,7 +545,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/dashboard.js?v=13}" defer></script>
 </body>
 
 </html>
