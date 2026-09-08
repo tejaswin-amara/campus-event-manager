@@ -21,30 +21,29 @@ CampusConnect operates an ACID-compliant relational schema comprising 4 core tab
 
 ## 2. Table: `users`
 
-Stores authentication credentials, university email identities, department affiliations, and role-based access control flags.
+Stores authentication credentials, university email identities, and role-based access control flags.
 
 ### 2.1 Column Definitions
 
 | Column Name | Data Type | Nullable | Default | Key | Constraints | Description | Example |
 |---|---|---|---|---|---|---|---|
 | `id` | `BIGINT` | `NO` | `AUTO_INCREMENT` | `PK` | `PRIMARY KEY` | Surrogate primary key | `1` |
-| `name` | `VARCHAR(100)` | `NO` | None | None | `CHAR_LENGTH(name) >= 2` | Full legal name of student/admin | `'Aarav Sharma'` |
-| `email` | `VARCHAR(150)` | `NO` | None | `UNI` | `UNIQUE (uk_users_email)` | Academic campus email address | `'aarav.sharma@campus.edu'` |
+| `username` | `VARCHAR(50)` | `NO` | None | `UNI` | `NOT NULL UNIQUE` | Login identifier | `'aarav_sharma'` |
 | `password` | `VARCHAR(255)` | `NO` | None | None | Bcrypt hash (length 60) | Salted & hashed password | `'$2a$10$7R3...'` |
-| `role` | `VARCHAR(20)` | `NO` | None | `IDX` | `CHECK (role IN ('STUDENT', 'ADMIN'))` | Role authorization claim | `'STUDENT'` |
-| `department` | `VARCHAR(100)` | `YES` | `NULL` | None | None | Academic department / division | `'Computer Science'` |
-| `created_at` | `TIMESTAMP` | `YES` | `CURRENT_TIMESTAMP` | None | Non-updatable timestamp | Record creation timestamp | `'2026-09-01 09:00:00'` |
+| `role` | `VARCHAR(20)` | `NO` | None | None | None | Role authorization claim | `'STUDENT'` |
+| `email` | `VARCHAR(254)` | `YES` | `NULL` | `UNI` | `UNIQUE` | Academic campus email address | `'aarav.sharma@campus.edu'` |
 
 ### 2.2 Keys and Constraints
 
 * **Primary Key:** `PRIMARY KEY (id)` — Clustered B-Tree index.
 * **Candidate Keys:**
   * `id`
-  * `email` (`uk_users_email`)
+  * `username` (UNIQUE)
+  * `email` (UNIQUE)
 * **Indexes:**
   * `PRIMARY` on `(id)` — Unique, Clustered.
-  * `uk_users_email` on `(email)` — Unique, Non-clustered B-Tree.
-  * `idx_users_role` on `(role)` — Non-unique B-Tree for administrative lookups.
+  * Implicit unique index on `(username)` — Unique, Non-clustered B-Tree.
+  * Implicit unique index on `(email)` — Unique, Non-clustered B-Tree.
 
 ---
 
@@ -123,7 +122,7 @@ Maintains asynchronous domain event messages produced inside application transac
 |---|---|---|---|---|---|---|---|
 | `id` | `BIGINT` | `NO` | `AUTO_INCREMENT` | `PK` | `PRIMARY KEY` | Surrogate primary key | `1` |
 | `aggregate_type` | `VARCHAR(50)` | `NO` | None | None | None | Originating aggregate root | `'REGISTRATION'` |
-| `aggregate_id` | `BIGINT` | `NO` | None | None | None | ID of the aggregate root | `1` |
+| `aggregate_id` | `VARCHAR(100)` | `NO` | None | None | None | ID of the aggregate root | `'1'` |
 | `event_type` | `VARCHAR(50)` | `NO` | None | None | None | Domain event identifier | `'EVENT_REGISTERED'` |
 | `payload` | `JSON` | `NO` | None | None | Valid JSON structure | Serialized event payload | `'{"userId": 1, "eventId": 1}'` |
 | `status` | `VARCHAR(20)` | `NO` | `'PENDING'` | `IDX` | `CHECK (status IN ('PENDING', 'PROCESSED', 'FAILED'))` | Outbox publishing status | `'PENDING'` |

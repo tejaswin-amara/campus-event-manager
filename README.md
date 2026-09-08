@@ -2,13 +2,13 @@
 
 > **Academic Subject:** 25CS1302E — Database Systems Engineering And Distributed Backend Development  
 > **Repository Branch:** `feat/complete-dbms-pbl-hardening`  
-> **Runtime Environment:** Java 25 LTS, Spring Boot 3.4.1, MySQL 8.4 LTS (InnoDB Engine), Flyway 10.20, Docker
+> **Runtime Environment:** Java 25 LTS, Spring Boot 4.1.0, MySQL 8.4 LTS (InnoDB Engine), Flyway 10.20, Docker
 
 [![Build & Test Status](https://img.shields.io/badge/tests-65%2F65%20passing-brightgreen)](src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java)
 [![Database](https://img.shields.io/badge/database-MySQL%208.4%20LTS-blue?logo=mysql&logoColor=white)](database/schema.sql)
 [![Migrations](https://img.shields.io/badge/flyway-V1--V4-red?logo=flyway&logoColor=white)](src/main/resources/db/migration/)
 [![Java](https://img.shields.io/badge/Java-25%20LTS-orange?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.1-green?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-green?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
@@ -91,10 +91,10 @@ export MYSQLPASSWORD=campus_app_password
 ```bash
 ./mvnw spring-boot:run
 ```
-Access the application at `http://localhost:8080`.
+Access the application at `http://localhost:9090` (default port 9090 prevents host proxy collisions).
 * **Student Login:** `aarav.sharma@campus.edu` / `password123`
 * **Admin Login:** `admin@campus.edu` / `admin123`
-* **OpenAPI Docs:** `http://localhost:8080/v3/api-docs`
+* **OpenAPI Docs:** `http://localhost:9090/v3/api-docs`
 
 ---
 

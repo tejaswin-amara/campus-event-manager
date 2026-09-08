@@ -123,13 +123,13 @@ erDiagram
 Mapping the conceptual ER model to physical relational tables with declarative constraints:
 
 ```text
-users(id [PK], name, email [UK], password, role, department, created_at)
-events(id [PK], title, description, category, date_time, venue, registration_link, image_url, status, created_at)
-registrations(id [PK], user_id [FK -> users.id], event_id [FK -> events.id], registration_date, UK(user_id, event_id))
+users(id [PK], username [UK], email [UK], password, role)
+events(id [PK], title, description, category, date_time, end_date_time, venue, registration_link, max_capacity, image_url, responses_link, image_data, image_mime_type, status, created_at)
+registrations(id [PK], user_id [FK -> users.id], event_id [FK -> events.id], registration_date, status, UK(user_id, event_id))
 outbox_events(id [PK], aggregate_type, aggregate_id, event_type, payload, status, created_at, processed_at)
 ```
 
-Refer to [`database/schema.sql`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/database/schema.sql) for authoritative DDL.
+Refer to [`database/schema.sql`](../database/schema.sql) for authoritative DDL.
 
 ---
 
@@ -147,7 +147,7 @@ Minimal cover $\mathcal{F}$ of the system:
 
 ## 8. Normalization (1NF to BCNF)
 
-As formally proven in [`docs/normalization.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/normalization.md):
+As formally proven in [`normalization.md`](normalization.md):
 * **1NF:** Atomic attributes; repeating registration arrays eliminated into associative entity `registrations`.
 * **2NF:** Zero partial key dependencies; all non-prime attributes depend on full candidate keys.
 * **3NF:** Zero transitive functional dependencies between non-prime attributes.
@@ -179,7 +179,7 @@ CampusConnect provides an exhaustive portfolio of 12 executable SQL modules in `
 
 ## 10. Transaction Analysis & ACID Semantics
 
-As detailed in [`docs/transaction-analysis.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/transaction-analysis.md):
+As detailed in [`transaction-analysis.md`](transaction-analysis.md):
 * **Isolation Level:** MySQL 8.4 `REPEATABLE READ`.
 * **MVCC Snapshot Isolation:** Every read uses a consistent snapshot Read View based on transaction start coordinates, traversing the Undo Log via `DB_ROLL_PTR`. Reads never block writes; writes never block reads.
 * **Durability:** Guaranteed via Write-Ahead Logging (WAL) and `innodb_flush_log_at_trx_commit = 1`.
@@ -193,10 +193,10 @@ As detailed in [`docs/transaction-analysis.md`](file:///c:/Users/speed/Documents
   1. Application Serialization: `@Lock(LockModeType.PESSIMISTIC_WRITE)` via `findByIdForUpdate` sets an exclusive row lock on the target event.
   2. Storage Engine Enforcement: InnoDB composite unique key `uk_user_event (user_id, event_id)` rejects concurrent collision inserts with `SQL Error 1062`.
 * **Empirical Verification:**
-  * Test Suite: [`EventServiceConcurrencyTest`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java).
+  * Test Suite: [`EventServiceConcurrencyTest`](../src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java).
   * Invariant 1 (Same User, 10 Threads): **1 Success, 9 Rejected (1062 Duplicate entry)**.
   * Invariant 2 (Distinct Users, 8 Threads): **8 / 8 Success, 0 Deadlocks**.
-  * Detailed report: [`docs/concurrency-test.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/concurrency-test.md).
+  * Detailed report: [`concurrency-test.md`](concurrency-test.md).
 
 ---
 
@@ -218,7 +218,7 @@ Empirical before-and-after performance benchmarking was conducted directly on My
   * **After Composite Index:** Index Lookup (`type: ref`), **filesort eliminated**, Cost = 0.70 (**51.7% cost reduction**).
 * **Negative Selectivity Demonstration:** Evaluated `SELECT * FROM users WHERE role = 'STUDENT'`. With 90% cardinality, the MySQL optimizer correctly bypassed secondary index `idx_users_role` to avoid random I/O bookmark lookups.
 * **N+1 Query Elimination:** Mitigated using JPQL `JOIN FETCH` in `RegistrationRepository.findByUserIdWithEvent`, reducing query volume from $1 + N$ round-trips to exactly **1** query.
-* Full evidence and JSON plans: [`database/explain/README.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/database/explain/README.md) and [`docs/query-optimization.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/query-optimization.md).
+* Full evidence and JSON plans: [`database/explain/README.md`](../database/explain/README.md) and [`query-optimization.md`](query-optimization.md).
 
 ---
 
@@ -236,7 +236,7 @@ Empirical before-and-after performance benchmarking was conducted directly on My
 
 ## 15. Distributed Database Architecture (CO6)
 
-As detailed in [`docs/distributed-database.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/distributed-database.md):
+As detailed in [`distributed-database.md`](distributed-database.md):
 * **Replication:** Semi-synchronous GTID replication with read-replica scaling via `AbstractRoutingDataSource`.
 * **Partitioning & Sharding:** Hash sharding by `campus_id` keeps 100% of registrations single-shard transactions.
 * **Distributed Transactions:** Avoids high-latency Two-Phase Commit (2PC) by implementing the **Transactional Outbox Pattern** (`outbox_events` table in Flyway V4), guaranteeing at-least-once asynchronous domain event publishing.
@@ -246,7 +246,7 @@ As detailed in [`docs/distributed-database.md`](file:///c:/Users/speed/Documents
 
 ## 16. Backup, Disaster Recovery & PITR
 
-As detailed in [`docs/backup-recovery.md`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/docs/backup-recovery.md):
+As detailed in [`backup-recovery.md`](backup-recovery.md):
 * **Backup Architecture:** Daily non-blocking logical snapshots (`mysqldump --single-transaction --source-data=2`) combined with continuous Binary Log streaming.
 * **Service Level Objectives:** Target RPO $\le$ 1 minute; target RTO $\le$ 15 minutes.
 * **Point-In-Time Recovery (PITR):** Documented step-by-step runbook utilizing `mysqlbinlog` to restore the database to any given second before corruption.

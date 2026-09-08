@@ -25,18 +25,18 @@ mysql -h 127.0.0.1 -P 3307 -u campus_app -pcampus_app_password campus_events -e 
 ```
 *Key Talking Point:* "Our schema is maintained in reproducible, idempotent migrations. V4 introduced table-level check constraints, composite B-Tree indexes, and the distributed transactional outbox."
 
-### Step 3: Launch the Spring Boot 3.4 Application
+### Step 3: Launch the Spring Boot 4.1 Application
 ```bash
 ./mvnw spring-boot:run
 ```
-*Demonstrate:* Starts cleanly on port `8080`, connecting to MySQL on port `3307`.
+*Demonstrate:* Starts cleanly on port `9090` (preventing host 8080 proxy collisions), connecting to MySQL on port `3307`.
 
 ---
 
 ## Act 2: Web Application & Role-Based Access (Minutes 2–5)
 
 ### Step 4: Student Flow (Browsing & Catalog Filtering)
-1. Open Browser to `http://localhost:8080/login`.
+1. Open Browser to `http://localhost:9090/login`.
 2. Login with Student Credentials:
    * **Email:** `aarav.sharma@campus.edu`
    * **Password:** `password123`

@@ -2,7 +2,7 @@
 
 **Course:** 25CS1302E — Database Systems Engineering And Distributed Backend Development  
 **Course Outcome Alignment:** **CO4** — Analyze isolation levels, concurrency anomalies, and locking protocols under high-throughput conditions.  
-**Target Test Class:** [`EventServiceConcurrencyTest`](file:///c:/Users/speed/Documents/antigravity/agitated-davinci/src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java)  
+**Target Test Class:** [`EventServiceConcurrencyTest`](../src/test/java/com/tejaswin/campus/service/EventServiceConcurrencyTest.java)  
 **Execution Environment:** Java 25.0.4.1 LTS + MySQL 8.4 LTS (Port 3307) + InnoDB Storage Engine
 
 ---

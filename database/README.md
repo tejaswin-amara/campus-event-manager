@@ -14,7 +14,6 @@ database/
 ├── transactions.sql                   # ACID transaction scenarios (BEGIN, SAVEPOINT, ROLLBACK)
 ├── indexes.sql                        # B-tree index definitions and maintenance commands
 ├── er-diagram.md                      # Formal ER Diagram (Mermaid) with cardinalities
-├── data-dictionary.md                 # Complete schema attributes, domains, and keys
 ├── sql/                               # Comprehensive CO3 SQL fluency package
 │   ├── ddl.sql                        # DDL: CREATE, ALTER, DROP, constraints
 │   ├── dml.sql                        # DML: Single/Multi INSERT, UPDATE, DELETE
