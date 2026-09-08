@@ -1,0 +1,3115 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev",
+    "title": "CampusConnect - Admin Control Center",
+    "capturedAt": 1773000000000,
+    "viewport": {
+      "width": 1440,
+      "height": 1024
+    },
+    "dpr": 2
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "styles": [
+        "Regular",
+        "Medium",
+        "Semi Bold",
+        "Bold",
+        "Extra Bold"
+      ]
+    }
+  ],
+  "root": {
+    "type": "FRAME",
+    "name": "Admin Control Center (Desktop 1440x1024)",
+    "x": 1600,
+    "y": 0,
+    "width": 1440,
+    "height": 1024,
+    "clipsContent": true,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 0.035,
+          "g": 0.035,
+          "b": 0.043
+        }
+      }
+    ],
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "Sidebar",
+        "x": 0,
+        "y": 0,
+        "width": 260,
+        "height": 1024,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.071,
+              "g": 0.071,
+              "b": 0.094
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "BrandLogo",
+            "x": 24,
+            "y": 28,
+            "width": 32,
+            "height": 32,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "CC",
+                "x": 32,
+                "y": 37,
+                "width": 16,
+                "height": 14,
+                "characters": "CC",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "Brand Title",
+            "x": 64,
+            "y": 32,
+            "width": 160,
+            "height": 24,
+            "characters": "CampusConnect",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 18,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "Role Badge",
+            "x": 64,
+            "y": 60,
+            "width": 72,
+            "height": 20,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "ADMIN",
+                "x": 72,
+                "y": 63,
+                "width": 56,
+                "height": 14,
+                "characters": "ADMIN",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-Overview",
+            "x": 16,
+            "y": 110,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.18
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.5
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Overview",
+                "x": 32,
+                "y": 121,
+                "width": 180,
+                "height": 18,
+                "characters": "Overview",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-Upcoming",
+            "x": 16,
+            "y": 158,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Upcoming",
+                "x": 32,
+                "y": 169,
+                "width": 180,
+                "height": 18,
+                "characters": "Upcoming",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.58,
+                  "g": 0.639,
+                  "b": 0.722
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-Ongoing",
+            "x": 16,
+            "y": 206,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Ongoing",
+                "x": 32,
+                "y": 217,
+                "width": 180,
+                "height": 18,
+                "characters": "Ongoing",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.58,
+                  "g": 0.639,
+                  "b": 0.722
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-Past Events",
+            "x": 16,
+            "y": 254,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Past Events",
+                "x": 32,
+                "y": 265,
+                "width": 180,
+                "height": 18,
+                "characters": "Past Events",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.58,
+                  "g": 0.639,
+                  "b": 0.722
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-Analytics",
+            "x": 16,
+            "y": 302,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Analytics",
+                "x": 32,
+                "y": 313,
+                "width": 180,
+                "height": 18,
+                "characters": "Analytics",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.58,
+                  "g": 0.639,
+                  "b": 0.722
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Nav-System Health",
+            "x": 16,
+            "y": 350,
+            "width": 228,
+            "height": 40,
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "System Health",
+                "x": 32,
+                "y": 361,
+                "width": 180,
+                "height": 18,
+                "characters": "System Health",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.58,
+                  "g": 0.639,
+                  "b": 0.722
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Sidebar-Footer",
+            "x": 16,
+            "y": 940,
+            "width": 228,
+            "height": 52,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.094,
+                  "g": 0.094,
+                  "b": 0.141
+                },
+                "opacity": 0.6
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 10,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "User Name",
+                "x": 28,
+                "y": 950,
+                "width": 120,
+                "height": 16,
+                "characters": "Admin User",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 12,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "Sign Out",
+                "x": 28,
+                "y": 968,
+                "width": 120,
+                "height": 14,
+                "characters": "Sign Out \u2192",
+                "fontFamily": "Inter",
+                "fontStyle": "Regular",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "AdminTopBar",
+        "x": 284,
+        "y": 24,
+        "width": 1132,
+        "height": 56,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 12,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "AdminHeaderTitle",
+            "x": 304,
+            "y": 40,
+            "width": 300,
+            "height": 24,
+            "characters": "Admin Operations & Control Center",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "CreateEventBtn",
+            "x": 1120,
+            "y": 32,
+            "width": 140,
+            "height": 40,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945,
+                  "a": 0.25
+                },
+                "offset": {
+                  "x": 0,
+                  "y": 0
+                },
+                "radius": 24,
+                "spread": 0
+              }
+            ],
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "CreateEventText",
+                "x": 1130,
+                "y": 44,
+                "width": 120,
+                "height": 16,
+                "characters": "+  Create Event",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ExportBtn",
+            "x": 1270,
+            "y": 32,
+            "width": 130,
+            "height": 40,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.149,
+                  "g": 0.149,
+                  "b": 0.22
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "ExportText",
+                "x": 1280,
+                "y": 44,
+                "width": 110,
+                "height": 16,
+                "characters": "Export CSV",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "KPI-TOTAL PUBLISHED",
+        "x": 284,
+        "y": 96,
+        "width": 265,
+        "height": 110,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "KPILabel",
+            "x": 300,
+            "y": 112,
+            "width": 233,
+            "height": 16,
+            "characters": "TOTAL PUBLISHED",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPIValue",
+            "x": 300,
+            "y": 134,
+            "width": 233,
+            "height": 32,
+            "characters": "24",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 26,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPISub",
+            "x": 300,
+            "y": 172,
+            "width": 233,
+            "height": 16,
+            "characters": "+12% this term",
+            "fontFamily": "Inter",
+            "fontStyle": "Medium",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "KPI-STUDENT REGISTRATIONS",
+        "x": 573,
+        "y": 96,
+        "width": 265,
+        "height": 110,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "KPILabel",
+            "x": 589,
+            "y": 112,
+            "width": 233,
+            "height": 16,
+            "characters": "STUDENT REGISTRATIONS",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPIValue",
+            "x": 589,
+            "y": 134,
+            "width": 233,
+            "height": 32,
+            "characters": "1,428",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 26,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPISub",
+            "x": 589,
+            "y": 172,
+            "width": 233,
+            "height": 16,
+            "characters": "+28% vs last month",
+            "fontFamily": "Inter",
+            "fontStyle": "Medium",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.063,
+              "g": 0.725,
+              "b": 0.506
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "KPI-UPCOMING EVENTS",
+        "x": 862,
+        "y": 96,
+        "width": 265,
+        "height": 110,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "KPILabel",
+            "x": 878,
+            "y": 112,
+            "width": 233,
+            "height": 16,
+            "characters": "UPCOMING EVENTS",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPIValue",
+            "x": 878,
+            "y": 134,
+            "width": 233,
+            "height": 32,
+            "characters": "14",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 26,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPISub",
+            "x": 878,
+            "y": 172,
+            "width": 233,
+            "height": 16,
+            "characters": "Next in 2 days",
+            "fontFamily": "Inter",
+            "fontStyle": "Medium",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.22,
+              "g": 0.741,
+              "b": 0.973
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "KPI-SYSTEM TELEMETRY",
+        "x": 1151,
+        "y": 96,
+        "width": 265,
+        "height": 110,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "KPILabel",
+            "x": 1167,
+            "y": 112,
+            "width": 233,
+            "height": 16,
+            "characters": "SYSTEM TELEMETRY",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPIValue",
+            "x": 1167,
+            "y": 134,
+            "width": 233,
+            "height": 32,
+            "characters": "142 MB",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 26,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "KPISub",
+            "x": 1167,
+            "y": 172,
+            "width": 233,
+            "height": 16,
+            "characters": "JVM Heap \u2022 8 Cores",
+            "fontFamily": "Inter",
+            "fontStyle": "Medium",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.961,
+              "g": 0.62,
+              "b": 0.043
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "CategoryDistCard",
+        "x": 284,
+        "y": 222,
+        "width": 540,
+        "height": 220,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "CardTitle",
+            "x": 304,
+            "y": 238,
+            "width": 300,
+            "height": 20,
+            "characters": "Category Distribution",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "Legend1",
+            "x": 304,
+            "y": 274,
+            "width": 200,
+            "height": 18,
+            "characters": "Technical \u2014 35%",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "Legend2",
+            "x": 304,
+            "y": 302,
+            "width": 200,
+            "height": 18,
+            "characters": "Cultural \u2014 25%",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "Legend3",
+            "x": 304,
+            "y": 330,
+            "width": 200,
+            "height": 18,
+            "characters": "Sports \u2014 15%",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "Legend4",
+            "x": 304,
+            "y": 358,
+            "width": 200,
+            "height": 18,
+            "characters": "Workshops \u2014 15%",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "Legend5",
+            "x": 304,
+            "y": 386,
+            "width": 200,
+            "height": 18,
+            "characters": "Seminars \u2014 10%",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "ChartDonut",
+            "x": 640,
+            "y": 260,
+            "width": 150,
+            "height": 150,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.2
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.5
+              }
+            ],
+            "strokeWeight": 20,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "TotalCount",
+                "x": 675,
+                "y": 325,
+                "width": 80,
+                "height": 20,
+                "characters": "24 Total",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 13,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "VelocityCard",
+        "x": 848,
+        "y": 222,
+        "width": 568,
+        "height": 220,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "VelocityTitle",
+            "x": 868,
+            "y": 238,
+            "width": 300,
+            "height": 20,
+            "characters": "Recent Registration Velocity",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "VelocitySub",
+            "x": 868,
+            "y": 260,
+            "width": 300,
+            "height": 16,
+            "characters": "Daily engagement over last 7 days",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar1",
+            "x": 900,
+            "y": 360,
+            "width": 32,
+            "height": 60,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar2",
+            "x": 950,
+            "y": 320,
+            "width": 32,
+            "height": 100,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar3",
+            "x": 1000,
+            "y": 300,
+            "width": 32,
+            "height": 120,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar4",
+            "x": 1050,
+            "y": 280,
+            "width": 32,
+            "height": 140,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar5",
+            "x": 1100,
+            "y": 330,
+            "width": 32,
+            "height": 90,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar6",
+            "x": 1150,
+            "y": 250,
+            "width": 32,
+            "height": 170,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.976,
+                  "g": 0.451,
+                  "b": 0.086
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Bar7",
+            "x": 1200,
+            "y": 270,
+            "width": 32,
+            "height": 150,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "BarLabels",
+            "x": 895,
+            "y": 426,
+            "width": 350,
+            "height": 16,
+            "characters": "Mon   Tue   Wed   Thu   Fri   Sat   Sun",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "EventTableCard",
+        "x": 284,
+        "y": 452,
+        "width": 1132,
+        "height": 330,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "TableSectionTitle",
+            "x": 304,
+            "y": 468,
+            "width": 300,
+            "height": 24,
+            "characters": "Event Registry & Lifecycle",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 15,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "TableHeader",
+            "x": 304,
+            "y": 502,
+            "width": 1092,
+            "height": 36,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.071,
+                  "g": 0.071,
+                  "b": 0.094
+                }
+              }
+            ],
+            "cornerRadius": 6,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "TH-Title",
+                "x": 320,
+                "y": 512,
+                "width": 280,
+                "height": 16,
+                "characters": "EVENT TITLE",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "TH-Cat",
+                "x": 620,
+                "y": 512,
+                "width": 120,
+                "height": 16,
+                "characters": "CATEGORY",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "TH-Date",
+                "x": 760,
+                "y": 512,
+                "width": 120,
+                "height": 16,
+                "characters": "DATE",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "TH-Reg",
+                "x": 900,
+                "y": 512,
+                "width": 100,
+                "height": 16,
+                "characters": "ATTENDEES",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "TH-Status",
+                "x": 1020,
+                "y": 512,
+                "width": 100,
+                "height": 16,
+                "characters": "STATUS",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              },
+              {
+                "type": "TEXT",
+                "name": "TH-Actions",
+                "x": 1180,
+                "y": 512,
+                "width": 180,
+                "height": 16,
+                "characters": "ACTIONS",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 11,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.392,
+                  "g": 0.455,
+                  "b": 0.545
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowTitle-0",
+            "x": 320,
+            "y": 558,
+            "width": 280,
+            "height": 18,
+            "characters": "AI & Autonomous Agents Hackathon",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowCat-0",
+            "x": 620,
+            "y": 554,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Technical",
+                "x": 628,
+                "y": 558,
+                "width": 64,
+                "height": 14,
+                "characters": "Technical",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowDate-0",
+            "x": 760,
+            "y": 558,
+            "width": 120,
+            "height": 16,
+            "characters": "Mar 14, 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "RowReg-0",
+            "x": 900,
+            "y": 558,
+            "width": 100,
+            "height": 16,
+            "characters": "120/150",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowStatus-0",
+            "x": 1020,
+            "y": 554,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Upcoming",
+                "x": 1028,
+                "y": 558,
+                "width": 64,
+                "height": 14,
+                "characters": "Upcoming",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActEdit-0",
+            "x": 1180,
+            "y": 554,
+            "width": 50,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Edit",
+                "x": 1188,
+                "y": 558,
+                "width": 34,
+                "height": 14,
+                "characters": "Edit",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActDel-0",
+            "x": 1238,
+            "y": 554,
+            "width": 56,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Delete",
+                "x": 1246,
+                "y": 558,
+                "width": 40,
+                "height": 14,
+                "characters": "Delete",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowTitle-1",
+            "x": 320,
+            "y": 604,
+            "width": 280,
+            "height": 18,
+            "characters": "Spring Symphony & Cultural Gala",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowCat-1",
+            "x": 620,
+            "y": 600,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.925,
+                  "g": 0.282,
+                  "b": 0.6
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.925,
+                  "g": 0.282,
+                  "b": 0.6
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Cultural",
+                "x": 628,
+                "y": 604,
+                "width": 64,
+                "height": 14,
+                "characters": "Cultural",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowDate-1",
+            "x": 760,
+            "y": 604,
+            "width": 120,
+            "height": 16,
+            "characters": "Mar 15, 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "RowReg-1",
+            "x": 900,
+            "y": 604,
+            "width": 100,
+            "height": 16,
+            "characters": "340/400",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowStatus-1",
+            "x": 1020,
+            "y": 600,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Upcoming",
+                "x": 1028,
+                "y": 604,
+                "width": 64,
+                "height": 14,
+                "characters": "Upcoming",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActEdit-1",
+            "x": 1180,
+            "y": 600,
+            "width": 50,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Edit",
+                "x": 1188,
+                "y": 604,
+                "width": 34,
+                "height": 14,
+                "characters": "Edit",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActDel-1",
+            "x": 1238,
+            "y": 600,
+            "width": 56,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Delete",
+                "x": 1246,
+                "y": 604,
+                "width": 40,
+                "height": 14,
+                "characters": "Delete",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowTitle-2",
+            "x": 320,
+            "y": 650,
+            "width": 280,
+            "height": 18,
+            "characters": "Inter-Collegiate Futsal Derby",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowCat-2",
+            "x": 620,
+            "y": 646,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Sports",
+                "x": 628,
+                "y": 650,
+                "width": 64,
+                "height": 14,
+                "characters": "Sports",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowDate-2",
+            "x": 760,
+            "y": 650,
+            "width": 120,
+            "height": 16,
+            "characters": "Mar 16, 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "RowReg-2",
+            "x": 900,
+            "y": 650,
+            "width": 100,
+            "height": 16,
+            "characters": "80/100",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowStatus-2",
+            "x": 1020,
+            "y": 646,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.22,
+                  "g": 0.741,
+                  "b": 0.973
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.22,
+                  "g": 0.741,
+                  "b": 0.973
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Ongoing",
+                "x": 1028,
+                "y": 650,
+                "width": 64,
+                "height": 14,
+                "characters": "Ongoing",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActEdit-2",
+            "x": 1180,
+            "y": 646,
+            "width": 50,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Edit",
+                "x": 1188,
+                "y": 650,
+                "width": 34,
+                "height": 14,
+                "characters": "Edit",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActDel-2",
+            "x": 1238,
+            "y": 646,
+            "width": 56,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Delete",
+                "x": 1246,
+                "y": 650,
+                "width": 40,
+                "height": 14,
+                "characters": "Delete",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowTitle-3",
+            "x": 320,
+            "y": 696,
+            "width": 280,
+            "height": 18,
+            "characters": "Production LLM Systems Workshop",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowCat-3",
+            "x": 620,
+            "y": 692,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.961,
+                  "g": 0.62,
+                  "b": 0.043
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.961,
+                  "g": 0.62,
+                  "b": 0.043
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Workshop",
+                "x": 628,
+                "y": 696,
+                "width": 64,
+                "height": 14,
+                "characters": "Workshop",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowDate-3",
+            "x": 760,
+            "y": 696,
+            "width": 120,
+            "height": 16,
+            "characters": "Mar 18, 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "RowReg-3",
+            "x": 900,
+            "y": 696,
+            "width": 100,
+            "height": 16,
+            "characters": "45/50",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowStatus-3",
+            "x": 1020,
+            "y": 692,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Upcoming",
+                "x": 1028,
+                "y": 696,
+                "width": 64,
+                "height": 14,
+                "characters": "Upcoming",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActEdit-3",
+            "x": 1180,
+            "y": 692,
+            "width": 50,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Edit",
+                "x": 1188,
+                "y": 696,
+                "width": 34,
+                "height": 14,
+                "characters": "Edit",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActDel-3",
+            "x": 1238,
+            "y": 692,
+            "width": 56,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Delete",
+                "x": 1246,
+                "y": 696,
+                "width": 40,
+                "height": 14,
+                "characters": "Delete",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowTitle-4",
+            "x": 320,
+            "y": 742,
+            "width": 280,
+            "height": 18,
+            "characters": "Future of Decentralized Identity",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowCat-4",
+            "x": 620,
+            "y": 738,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.024,
+                  "g": 0.714,
+                  "b": 0.831
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.024,
+                  "g": 0.714,
+                  "b": 0.831
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Seminar",
+                "x": 628,
+                "y": 742,
+                "width": 64,
+                "height": 14,
+                "characters": "Seminar",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "RowDate-4",
+            "x": 760,
+            "y": 742,
+            "width": 120,
+            "height": 16,
+            "characters": "Mar 20, 2026",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "RowReg-4",
+            "x": 900,
+            "y": 742,
+            "width": 100,
+            "height": 16,
+            "characters": "95/120",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "RowStatus-4",
+            "x": 1020,
+            "y": 738,
+            "width": 80,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.063,
+                  "g": 0.725,
+                  "b": 0.506
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Upcoming",
+                "x": 1028,
+                "y": 742,
+                "width": 64,
+                "height": 14,
+                "characters": "Upcoming",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActEdit-4",
+            "x": 1180,
+            "y": 738,
+            "width": 50,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Edit",
+                "x": 1188,
+                "y": 742,
+                "width": 34,
+                "height": 14,
+                "characters": "Edit",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "ActDel-4",
+            "x": 1238,
+            "y": 738,
+            "width": 56,
+            "height": 22,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.937,
+                  "g": 0.267,
+                  "b": 0.267
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Delete",
+                "x": 1246,
+                "y": 742,
+                "width": 40,
+                "height": 14,
+                "characters": "Delete",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev",
+    "title": "CampusConnect - Admin Login",
+    "capturedAt": 1773000000000,
+    "viewport": {
+      "width": 1440,
+      "height": 1024
+    },
+    "dpr": 2
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "styles": [
+        "Regular",
+        "Medium",
+        "Bold",
+        "Extra Bold"
+      ]
+    }
+  ],
+  "root": {
+    "type": "FRAME",
+    "name": "Admin Login Screen (Desktop 1440x1024)",
+    "x": 4800,
+    "y": 0,
+    "width": 1440,
+    "height": 1024,
+    "clipsContent": true,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 0.035,
+          "g": 0.035,
+          "b": 0.043
+        }
+      }
+    ],
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "LoginCard",
+        "x": 490,
+        "y": 232,
+        "width": 460,
+        "height": 560,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            },
+            "opacity": 0.5
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 20,
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.4
+            },
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "radius": 16,
+            "spread": 0
+          }
+        ],
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "LoginLogo",
+            "x": 702,
+            "y": 266,
+            "width": 36,
+            "height": 36,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 10,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "CC",
+                "x": 710,
+                "y": 277,
+                "width": 20,
+                "height": 14,
+                "characters": "CC",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "LoginTitle",
+            "x": 520,
+            "y": 308,
+            "width": 400,
+            "height": 28,
+            "characters": "CampusConnect Admin",
+            "fontFamily": "Inter",
+            "fontStyle": "Extra Bold",
+            "fontSize": 22,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "LoginSub",
+            "x": 520,
+            "y": 340,
+            "width": 400,
+            "height": 20,
+            "characters": "Enter authorized credentials to access management control plane",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "SecBadge",
+            "x": 540,
+            "y": 372,
+            "width": 360,
+            "height": 32,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.12
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.5
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 6,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "SecText",
+                "x": 550,
+                "y": 380,
+                "width": 340,
+                "height": 16,
+                "characters": "Protected via Rate Limiting, BCrypt & Audit Logging",
+                "fontFamily": "Inter",
+                "fontStyle": "Medium",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "UserLabel",
+            "x": 530,
+            "y": 426,
+            "width": 380,
+            "height": 16,
+            "characters": "ADMIN USERNAME",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "UserInputBox",
+            "x": 530,
+            "y": 448,
+            "width": 380,
+            "height": 48,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.078,
+                  "g": 0.078,
+                  "b": 0.118
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "UserPlaceholder",
+                "x": 544,
+                "y": 463,
+                "width": 350,
+                "height": 18,
+                "characters": "admin",
+                "fontFamily": "Inter",
+                "fontStyle": "Regular",
+                "fontSize": 13,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "PassLabel",
+            "x": 530,
+            "y": 512,
+            "width": 380,
+            "height": 16,
+            "characters": "SECURE PASSWORD",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "PassInputBox",
+            "x": 530,
+            "y": 534,
+            "width": 380,
+            "height": 48,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.078,
+                  "g": 0.078,
+                  "b": 0.118
+                }
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "opacity": 0.08
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "PassPlaceholder",
+                "x": 544,
+                "y": 549,
+                "width": 350,
+                "height": 18,
+                "characters": "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+                "fontFamily": "Inter",
+                "fontStyle": "Regular",
+                "fontSize": 14,
+                "textAlign": "LEFT",
+                "color": {
+                  "r": 0.973,
+                  "g": 0.98,
+                  "b": 0.988
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "LoginBtn",
+            "x": 530,
+            "y": 612,
+            "width": 380,
+            "height": 50,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945,
+                  "a": 0.25
+                },
+                "offset": {
+                  "x": 0,
+                  "y": 0
+                },
+                "radius": 24,
+                "spread": 0
+              }
+            ],
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "LoginBtnText",
+                "x": 530,
+                "y": 627,
+                "width": 380,
+                "height": 20,
+                "characters": "Sign In to Admin Console \u2192",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 14,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "BackLink",
+            "x": 530,
+            "y": 688,
+            "width": 380,
+            "height": 20,
+            "characters": "\u2190 Return to Student Event Discovery",
+            "fontFamily": "Inter",
+            "fontStyle": "Medium",
+            "fontSize": 12,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          }
+        ]
+      }
+    ]
+  }
+}

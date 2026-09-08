@@ -4,246 +4,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusConnect - Admin</title>
+    <title>CampusConnect — Admin Control Center</title>
+    
+    <!-- Typography & Frameworks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css?v=13}">
+    
+    <!-- OpenDesign System Tokens & Styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css?v=20}">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-    <script th:src="@{/js/main.js}" defer></script>
+    <script th:src="@{/js/main.js?v=20}" defer></script>
+    
     <!-- SEO & Social Meta Tags -->
-    <meta property="og:title" content="CampusConnect - Admin Control Center">
-    <meta property="og:description" content="Manage and analyze campus events with ease.">
+    <meta property="og:title" content="CampusConnect — Admin Operations & Control Plane">
+    <meta property="og:description" content="Manage and analyze campus events, registrations, and capacity in real-time.">
     <meta property="og:type" content="website">
-    <meta name="theme-color" content="#0C0C14">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#09090B">
 </head>
 
 <body>
-    <!-- Hidden inputs for Premium Toast Notifications -->
+    <!-- Hidden inputs for Toast Notifications -->
     <input type="hidden" id="flashSuccessMsg" th:value="${success}">
     <input type="hidden" id="flashErrorMsg" th:value="${error}">
 
     <!-- 📱 Mobile Header (Visible < 992px) -->
-    <header class="mobile-header d-lg-none glass">
+    <header class="mobile-header d-lg-none glass d-flex align-items-center justify-content-between px-3">
         <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-link text-white p-0" onclick="toggleSidebar()" aria-label="Open Navigation Menu">
-                <i class="bi bi-list fs-1" aria-hidden="true"></i>
+            <button class="btn btn-link text-white p-1" onclick="toggleSidebar()" aria-label="Open Navigation Menu">
+                <i class="bi bi-list fs-2" aria-hidden="true"></i>
             </button>
-            <span class="fs-5 fw-bold text-white tracking-wide ms-2">CampusConnect</span>
+            <div class="d-flex align-items-center gap-2 ms-1">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span class="fs-5 fw-bold text-white tracking-wide">CampusConnect</span>
+            </div>
         </div>
-        <div class="rounded-circle bg-gradient d-flex align-items-center justify-content-center"
-            style="width: 32px; height: 32px; background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">
-            <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'A'}">A</span>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge rounded-pill bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30 px-2 py-1 small">ADMIN</span>
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                style="width: 34px; height: 34px; background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4);">
+                <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'A'}">A</span>
+            </div>
         </div>
     </header>
 
     <!-- 🌑 Sidebar Overlay (Mobile) -->
-    <div class="sidebar-overlay" onclick="toggleSidebar()" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()" id="sidebarOverlay" aria-hidden="true"></div>
 
     <div class="app-container">
         <!-- 🧊 Sidebar (Fixed Desktop / Offcanvas Mobile) -->
-        <nav class="sidebar" id="sidebar">
+        <nav class="sidebar" id="sidebar" aria-label="Admin Navigation">
             <!-- Brand (Desktop) -->
-            <div class="mb-5 d-none d-lg-block px-2 text-center text-lg-start">
-                <img th:src="@{/images/logo.png}" alt="CampusConnect" class="brand-logo d-block">
+            <div class="mb-4 d-none d-lg-block px-2 text-start">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-mortarboard-fill text-primary fs-3"></i>
+                    <span class="fs-5 fw-bold text-white tracking-wide">CampusConnect</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30 px-2 py-1" style="font-size: 0.7rem;">ADMIN CONSOLE</span>
+                    <span class="badge rounded-pill bg-success bg-opacity-20 text-success border border-success border-opacity-30 px-2 py-1" style="font-size: 0.7rem;">ONLINE</span>
+                </div>
             </div>
 
             <!-- Nav Links -->
             <ul class="nav flex-column mb-auto">
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a th:href="@{/admin/dashboard}" class="nav-link"
                         th:classappend="${activeStatus == null && searchQuery == null} ? 'active' : ''"
                         aria-label="Show all events">
-                        <i class="bi bi-grid-fill"></i> All Events
+                        <i class="bi bi-grid-fill me-2"></i> Event Overview
                     </a>
                 </li>
+                
                 <!-- Time Filters -->
-                <li class="nav-item">
-                    <span class="text-muted small text-uppercase px-3 fw-bold mt-4 mb-2 d-block"
-                        style="font-size: 0.7rem;">Time</span>
+                <li class="nav-item mt-3 mb-1">
+                    <span class="text-muted text-uppercase px-3 fw-bold d-block"
+                        style="font-size: 0.68rem; letter-spacing: 0.08em;">Quick Filter</span>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a th:href="@{/admin/dashboard(status='Upcoming')}" class="nav-link"
                         th:classappend="${activeStatus == 'Upcoming'} ? 'active' : ''"
                         aria-label="Filter upcoming events">
-                        <i class="bi bi-calendar-check text-green"></i> Upcoming
+                        <i class="bi bi-calendar-check text-green me-2"></i> Upcoming
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a th:href="@{/admin/dashboard(status='Ongoing')}" class="nav-link"
                         th:classappend="${activeStatus == 'Ongoing'} ? 'active' : ''"
                         aria-label="Filter ongoing events">
-                        <i class="bi bi-broadcast text-blue"></i> Ongoing
+                        <i class="bi bi-broadcast text-blue me-2"></i> Ongoing
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-1">
                     <a th:href="@{/admin/dashboard(status='Past')}" class="nav-link"
                         th:classappend="${activeStatus == 'Past'} ? 'active' : ''" aria-label="Filter past events">
-                        <i class="bi bi-clock-history text-muted"></i> Past
+                        <i class="bi bi-clock-history text-muted me-2"></i> Past Events
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#addEventModal"
+
+                <li class="nav-item mt-3 mb-1">
+                    <span class="text-muted text-uppercase px-3 fw-bold d-block"
+                        style="font-size: 0.68rem; letter-spacing: 0.08em;">Management</span>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="#" class="nav-link text-primary-light" data-bs-toggle="modal" data-bs-target="#addEventModal"
                         aria-label="Create a new event">
-                        <i class="bi bi-plus-circle-fill text-gradient"></i> Create Event
+                        <i class="bi bi-plus-circle-fill text-primary me-2"></i> Create Event
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a th:href="@{/student/dashboard}" class="nav-link" aria-label="View Student Catalogue">
+                        <i class="bi bi-eye me-2"></i> Student View
                     </a>
                 </li>
             </ul>
 
-            <!-- User Profile (Sign Out Only) -->
-            <div class="mt-auto border-top border-secondary pt-3" style="border-color: var(--border-glass) !important;">
+            <!-- User Profile & Sign Out Footer -->
+            <div class="mt-auto border-top pt-3" style="border-color: var(--border-glass) !important;">
                 <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 </form>
-                <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit();"
-                    class="nav-link text-danger" role="button" aria-label="Sign Out"
-                    onkeydown="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); document.getElementById('logoutForm').submit(); }">
-                    <i class="bi bi-box-arrow-right"></i> Sign Out
-                </a>
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255, 255, 255, 0.03);">
+                    <div class="d-flex align-items-center gap-2 overflow-hidden">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
+                            style="width: 32px; height: 32px; background: rgba(239, 68, 68, 0.2); color: #fca5a5;">
+                            <span th:text="${user != null ? #strings.substring(user.username,0,1).toUpperCase() : 'A'}">A</span>
+                        </div>
+                        <div class="overflow-hidden">
+                            <span class="text-white fw-semibold small d-block text-truncate" th:text="${user != null ? user.username : 'Administrator'}">admin</span>
+                            <span class="text-muted d-block" style="font-size: 0.7rem;">System Admin</span>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit();"
+                        class="btn btn-sm btn-link text-danger p-0" title="Sign Out" aria-label="Sign Out">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </nav>
 
         <!-- 🚀 Main Content -->
         <main class="main-content">
             <div th:if="${user != null}">
-                <!-- Dashboard Title Area -->
-                <div
-                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-in">
+                <!-- Dashboard Header Area -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 animate-in">
                     <div>
-                        <h2 class="fw-bold mb-1">Overview</h2>
-                        <p class="text-muted small mb-0">Manage events and view analytics.</p>
+                        <h1 class="fw-bold mb-1 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;">Operations Overview</h1>
+                        <p class="text-muted small mb-0">Control plane for university events, attendance metrics, and system status</p>
                     </div>
 
-                    <!-- Search & Actions (Responsive) -->
-                    <div class="d-flex flex-column flex-sm-row gap-3 w-100 justify-content-end"
-                        style="max-width: 500px;">
-                        <form th:action="@{/admin/dashboard}" method="get"
-                            class="position-relative flex-grow-1 admin-search-wrapper">
-                            <i
-                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 search-icon text-muted"></i>
+                    <!-- Search & Action Toolbar -->
+                    <div class="d-flex flex-column flex-sm-row gap-2 w-100 justify-content-end" style="max-width: 540px;">
+                        <form th:action="@{/admin/dashboard}" method="get" class="position-relative flex-grow-1">
+                            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" aria-hidden="true"></i>
                             <input type="text" name="search" id="searchInput"
-                                class="form-control rounded-pill admin-search-input" th:value="${searchQuery}"
+                                class="form-control rounded-pill ps-5 pe-4 shadow-sm" th:value="${searchQuery}"
                                 placeholder="Search events..." aria-label="Search events to manage">
-                            <div
-                                class="position-absolute top-50 end-0 translate-middle-y me-3 search-shortcut d-none d-md-block pointer-events-none">
-                                <span class="badge rounded-pill"
-                                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: monospace; font-size: 11px;">⌘K</span>
-                            </div>
                         </form>
-                        <a th:href="@{/admin/export-events}" class="btn-export">
-                            <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
+                        
+                        <button type="button" class="btn btn-primary d-inline-flex align-items-center gap-2 px-3 rounded-pill shadow-sm"
+                            data-bs-toggle="modal" data-bs-target="#addEventModal">
+                            <i class="bi bi-plus-lg"></i>
+                            <span>Create</span>
+                        </button>
+                        
+                        <a th:href="@{/admin/export-events}" class="btn btn-outline-light d-inline-flex align-items-center gap-2 px-3 rounded-pill shadow-sm">
+                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                            <span>Export CSV</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- 📊 Stats & Charts Grid -->
-                <div class="row g-4 mb-4 animate-in" style="animation-delay: 0.05s;">
-                    <!-- Total -->
-                    <div class="col-6 col-md-3 col-lg-2">
-                        <div class="stat-card h-100" data-icon="📅">
-                            <div class="stat-label">TOTAL</div>
-                            <div class="stat-number" th:data-countup="${totalEvents}" th:text="${totalEvents}">0</div>
+                <!-- 📊 KPI Stat Cards Grid -->
+                <div class="row g-3 mb-4 animate-in">
+                    <!-- Total Events -->
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card h-100 p-3 rounded-4 glass-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="stat-label small fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">TOTAL EVENTS</span>
+                                <span class="badge rounded-pill bg-primary bg-opacity-20 text-primary-light">All Time</span>
+                            </div>
+                            <div class="stat-number fw-bold text-white fs-2 mb-1" th:data-countup="${totalEvents}" th:text="${totalEvents}">0</div>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Catalogued listings</span>
+                        </div>
+                    </div>
+                    <!-- Registrations -->
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card h-100 p-3 rounded-4 glass-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="stat-label small fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">STUDENT INTEREST</span>
+                                <span class="badge rounded-pill bg-success bg-opacity-20 text-success">Engaged</span>
+                            </div>
+                            <div class="stat-number fw-bold text-white fs-2 mb-1" th:data-countup="${totalRegistrations}" th:text="${totalRegistrations}">0</div>
+                            <span class="text-success small" style="font-size: 0.75rem;">Total student sign-ups</span>
                         </div>
                     </div>
                     <!-- Upcoming -->
-                    <div class="col-6 col-md-3 col-lg-2">
-                        <div class="stat-card h-100" data-icon="🚀">
-                            <div class="stat-label" style="color: var(--success)">UPCOMING</div>
-                            <div class="stat-number" th:data-countup="${upcomingEvents}" th:text="${upcomingEvents}">0
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card h-100 p-3 rounded-4 glass-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="stat-label small fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">UPCOMING</span>
+                                <span class="badge rounded-pill bg-info bg-opacity-20 text-info">Active</span>
                             </div>
+                            <div class="stat-number fw-bold text-white fs-2 mb-1" th:data-countup="${upcomingEvents}" th:text="${upcomingEvents}">0</div>
+                            <span class="text-info small" style="font-size: 0.75rem;">Ready for attendance</span>
                         </div>
                     </div>
-                    <!-- Ongoing -->
-                    <div class="col-6 col-md-3 col-lg-2">
-                        <div class="stat-card h-100" data-icon="📡">
-                            <div class="stat-label" style="color: var(--secondary)">ONGOING</div>
-                            <div class="stat-number" th:data-countup="${ongoingEvents}" th:text="${ongoingEvents}">0
+                    <!-- Telemetry -->
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card h-100 p-3 rounded-4 glass-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="stat-label small fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">JVM HEAP MEMORY</span>
+                                <span class="badge rounded-pill bg-warning bg-opacity-20 text-warning" th:text="${sysCores} + ' Cores'">8 Cores</span>
                             </div>
+                            <div class="stat-number fw-bold text-white fs-2 mb-1">
+                                <span th:text="${sysMemoryUsed}">0</span> <span class="fs-6 text-muted">/ <span th:text="${sysMemoryTotal}">0</span> MB</span>
+                            </div>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Spring Boot Runtime</span>
                         </div>
                     </div>
-                    <!-- Past -->
-                    <div class="col-6 col-md-3 col-lg-2">
-                        <div class="stat-card h-100" data-icon="⏳">
-                            <div class="stat-label">PAST</div>
-                            <div class="stat-number" th:data-countup="${pastEvents}" th:text="${pastEvents}">0</div>
+                </div>
+
+                <!-- 📈 Analytics Section: Distribution Chart & Overview -->
+                <div class="row g-3 mb-4 animate-in">
+                    <!-- Distribution Chart -->
+                    <div class="col-12 col-lg-6">
+                        <div class="glass-card p-4 rounded-4 h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h2 class="h6 fw-bold text-white mb-0">Category Distribution</h2>
+                                    <p class="text-muted small mb-0">Event frequency across campus faculties</p>
+                                </div>
+                                <span class="badge bg-secondary bg-opacity-20 text-secondary">Analytics</span>
+                            </div>
+                            <div style="height: 220px; position: relative;">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 📈 Analytics Chart Column -->
-                    <div class="col-12 col-lg-4">
-                        <div class="glass-card h-100 d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted small fw-bold text-uppercase">Distribution</span>
-                                <i class="bi bi-pie-chart-fill text-primary"></i>
+                    <!-- Operations Quick Actions & Event Health -->
+                    <div class="col-12 col-lg-6">
+                        <div class="glass-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="h6 fw-bold text-white mb-0">Lifecycle Snapshot</h2>
+                                    <span class="badge bg-primary bg-opacity-20 text-primary-light">Real-Time</span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Upcoming Events Pipeline</span>
+                                        <span class="text-white fw-semibold" th:text="${upcomingEvents} + ' Events'">14 Events</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            th:style="'width: ' + (${totalEvents > 0 ? (upcomingEvents * 100 / totalEvents) : 0}) + '%;'"
+                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Ongoing Events</span>
+                                        <span class="text-white fw-semibold" th:text="${ongoingEvents} + ' Live'">2 Live</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px;">
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                            th:style="'width: ' + (${totalEvents > 0 ? (ongoingEvents * 100 / totalEvents) : 0}) + '%;'"
+                                            aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Past Archive</span>
+                                        <span class="text-white fw-semibold" th:text="${pastEvents} + ' Concluded'">8 Concluded</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px;">
+                                        <div class="progress-bar bg-secondary" role="progressbar"
+                                            th:style="'width: ' + (${totalEvents > 0 ? (pastEvents * 100 / totalEvents) : 0}) + '%;'"
+                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex-grow-1 position-relative" style="min-height: 150px;">
-                                <canvas id="categoryChart"></canvas>
+
+                            <div class="p-3 rounded-3 mt-3 d-flex align-items-center justify-content-between" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass);">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-shield-check text-success fs-5"></i>
+                                    <div>
+                                        <span class="text-white small fw-bold d-block">Integrity Checks Active</span>
+                                        <span class="text-muted d-block" style="font-size: 0.72rem;">Flyway V1–V3 • BCrypt • Audit Log</span>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success bg-opacity-20 text-success">Healthy</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 📋 Data Table (Responsive Wrapper) -->
-                <div class="glass-card p-0 overflow-hidden animate-in" style="animation-delay: 0.1s;">
+                <!-- 📋 Events Management Table Card -->
+                <div class="glass-card rounded-4 overflow-hidden mb-4 animate-in">
+                    <div class="p-4 border-bottom d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2"
+                        style="border-color: var(--border-glass) !important;">
+                        <div>
+                            <h2 class="h6 fw-bold text-white mb-0">Event Registry & Lifecycle</h2>
+                            <p class="text-muted small mb-0">Manage published events, update capacity, and inspect registrations</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <span class="badge rounded-pill bg-secondary bg-opacity-20 text-secondary align-self-center"
+                                th:text="'Total: ' + ${totalItems} + ' records'">Total: 24 records</span>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
-                        <table class="table table-custom w-100" id="eventsTable">
-                            <thead>
+                        <table class="table table-dark table-hover mb-0 align-middle" id="eventsTable">
+                            <thead class="text-muted small" style="background: rgba(0, 0, 0, 0.2); font-size: 0.72rem; letter-spacing: 0.05em;">
                                 <tr>
-                                    <th class="ps-4" style="width: 40px;">#</th>
-                                    <th style="min-width: 150px;">Title</th>
-                                    <th style="min-width: 100px;">Category</th>
-                                    <th style="min-width: 160px;">Date & Time</th>
-                                    <th style="min-width: 120px;">Venue</th>
-                                    <th style="min-width: 90px;">Status</th>
-                                    <th class="text-end pe-4" style="min-width: 90px;">Actions</th>
+                                    <th class="ps-4 py-3">EVENT TITLE</th>
+                                    <th class="py-3">CATEGORY</th>
+                                    <th class="py-3">SCHEDULE</th>
+                                    <th class="py-3">VENUE</th>
+                                    <th class="py-3">ATTENDEES</th>
+                                    <th class="py-3">STATUS</th>
+                                    <th class="text-end pe-4 py-3">ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Event Row -->
-                                <tr th:each="event, stat : ${events}" class="align-middle fade-in"
-                                    th:data-category="${event.category}"
+                                <tr th:each="event : ${events}" th:data-category="${event.category}"
                                     th:data-status="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">
-                                    <td class="ps-4 text-muted" th:text="${stat.index + 1}">1</td>
-                                    <td>
-                                        <div class="fw-bold text-white text-truncate" style="max-width: 200px;"
-                                            th:text="${event.title}">Title</div>
+                                    <!-- Title -->
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-3 overflow-hidden flex-shrink-0 d-flex align-items-center justify-content-center bg-dark"
+                                                style="width: 44px; height: 44px; border: 1px solid var(--border-glass);">
+                                                <img th:if="${event.imageData != null}"
+                                                    th:src="@{/student/api/public/events/image/{id}(id=${event.id})}"
+                                                    class="w-100 h-100 object-fit-cover" alt="Thumb">
+                                                <i th:if="${event.imageData == null}" class="bi bi-calendar-event text-muted fs-5"></i>
+                                            </div>
+                                            <div>
+                                                <a th:href="@{/student/event/{id}(id=${event.id})}" class="text-white fw-semibold text-decoration-none hover-primary d-block" th:text="${event.title}">Title</a>
+                                                <span class="text-muted small" th:text="${event.maxCapacity != null ? 'Capacity: ' + event.maxCapacity : 'Unlimited'}">Capacity</span>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td>
+                                    <!-- Category -->
+                                    <td class="py-3">
                                         <span class="badge-pill"
-                                            th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : (${event.category == 'Seminar'} ? 'badge-seminar' : 'glass'))))"
+                                            th:classappend="${event.category == 'Technical'} ? 'badge-tech' : (${event.category == 'Cultural'} ? 'badge-cultural' : (${event.category == 'Sports'} ? 'badge-sports' : (${event.category == 'Workshop'} ? 'badge-workshop' : 'badge-seminar')))"
                                             th:text="${event.category}">Category</span>
                                     </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="line-height: 1.3;">
-                                            <div class="small fw-semibold text-white"
-                                                th:text="${#temporals.format(event.dateTime, 'MMM dd')}">Date</div>
-
-                                            <!-- Handle optional end date (if different) -->
-                                            <div class="small text-muted"
-                                                th:if="${event.endDateTime != null && !event.endDateTime.toLocalDate().isEqual(event.dateTime.toLocalDate())}"
-                                                th:text="'to ' + ${#temporals.format(event.endDateTime, 'MMM dd')}">to
-                                                Date</div>
-
-                                            <div class="small text-muted"
-                                                th:text="${#temporals.format(event.dateTime, 'h:mm a')}">Time</div>
-                                        </div>
+                                    <!-- Date -->
+                                    <td class="py-3 text-secondary small">
+                                        <span class="text-white d-block" th:text="${#temporals.format(event.dateTime, 'MMM dd, yyyy')}">Date</span>
+                                        <span class="text-muted" th:text="${#temporals.format(event.dateTime, 'h:mm a')}">Time</span>
                                     </td>
-                                    <td>
-                                        <div class="text-truncate text-white" style="max-width: 120px;"
-                                            th:text="${event.venue}">Venue
-                                        </div>
+                                    <!-- Venue -->
+                                    <td class="py-3 text-secondary small text-truncate" style="max-width: 180px;" th:text="${event.venue}">Venue</td>
+                                    <!-- Attendees -->
+                                    <td class="py-3">
+                                        <span class="badge bg-secondary bg-opacity-30 text-white"
+                                            th:text="${eventRegistrationCounts != null && eventRegistrationCounts.containsKey(event.id) ? eventRegistrationCounts.get(event.id) : 0}">0</span>
                                     </td>
-                                    <td>
-                                        <span class="badge-pill border-0"
-                                            style="font-size: 0.7rem; padding: 0.3em 0.8em;"
-                                            th:classappend="${event.dateTime.isAfter(now)} ? 'badge-upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'badge-ongoing' : 'badge-past')"
+                                    <!-- Status -->
+                                    <td class="py-3">
+                                        <span class="badge rounded-pill"
+                                            th:classappend="${event.dateTime.isAfter(now)} ? 'bg-success bg-opacity-20 text-success border border-success border-opacity-30' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'bg-info bg-opacity-20 text-info border border-info border-opacity-30' : 'bg-secondary bg-opacity-20 text-secondary border border-secondary border-opacity-30')"
                                             th:text="${event.dateTime.isAfter(now)} ? 'Upcoming' : (${event.endDateTime != null && event.endDateTime.isAfter(now)} ? 'Ongoing' : 'Past')">Status</span>
                                     </td>
-                                    <td class="text-end pe-4">
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <button type="button" class="btn-icon-ghost hover-edit"
+                                    <!-- Actions -->
+                                    <td class="text-end pe-4 py-3">
+                                        <div class="d-inline-flex gap-1">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary px-2 py-1"
                                                 onclick="openEditModal(this)" th:data-id="${event.id}"
                                                 th:data-title="${event.title}" th:data-category="${event.category}"
                                                 th:data-datetime="${event.dateTime}"
@@ -252,13 +388,13 @@
                                                 th:data-desc="${event.description}"
                                                 th:data-image="${event.imageData != null ? '/student/api/public/events/image/' + event.id : ''}"
                                                 th:data-responses="${event.responsesLink}"
-                                                th:data-capacity="${event.maxCapacity}" title="Edit"
+                                                th:data-capacity="${event.maxCapacity}" title="Edit Event"
                                                 aria-label="Edit this event">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button type="button" class="btn-icon-ghost hover-delete"
+                                            <button type="button" class="btn btn-sm btn-outline-danger px-2 py-1"
                                                 data-bs-toggle="modal" data-bs-target="#deleteEventModal"
-                                                th:onclick="'setDeleteId(' + ${event.id} + ')'" title="Delete"
+                                                th:onclick="'setDeleteId(' + ${event.id} + ')'" title="Delete Event"
                                                 aria-label="Delete this event">
                                                 <i class="bi bi-trash"></i>
                                             </button>
@@ -268,7 +404,7 @@
                                 <tr th:if="${events == null or events.isEmpty()}">
                                     <td colspan="7" class="text-center py-5 text-muted">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i class="bi bi-inbox fs-1 mb-2" style="opacity: 0.5;"></i>
+                                            <i class="bi bi-inbox fs-1 mb-2 opacity-50"></i>
                                             <p class="mb-0">No events found matching your criteria.</p>
                                         </div>
                                     </td>
@@ -277,7 +413,7 @@
                         </table>
                     </div>
 
-                    <!-- 🔄 Pagination Controls -->
+                    <!-- Pagination -->
                     <div class="px-4 py-3 border-top border-white-10 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3"
                         th:if="${totalPages > 0}">
                         <div class="text-muted small">
@@ -286,20 +422,20 @@
                             (Total: <span th:text="${totalItems}">0</span> records)
                         </div>
                         <nav aria-label="Events table navigation">
-                            <ul class="pagination pagination-sm mb-0 admin-pagination custom-pagination">
+                            <ul class="pagination pagination-sm mb-0 custom-pagination">
                                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                                    <a class="page-link border-0"
+                                    <a class="page-link"
                                         th:href="@{/admin/dashboard(page=${currentPage - 1}, search=${searchQuery})}"
-                                        tabindex="-1" aria-disabled="true">Previous</a>
+                                        tabindex="-1">Previous</a>
                                 </li>
                                 <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
                                     th:classappend="${currentPage == pageNum} ? 'active'">
-                                    <a class="page-link border-0"
+                                    <a class="page-link"
                                         th:href="@{/admin/dashboard(page=${pageNum}, search=${searchQuery})}"
                                         th:text="${pageNum + 1}">1</a>
                                 </li>
                                 <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
-                                    <a class="page-link border-0"
+                                    <a class="page-link"
                                         th:href="@{/admin/dashboard(page=${currentPage + 1}, search=${searchQuery})}">Next</a>
                                 </li>
                             </ul>
@@ -308,6 +444,7 @@
                 </div>
             </div>
 
+            <!-- Expired Session State -->
             <div class="glass-card p-5 text-center animate-in" th:if="${user == null}">
                 <div class="rounded-circle bg-danger bg-opacity-10 mx-auto mb-4 d-flex align-items-center justify-content-center"
                     style="width: 64px; height: 64px;">
@@ -315,7 +452,7 @@
                 </div>
                 <h3 class="fw-bold text-white mb-2">Session Expired</h3>
                 <p class="text-muted mb-4">You are not currently logged in as an administrator.</p>
-                <a th:href="@{/admin/login}" class="btn-action justify-content-center">Go to Login</a>
+                <a th:href="@{/admin/login}" class="btn btn-primary px-4 py-2 rounded-pill">Go to Login</a>
             </div>
         </main>
     </div>
@@ -323,30 +460,29 @@
     <!-- ➕ Create Event Modal -->
     <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true"
         role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content glass" style="border-radius: var(--radius-modal);">
-                <div class="modal-header border-bottom border-secondary"
-                    style="border-color: var(--border-glass) !important;">
-                    <h5 class="modal-title fw-bold" id="addEventModalLabel">Create New Event</h5>
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content glass rounded-4 border-secondary border-opacity-30">
+                <div class="modal-header border-bottom border-secondary border-opacity-20 px-4 py-3">
+                    <h5 class="modal-title fw-bold text-white" id="addEventModalLabel">Create New Event</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close Create Event Modal"></button>
                 </div>
-                <div class="modal-body custom-scrollbar px-4 pb-4">
+                <div class="modal-body custom-scrollbar px-4 py-4">
                     <form th:action="@{/admin/add-event}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                        <!-- Section: Basic Info -->
+                        <!-- Basic Information -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">BASIC INFORMATION</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">1. Basic Information</h6>
                             <div class="mb-3">
-                                <label for="addTitle" class="form-label modal-label">EVENT TITLE</label>
-                                <input type="text" class="form-control modal-input" name="title" id="addTitle"
-                                    placeholder="e.g. Annual Tech Symposium" required>
+                                <label for="addTitle" class="form-label small fw-bold text-muted">EVENT TITLE *</label>
+                                <input type="text" class="form-control rounded-3" name="title" id="addTitle"
+                                    placeholder="e.g. Annual Autonomous Agents Hackathon" required>
                             </div>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="addCategory" class="form-label modal-label">CATEGORY</label>
-                                    <select class="form-select modal-input" name="category" id="addCategory" required>
+                                    <label for="addCategory" class="form-label small fw-bold text-muted">CATEGORY *</label>
+                                    <select class="form-select rounded-3" name="category" id="addCategory" required>
                                         <option value="Technical">Technical</option>
                                         <option value="Cultural">Cultural</option>
                                         <option value="Sports">Sports</option>
@@ -355,81 +491,82 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="addVenue" class="form-label modal-label">VENUE</label>
-                                    <input type="text" class="form-control modal-input" name="venue" id="addVenue"
-                                        placeholder="e.g. Auditorium A1" required>
+                                    <label for="addVenue" class="form-label small fw-bold text-muted">VENUE *</label>
+                                    <input type="text" class="form-control rounded-3" name="venue" id="addVenue"
+                                    placeholder="e.g. Turing Innovation Hall" required>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Section: Schedule & Capacity -->
+                        <!-- Schedule & Capacity -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">SCHEDULE & CAPACITY</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">2. Schedule & Capacity</h6>
                             <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <label for="addStart" class="form-label modal-label">START DATE & TIME</label>
-                                    <input type="datetime-local" class="form-control modal-input" name="dateTime"
+                                <div class="col-md-6">
+                                    <label for="addStart" class="form-label small fw-bold text-muted">START DATE & TIME *</label>
+                                    <input type="datetime-local" class="form-control rounded-3" name="dateTime"
                                         id="addStart" required>
                                 </div>
-                                <div class="col-6">
-                                    <label for="addEnd" class="form-label modal-label">END DATE & TIME</label>
-                                    <input type="datetime-local" class="form-control modal-input" name="endDateTime"
+                                <div class="col-md-6">
+                                    <label for="addEnd" class="form-label small fw-bold text-muted">END DATE & TIME (OPTIONAL)</label>
+                                    <input type="datetime-local" class="form-control rounded-3" name="endDateTime"
                                         id="addEnd">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="addCapacity" class="form-label modal-label">MAX CAPACITY</label>
-                                <input type="number" class="form-control modal-input" name="maxCapacity"
-                                    id="addCapacity" min="1" placeholder="Leave blank for unlimited">
+                                <label for="addCapacity" class="form-label small fw-bold text-muted">MAX CAPACITY</label>
+                                <input type="number" class="form-control rounded-3" name="maxCapacity"
+                                    id="addCapacity" min="1" placeholder="Leave blank for unlimited capacity">
                             </div>
                         </div>
 
-                        <!-- Section: Links & Description -->
+                        <!-- Links & Description -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">LINKS & DESCRIPTION</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">3. Links & Description</h6>
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label for="addRegLink" class="form-label modal-label">REGISTRATION LINK</label>
-                                    <input type="url" class="form-control modal-input" name="registrationLink"
+                                    <label for="addRegLink" class="form-label small fw-bold text-muted">REGISTRATION LINK (URL)</label>
+                                    <input type="url" class="form-control rounded-3" name="registrationLink"
                                         id="addRegLink" placeholder="https://forms.gle/...">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="addResLink" class="form-label modal-label">RESPONSES LINK</label>
-                                    <input type="url" class="form-control modal-input" name="responsesLink"
-                                        id="addResLink" placeholder="https://docs.google/...">
+                                    <label for="addResLink" class="form-label small fw-bold text-muted">RESPONSES SHEET LINK (URL)</label>
+                                    <input type="url" class="form-control rounded-3" name="responsesLink"
+                                        id="addResLink" placeholder="https://docs.google.com/spreadsheets/...">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="addDesc" class="form-label modal-label">DESCRIPTION</label>
-                                <textarea class="form-control modal-input" name="description" id="addDesc"
-                                    placeholder="Provide event details, speakers, or requirements..."
-                                    style="height: 120px" required></textarea>
+                                <label for="addDesc" class="form-label small fw-bold text-muted">EVENT DESCRIPTION *</label>
+                                <textarea class="form-control rounded-3" name="description" id="addDesc"
+                                    placeholder="Provide event details, schedule highlights, rules, and prerequisites..."
+                                    style="height: 110px" required></textarea>
                             </div>
                         </div>
 
-                        <!-- Section: Media -->
+                        <!-- Banner Image Upload -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">EVENT BANNER</div>
-                            <div class="upload-zone" id="createUploadZone">
-                                <i class="bi bi-cloud-arrow-up fs-2 upload-icon"></i>
-                                <span class="upload-text fw-bold">Drag & drop or click to browse</span>
-                                <span class="upload-hint">PNG, JPG, WEBP — max 5MB</span>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">4. Event Banner Poster</h6>
+                            <div class="upload-zone p-4 rounded-3 text-center border-dashed" id="createUploadZone"
+                                style="border: 2px dashed rgba(255, 255, 255, 0.15); cursor: pointer;">
+                                <i class="bi bi-cloud-arrow-up fs-1 text-primary d-block mb-2"></i>
+                                <span class="upload-text fw-bold text-white d-block">Drag & drop image or click to browse</span>
+                                <span class="upload-hint text-muted small">PNG, JPG, WEBP — max 5MB</span>
                                 <input type="file" class="d-none file-input" name="imageFile" id="createImageFile"
                                     accept="image/*">
                             </div>
-                            <div class="upload-preview mt-3" id="createPreviewBox" style="display: none;">
-                                <img id="createPreviewImg" src="" alt="Preview">
+                            <div class="upload-preview mt-3 p-2 rounded-3 glass d-flex align-items-center gap-3" id="createPreviewBox" style="display: none;">
+                                <img id="createPreviewImg" src="" alt="Preview" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
                                 <div class="d-flex flex-column flex-grow-1">
-                                    <span class="small fw-bold">Image ready</span>
-                                    <button type="button" class="remove-btn align-self-start mt-1"
+                                    <span class="small fw-bold text-white">Poster Image Selected</span>
+                                    <button type="button" class="btn btn-sm btn-link text-danger p-0 align-self-start"
                                         onclick="clearCreateBanner()">Remove</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-grid pt-2">
-                            <button type="submit" class="btn btn-action w-100 justify-content-center p-3 fs-6">
-                                <i class="bi bi-calendar-plus me-2"></i> Create Event
+                            <button type="submit" class="btn btn-primary p-3 fw-bold rounded-3">
+                                <i class="bi bi-calendar-plus me-2"></i> Publish Event to Catalogue
                             </button>
                         </div>
                     </form>
@@ -441,31 +578,30 @@
     <!-- ✏️ Edit Event Modal -->
     <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true"
         role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content glass" style="border-radius: var(--radius-modal);">
-                <div class="modal-header border-bottom border-secondary"
-                    style="border-color: var(--border-glass) !important;">
-                    <h5 class="modal-title fw-bold" id="editEventModalLabel">Edit Event</h5>
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content glass rounded-4 border-secondary border-opacity-30">
+                <div class="modal-header border-bottom border-secondary border-opacity-20 px-4 py-3">
+                    <h5 class="modal-title fw-bold text-white" id="editEventModalLabel">Edit Event</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close Edit Event Modal"></button>
                 </div>
-                <div class="modal-body custom-scrollbar px-4 pb-4">
+                <div class="modal-body custom-scrollbar px-4 py-4">
                     <form th:action="@{/admin/edit-event}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <input type="hidden" id="editId" name="id">
 
-                        <!-- Section: Basic Info -->
+                        <!-- Basic Information -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">BASIC INFORMATION</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">1. Basic Information</h6>
                             <div class="mb-3">
-                                <label for="editTitle" class="form-label modal-label">EVENT TITLE</label>
-                                <input type="text" class="form-control modal-input" id="editTitle" name="title"
+                                <label for="editTitle" class="form-label small fw-bold text-muted">EVENT TITLE *</label>
+                                <input type="text" class="form-control rounded-3" id="editTitle" name="title"
                                     placeholder="Enter title" required>
                             </div>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="editCategory" class="form-label modal-label">CATEGORY</label>
-                                    <select class="form-select modal-input" id="editCategory" name="category" required>
+                                    <label for="editCategory" class="form-label small fw-bold text-muted">CATEGORY *</label>
+                                    <select class="form-select rounded-3" id="editCategory" name="category" required>
                                         <option value="Technical">Technical</option>
                                         <option value="Cultural">Cultural</option>
                                         <option value="Sports">Sports</option>
@@ -474,81 +610,81 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="editVenue" class="form-label modal-label">VENUE</label>
-                                    <input type="text" class="form-control modal-input" id="editVenue" name="venue"
+                                    <label for="editVenue" class="form-label small fw-bold text-muted">VENUE *</label>
+                                    <input type="text" class="form-control rounded-3" id="editVenue" name="venue"
                                         placeholder="Enter venue" required>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Section: Schedule & Capacity -->
+                        <!-- Schedule & Capacity -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">SCHEDULE & CAPACITY</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">2. Schedule & Capacity</h6>
                             <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <label for="editDateTime" class="form-label modal-label">START DATE & TIME</label>
-                                    <input type="datetime-local" class="form-control modal-input" id="editDateTime"
+                                <div class="col-md-6">
+                                    <label for="editDateTime" class="form-label small fw-bold text-muted">START DATE & TIME *</label>
+                                    <input type="datetime-local" class="form-control rounded-3" id="editDateTime"
                                         name="dateTime" required>
                                 </div>
-                                <div class="col-6">
-                                    <label for="editEndDateTime" class="form-label modal-label">END DATE & TIME</label>
-                                    <input type="datetime-local" class="form-control modal-input" id="editEndDateTime"
+                                <div class="col-md-6">
+                                    <label for="editEndDateTime" class="form-label small fw-bold text-muted">END DATE & TIME (OPTIONAL)</label>
+                                    <input type="datetime-local" class="form-control rounded-3" id="editEndDateTime"
                                         name="endDateTime">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="editCapacity" class="form-label modal-label">MAX CAPACITY</label>
-                                <input type="number" class="form-control modal-input" id="editCapacity"
-                                    name="maxCapacity" min="1" placeholder="Leave blank for unlimited">
+                                <label for="editCapacity" class="form-label small fw-bold text-muted">MAX CAPACITY</label>
+                                <input type="number" class="form-control rounded-3" id="editCapacity"
+                                    name="maxCapacity" min="1" placeholder="Leave blank for unlimited capacity">
                             </div>
                         </div>
 
-                        <!-- Section: Links & Description -->
+                        <!-- Links & Description -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">LINKS & DESCRIPTION</div>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">3. Links & Description</h6>
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label for="editLink" class="form-label modal-label">REGISTRATION LINK</label>
-                                    <input type="url" class="form-control modal-input" id="editLink"
+                                    <label for="editLink" class="form-label small fw-bold text-muted">REGISTRATION LINK (URL)</label>
+                                    <input type="url" class="form-control rounded-3" id="editLink"
                                         name="registrationLink" placeholder="https://forms.gle/...">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="editResponsesLink" class="form-label modal-label">RESPONSES LINK</label>
-                                    <input type="url" class="form-control modal-input" id="editResponsesLink"
-                                        name="responsesLink" placeholder="https://docs.google/...">
+                                    <label for="editResponsesLink" class="form-label small fw-bold text-muted">RESPONSES SHEET LINK (URL)</label>
+                                    <input type="url" class="form-control rounded-3" id="editResponsesLink"
+                                        name="responsesLink" placeholder="https://docs.google.com/spreadsheets/...">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="editDesc" class="form-label modal-label">DESCRIPTION</label>
-                                <textarea class="form-control modal-input" id="editDesc" name="description"
-                                    placeholder="Enter details..." style="height: 120px" required></textarea>
+                                <label for="editDesc" class="form-label small fw-bold text-muted">DESCRIPTION *</label>
+                                <textarea class="form-control rounded-3" id="editDesc" name="description"
+                                    placeholder="Enter details..." style="height: 110px" required></textarea>
                             </div>
                         </div>
 
-                        <!-- Section: Media -->
+                        <!-- Media -->
                         <div class="mb-4">
-                            <div class="text-secondary small fw-bold mb-3 tracking-widest">CHANGE BANNER (OPTIONAL)
-                            </div>
-                            <div class="upload-zone" id="editUploadZone">
-                                <i class="bi bi-image fs-2 upload-icon"></i>
-                                <span class="upload-text fw-bold">Click to upload new image</span>
-                                <span class="upload-hint">PNG, JPG, WEBP — max 5MB</span>
+                            <h6 class="text-primary-light small fw-bold mb-3 tracking-widest text-uppercase">4. Change Banner (Optional)</h6>
+                            <div class="upload-zone p-4 rounded-3 text-center border-dashed" id="editUploadZone"
+                                style="border: 2px dashed rgba(255, 255, 255, 0.15); cursor: pointer;">
+                                <i class="bi bi-image fs-1 text-primary d-block mb-2"></i>
+                                <span class="upload-text fw-bold text-white d-block">Click to upload new banner image</span>
+                                <span class="upload-hint text-muted small">PNG, JPG, WEBP — max 5MB</span>
                                 <input type="file" class="d-none file-input" name="imageFile" id="editImageFile"
                                     accept="image/*">
                             </div>
-                            <div class="upload-preview mt-3" id="editPreviewBox" style="display: none;">
-                                <img id="editPreviewImg" src="" alt="Preview" loading="lazy">
+                            <div class="upload-preview mt-3 p-2 rounded-3 glass d-flex align-items-center gap-3" id="editPreviewBox" style="display: none;">
+                                <img id="editPreviewImg" src="" alt="Preview" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
                                 <div class="d-flex flex-column flex-grow-1">
-                                    <span class="small fw-bold">Image ready</span>
-                                    <button type="button" class="remove-btn align-self-start mt-1"
+                                    <span class="small fw-bold text-white">Image ready</span>
+                                    <button type="button" class="btn btn-sm btn-link text-danger p-0 align-self-start"
                                         onclick="clearEditBanner()">Remove</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-grid pt-2">
-                            <button type="submit" class="btn btn-action w-100 justify-content-center p-3 fs-6">
-                                <i class="bi bi-check-circle me-2"></i> Update Event
+                            <button type="submit" class="btn btn-primary p-3 fw-bold rounded-3">
+                                <i class="bi bi-check-circle me-2"></i> Save Changes
                             </button>
                         </div>
                     </form>
@@ -561,19 +697,18 @@
     <div class="modal fade" id="deleteEventModal" tabindex="-1" aria-labelledby="deleteEventModalLabel"
         aria-hidden="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass border-danger bg-dark">
+            <div class="modal-content glass rounded-4 border-danger border-opacity-40">
                 <div class="modal-body text-center p-5">
-                    <div class="rounded-circle bg-danger bg-opacity-10 mx-auto mb-4 d-flex align-items-center justify-content-center"
-                        style="width: 64px; height: 64px;">
-                        <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
+                    <div class="rounded-circle bg-danger bg-opacity-15 mx-auto mb-4 d-flex align-items-center justify-content-center"
+                        style="width: 64px; height: 64px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                        <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
                     </div>
-                    <h4 class="fw-bold mb-2" id="deleteEventModalLabel">Delete Event?</h4>
-                    <p class="text-muted mb-4">This action cannot be undone. Are you sure you want to delete this event?
-                    </p>
+                    <h3 class="fw-bold mb-2 text-white" id="deleteEventModalLabel">Delete Event?</h3>
+                    <p class="text-muted mb-4 small">This action cannot be undone. All registered interest and associations will be permanently removed.</p>
                     <div class="d-flex justify-content-center gap-3">
-                        <button type="button" class="btn btn-outline-secondary px-4 text-white"
+                        <button type="button" class="btn btn-outline-secondary px-4 text-white rounded-pill"
                             data-bs-dismiss="modal">Cancel</button>
-                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger px-4">Delete Event</a>
+                        <a id="confirmDeleteBtn" href="#" class="btn btn-danger px-4 rounded-pill">Delete Event</a>
                     </div>
                 </div>
             </div>
@@ -590,7 +725,7 @@
             categoryCounts: /*[[${categoryCounts}]]*/      {}
         };
     </script>
-    <script th:src="@{/js/admin-dashboard.js?v=13}"></script>
+    <script th:src="@{/js/admin-dashboard.js?v=20}"></script>
 </body>
 
 </html>

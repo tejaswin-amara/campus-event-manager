@@ -1,0 +1,906 @@
+{
+  "version": 1,
+  "source": {
+    "url": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev",
+    "title": "CampusConnect - Mobile Student View",
+    "capturedAt": 1773000000000,
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "dpr": 2
+  },
+  "fonts": [
+    {
+      "family": "Inter",
+      "styles": [
+        "Regular",
+        "Medium",
+        "Semi Bold",
+        "Bold"
+      ]
+    }
+  ],
+  "root": {
+    "type": "FRAME",
+    "name": "Mobile Student View (375x812)",
+    "x": 8000,
+    "y": 0,
+    "width": 375,
+    "height": 812,
+    "clipsContent": true,
+    "fills": [
+      {
+        "type": "SOLID",
+        "color": {
+          "r": 0.035,
+          "g": 0.035,
+          "b": 0.043
+        }
+      }
+    ],
+    "children": [
+      {
+        "type": "FRAME",
+        "name": "MobileHeader",
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 64,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.071,
+              "g": 0.071,
+              "b": 0.094
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Hamburger",
+            "x": 16,
+            "y": 22,
+            "width": 24,
+            "height": 24,
+            "characters": "\u2630",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 20,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "MobTitle",
+            "x": 52,
+            "y": 22,
+            "width": 160,
+            "height": 22,
+            "characters": "CampusConnect",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "MobUser",
+            "x": 320,
+            "y": 18,
+            "width": 38,
+            "height": 28,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "S",
+                "x": 328,
+                "y": 25,
+                "width": 22,
+                "height": 14,
+                "characters": "S",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobSearch",
+        "x": 16,
+        "y": 80,
+        "width": 343,
+        "height": 44,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 22,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "MobSearchPh",
+            "x": 36,
+            "y": 94,
+            "width": 260,
+            "height": 18,
+            "characters": "Search campus events...",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 13,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobPill-All",
+        "x": 16,
+        "y": 138,
+        "width": 74,
+        "height": 32,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            }
+          }
+        ],
+        "cornerRadius": 999,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "All",
+            "x": 16,
+            "y": 145,
+            "width": 74,
+            "height": 16,
+            "characters": "All",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 1.0,
+              "g": 1.0,
+              "b": 1.0
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobPill-Tech",
+        "x": 100,
+        "y": 138,
+        "width": 74,
+        "height": 32,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "cornerRadius": 999,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Tech",
+            "x": 100,
+            "y": 145,
+            "width": 74,
+            "height": 16,
+            "characters": "Tech",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobPill-Culture",
+        "x": 184,
+        "y": 138,
+        "width": 74,
+        "height": 32,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "cornerRadius": 999,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Culture",
+            "x": 184,
+            "y": 145,
+            "width": 74,
+            "height": 16,
+            "characters": "Culture",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobPill-Sports",
+        "x": 268,
+        "y": 138,
+        "width": 74,
+        "height": 32,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "cornerRadius": 999,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Sports",
+            "x": 268,
+            "y": 145,
+            "width": 74,
+            "height": 16,
+            "characters": "Sports",
+            "fontFamily": "Inter",
+            "fontStyle": "Semi Bold",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobCard-Technical",
+        "x": 16,
+        "y": 186,
+        "width": 343,
+        "height": 190,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "MobCatLine",
+            "x": 16,
+            "y": 186,
+            "width": 343,
+            "height": 3,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "MobCat",
+            "x": 32,
+            "y": 200,
+            "width": 80,
+            "height": 20,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Technical",
+                "x": 40,
+                "y": 203,
+                "width": 64,
+                "height": 14,
+                "characters": "Technical",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardTitle",
+            "x": 32,
+            "y": 228,
+            "width": 311,
+            "height": 22,
+            "characters": "AI & Autonomous Agents Hackathon",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardDate",
+            "x": 32,
+            "y": 258,
+            "width": 311,
+            "height": 18,
+            "characters": "Mar 14 \u2022 10 AM",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardVenue",
+            "x": 32,
+            "y": 280,
+            "width": 311,
+            "height": 18,
+            "characters": "Turing Lab",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "MobBtn",
+            "x": 32,
+            "y": 316,
+            "width": 311,
+            "height": 38,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "MobBtnTxt",
+                "x": 32,
+                "y": 326,
+                "width": 311,
+                "height": 16,
+                "characters": "View Event Details",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "MobCard-Cultural",
+        "x": 16,
+        "y": 392,
+        "width": 343,
+        "height": 190,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.094,
+              "g": 0.094,
+              "b": 0.141
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "cornerRadius": 14,
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "MobCatLine",
+            "x": 16,
+            "y": 392,
+            "width": 343,
+            "height": 3,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.925,
+                  "g": 0.282,
+                  "b": 0.6
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "MobCat",
+            "x": 32,
+            "y": 406,
+            "width": 80,
+            "height": 20,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.925,
+                  "g": 0.282,
+                  "b": 0.6
+                },
+                "opacity": 0.16
+              }
+            ],
+            "strokes": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.925,
+                  "g": 0.282,
+                  "b": 0.6
+                },
+                "opacity": 0.35
+              }
+            ],
+            "strokeWeight": 1,
+            "cornerRadius": 999,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "Cultural",
+                "x": 40,
+                "y": 409,
+                "width": 64,
+                "height": 14,
+                "characters": "Cultural",
+                "fontFamily": "Inter",
+                "fontStyle": "Semi Bold",
+                "fontSize": 11,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardTitle",
+            "x": 32,
+            "y": 434,
+            "width": 311,
+            "height": 22,
+            "characters": "Spring Symphony & Gala",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.973,
+              "g": 0.98,
+              "b": 0.988
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardDate",
+            "x": 32,
+            "y": 464,
+            "width": 311,
+            "height": 18,
+            "characters": "Mar 15 \u2022 6:30 PM",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "MobCardVenue",
+            "x": 32,
+            "y": 486,
+            "width": 311,
+            "height": 18,
+            "characters": "Grand Auditorium",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "LEFT",
+            "color": {
+              "r": 0.58,
+              "g": 0.639,
+              "b": 0.722
+            },
+            "opacity": 1
+          },
+          {
+            "type": "FRAME",
+            "name": "MobBtn",
+            "x": 32,
+            "y": 522,
+            "width": 311,
+            "height": 38,
+            "clipsContent": true,
+            "fills": [
+              {
+                "type": "SOLID",
+                "color": {
+                  "r": 0.388,
+                  "g": 0.4,
+                  "b": 0.945
+                }
+              }
+            ],
+            "cornerRadius": 8,
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "MobBtnTxt",
+                "x": 32,
+                "y": 532,
+                "width": 311,
+                "height": 16,
+                "characters": "View Event Details",
+                "fontFamily": "Inter",
+                "fontStyle": "Bold",
+                "fontSize": 12,
+                "textAlign": "CENTER",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                },
+                "opacity": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "FRAME",
+        "name": "BottomNav",
+        "x": 0,
+        "y": 748,
+        "width": 375,
+        "height": 64,
+        "clipsContent": true,
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 0.071,
+              "g": 0.071,
+              "b": 0.094
+            }
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "opacity": 0.08
+          }
+        ],
+        "strokeWeight": 1,
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "TabHome",
+            "x": 30,
+            "y": 764,
+            "width": 60,
+            "height": 32,
+            "characters": "Events",
+            "fontFamily": "Inter",
+            "fontStyle": "Bold",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.388,
+              "g": 0.4,
+              "b": 0.945
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "TabExplore",
+            "x": 125,
+            "y": 764,
+            "width": 60,
+            "height": 32,
+            "characters": "Explore",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "TabSaved",
+            "x": 220,
+            "y": 764,
+            "width": 60,
+            "height": 32,
+            "characters": "Saved",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          },
+          {
+            "type": "TEXT",
+            "name": "TabProfile",
+            "x": 310,
+            "y": 764,
+            "width": 60,
+            "height": 32,
+            "characters": "Profile",
+            "fontFamily": "Inter",
+            "fontStyle": "Regular",
+            "fontSize": 11,
+            "textAlign": "CENTER",
+            "color": {
+              "r": 0.392,
+              "g": 0.455,
+              "b": 0.545
+            },
+            "opacity": 1
+          }
+        ]
+      }
+    ]
+  }
+}

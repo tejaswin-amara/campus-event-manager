@@ -1,0 +1,91 @@
+/**
+ * 🎓 CampusConnect — Unified Design Tokens (OpenDesign + UI/UX Pro Max)
+ * Compliant with shadcn UI variable conventions & WCAG AA contrast standards.
+ */
+
+:root {
+  /* Surface Layers (Refined deep zinc-slate palette) */
+  --background: #09090b;
+  --foreground: #f8fafc;
+  --bg-base: #09090b;
+  --bg-surface: #121218;
+  --bg-card: #181824;
+  --bg-card-hover: #222232;
+  --bg-elevated: #262638;
+  --bg-input: #14141e;
+  --bg-modal: #13131f;
+
+  /* Card & Popover Tokens */
+  --card: #181824;
+  --card-foreground: #f8fafc;
+  --popover: #181824;
+  --popover-foreground: #f8fafc;
+
+  /* Brand / Primary */
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --primary-hover: #4f46e5;
+  --primary-light: #818cf8;
+  --primary-glow: rgba(99, 102, 241, 0.25);
+
+  /* Secondary & Muted */
+  --secondary: #262638;
+  --secondary-foreground: #f1f5f9;
+  --muted: #262638;
+  --muted-foreground: #94a3b8;
+  --accent: #f97316;
+  --accent-foreground: #ffffff;
+  --accent-hover: #ea580c;
+
+  /* Destructive & Status */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --info: #38bdf8;
+  --warning: #f59e0b;
+
+  /* Category Specific Accents */
+  --cat-technical: #6366f1;
+  --cat-technical-text: #a5b4fc;
+  --cat-cultural: #ec4899;
+  --cat-cultural-text: #f472b6;
+  --cat-sports: #10b981;
+  --cat-sports-text: #6ee7b7;
+  --cat-workshop: #f59e0b;
+  --cat-workshop-text: #fcd34d;
+  --cat-seminar: #06b6d4;
+  --cat-seminar-text: #67e8f9;
+
+  /* Borders & Focus Rings */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #6366f1;
+  --ring-offset: #09090b;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+  --radius: 12px;
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 40px -8px rgba(0, 0, 0, 0.75);
+  --shadow-glow: 0 0 24px -4px rgba(99, 102, 241, 0.25);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}

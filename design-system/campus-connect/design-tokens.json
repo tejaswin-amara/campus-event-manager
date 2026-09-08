@@ -1,0 +1,104 @@
+{
+  "name": "campus-connect",
+  "version": "2.0.0",
+  "meta": {
+    "source": "OpenDesign + UI/UX Pro Max",
+    "figmaDocument": "https://www.figma.com/design/Q79IEbAIuSFIQlr29Bw7L7/Untitled?node-id=0-1&m=dev"
+  },
+  "colors": {
+    "base": {
+      "black": "#09090B",
+      "white": "#FFFFFF"
+    },
+    "surface": {
+      "bgBase": "#09090B",
+      "bgSurface": "#121218",
+      "bgCard": "#181824",
+      "bgCardHover": "#222232",
+      "bgMuted": "#262638",
+      "bgInput": "#14141E",
+      "bgModal": "#13131F"
+    },
+    "border": {
+      "subtle": "rgba(255, 255, 255, 0.08)",
+      "medium": "rgba(255, 255, 255, 0.14)",
+      "focus": "#6366F1",
+      "glow": "rgba(99, 102, 241, 0.35)"
+    },
+    "text": {
+      "primary": "#F8FAFC",
+      "secondary": "#94A3B8",
+      "muted": "#64748B",
+      "inverse": "#09090B"
+    },
+    "brand": {
+      "primary": "#6366F1",
+      "primaryHover": "#4F46E5",
+      "primaryLight": "#818CF8",
+      "accent": "#F97316",
+      "accentHover": "#EA580C"
+    },
+    "category": {
+      "technical": "#6366F1",
+      "cultural": "#EC4899",
+      "sports": "#10B981",
+      "workshop": "#F59E0B",
+      "seminar": "#06B6D4"
+    },
+    "status": {
+      "upcoming": "#10B981",
+      "ongoing": "#38BDF8",
+      "past": "#64748B",
+      "destructive": "#EF4444"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "mono": "'JetBrains Mono', 'SF Mono', monospace"
+    },
+    "fontSize": {
+      "xs": "12px",
+      "sm": "14px",
+      "base": "16px",
+      "lg": "18px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "30px",
+      "4xl": "36px"
+    },
+    "fontWeight": {
+      "normal": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "extrabold": 800
+    }
+  },
+  "spacing": {
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
+    "10": "40px",
+    "12": "48px",
+    "16": "64px"
+  },
+  "radii": {
+    "sm": "6px",
+    "md": "10px",
+    "lg": "16px",
+    "xl": "20px",
+    "2xl": "24px",
+    "pill": "9999px"
+  },
+  "shadows": {
+    "sm": "0 1px 2px rgba(0,0,0,0.4)",
+    "md": "0 4px 12px rgba(0,0,0,0.5)",
+    "lg": "0 12px 32px -4px rgba(0,0,0,0.6)",
+    "glow": "0 0 24px rgba(99, 102, 241, 0.2)"
+  }
+}

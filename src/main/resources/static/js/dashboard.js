@@ -46,10 +46,14 @@ if (searchInput) {
 
 // 🏷️ Category Filter
 function filterCategory(cat, btn) {
-    document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.sidebar .nav-link, .btn-filter-pill').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll(`.sidebar .nav-link[onclick*="'${cat}'"], .btn-filter-pill[onclick*="'${cat}'"]`).forEach(el => el.classList.add('active'));
+    if (btn) btn.classList.add('active');
 
-    if (window.innerWidth < 992) toggleSidebar();
+    if (window.innerWidth < 992) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('show')) toggleSidebar();
+    }
 
     const cards = document.querySelectorAll('.event-item');
     let visible = 0;
@@ -74,9 +78,12 @@ function filterCategory(cat, btn) {
 // ⏳ Status Filter
 function filterStatus(status, btn) {
     document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
 
-    if (window.innerWidth < 992) toggleSidebar();
+    if (window.innerWidth < 992) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('show')) toggleSidebar();
+    }
 
     const cards = document.querySelectorAll('.event-item');
     let visible = 0;
@@ -99,11 +106,18 @@ function filterStatus(status, btn) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 🖼️ Modal Logic
-const modalEl = document.getElementById('eventDetailModal');
-const detailModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+// Modal Logic
+function getDetailModal() {
+    const modalEl = document.getElementById('eventDetailModal');
+    if (!modalEl) return null;
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        return bootstrap.Modal.getOrCreateInstance(modalEl);
+    }
+    return null;
+}
 
 function openDetailModal(btn) {
+    const detailModal = getDetailModal();
     if (!detailModal) return;
 
     const title = btn.dataset.title;
@@ -113,58 +127,64 @@ function openDetailModal(btn) {
     const time = btn.dataset.time;
     const endTime = btn.dataset.endtime;
 
-    document.getElementById('detailTitle').innerText = title;
-    document.getElementById('detailDesc').innerText = desc;
+    const titleEl = document.getElementById('detailTitle');
+    if (titleEl) titleEl.innerText = title;
+    const descEl = document.getElementById('detailDesc');
+    if (descEl) descEl.innerText = desc;
 
     // Logic for Date Range Display
     let dateDisplay = `${date}`;
     if (endDate && endDate !== date) {
         dateDisplay += ` - ${endDate}`;
     }
-    document.getElementById('detailDate').textContent = dateDisplay;
+    const dateEl = document.getElementById('detailDate');
+    if (dateEl) dateEl.textContent = dateDisplay;
 
     // Logic for Time Range Display
     let timeDisplay = `${time}`;
     if (endTime) {
         timeDisplay += ` - ${endTime}`;
     }
-    document.getElementById('detailTime').textContent = timeDisplay;
+    const timeEl = document.getElementById('detailTime');
+    if (timeEl) timeEl.textContent = timeDisplay;
 
-    document.getElementById('detailVenue').textContent = btn.dataset.venue;
+    const venueEl = document.getElementById('detailVenue');
+    if (venueEl) venueEl.textContent = btn.dataset.venue;
 
     const cat = btn.dataset.cat;
     const catBadge = document.getElementById('detailCat');
-    catBadge.textContent = cat;
-
-    // Reset classes
-    catBadge.className = 'badge-pill mb-2';
-    if (cat === 'Technical') catBadge.classList.add('badge-tech');
-    else if (cat === 'Cultural') catBadge.classList.add('badge-cultural');
-    else if (cat === 'Sports') catBadge.classList.add('badge-sports');
-    else if (cat === 'Workshop') catBadge.classList.add('badge-workshop');
-    else if (cat === 'Seminar') catBadge.classList.add('badge-seminar');
-    else catBadge.classList.add('glass');
+    if (catBadge) {
+        catBadge.textContent = cat;
+        catBadge.className = 'badge-pill mb-2';
+        if (cat === 'Technical') catBadge.classList.add('badge-tech');
+        else if (cat === 'Cultural') catBadge.classList.add('badge-cultural');
+        else if (cat === 'Sports') catBadge.classList.add('badge-sports');
+        else if (cat === 'Workshop') catBadge.classList.add('badge-workshop');
+        else if (cat === 'Seminar') catBadge.classList.add('badge-seminar');
+        else catBadge.classList.add('glass');
+    }
 
     const img = btn.dataset.img;
     const imgEl = document.getElementById('detailImg');
     const posterCol = document.getElementById('modalPosterCol');
     const detailsCol = document.getElementById('modalDetailsCol');
 
-    // Clear any previous error states that might darken the image
-    imgEl.classList.remove('opacity-50', 'p-5');
-
-    // Logic: If image exists, show it. The parent container controls the black bg.
-    if (img && img !== 'null' && img.trim() !== '') {
-        imgEl.src = img;
-        imgEl.style.display = 'block';
-        posterCol.style.display = 'flex';
-        posterCol.style.setProperty('display', 'flex', 'important');
-        posterCol.style.width = '';  // reset to CSS default
-        detailsCol.className = 'flex-grow-1 overflow-y-auto custom-scrollbar';
-    } else {
-        imgEl.style.display = 'none';
-        posterCol.style.setProperty('display', 'none', 'important');
-        detailsCol.className = 'flex-grow-1 overflow-y-auto custom-scrollbar';
+    if (imgEl) {
+        imgEl.classList.remove('opacity-50', 'p-5');
+        if (img && img !== 'null' && img.trim() !== '') {
+            imgEl.src = img;
+            imgEl.style.display = 'block';
+            if (posterCol) {
+                posterCol.style.display = 'flex';
+                posterCol.style.setProperty('display', 'flex', 'important');
+                posterCol.style.width = '';
+            }
+            if (detailsCol) detailsCol.className = 'flex-grow-1 overflow-y-auto custom-scrollbar';
+        } else {
+            imgEl.style.display = 'none';
+            if (posterCol) posterCol.style.setProperty('display', 'none', 'important');
+            if (detailsCol) detailsCol.className = 'flex-grow-1 overflow-y-auto custom-scrollbar';
+        }
     }
 
     const link = btn.dataset.link;
@@ -172,38 +192,42 @@ function openDetailModal(btn) {
     const calBtn = document.getElementById('calendarBtn');
     const qrContainer = document.getElementById('qrCodeContainer');
 
-    // Reset QR container between opens
-    const scanText = document.createElement('small');
-    scanText.className = 'text-muted d-block mb-3';
-    scanText.textContent = 'Scan to Register';
-    qrContainer.innerHTML = ''; // Clear container
-    qrContainer.appendChild(scanText);
-    qrContainer.style.display = 'none';
+    if (qrContainer) {
+        const scanText = document.createElement('small');
+        scanText.className = 'text-muted d-block mb-3';
+        scanText.textContent = 'Scan to Register';
+        qrContainer.innerHTML = '';
+        qrContainer.appendChild(scanText);
+        qrContainer.style.display = 'none';
+    }
 
     if (link) {
-        // Use internal tracking endpoint instead of direct external link
         const eventId = btn.dataset.id;
-        btnEl.href = `/student/register-external/${eventId}`;
-        btnEl.target = "_blank";
-        btnEl.classList.remove('d-none');
-        btnEl.classList.add('d-block');
-
-        // QR Code
-        if (typeof generateQRCode === 'function') {
-            generateQRCode('qrCodeContainer', link);
+        if (btnEl) {
+            btnEl.href = `/student/register-external/${eventId}`;
+            btnEl.target = "_blank";
+            btnEl.classList.remove('d-none');
+            btnEl.classList.add('d-block');
         }
-        qrContainer.style.display = 'block';
-    } else {
+
+        if (qrContainer) {
+            if (typeof generateQRCode === 'function') {
+                generateQRCode('qrCodeContainer', link);
+            }
+            qrContainer.style.display = 'block';
+        }
+    } else if (btnEl) {
         btnEl.classList.remove('d-block');
         btnEl.classList.add('d-none');
     }
 
-    // Calendar Download
-    calBtn.onclick = () => {
-        if (typeof downloadICS === 'function') {
-            downloadICS(title, desc, date, time, btn.dataset.venue);
-        }
-    };
+    if (calBtn) {
+        calBtn.onclick = () => {
+            if (typeof downloadICS === 'function') {
+                downloadICS(title, desc, date, time, btn.dataset.venue);
+            }
+        };
+    }
 
     detailModal.show();
 }
