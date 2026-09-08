@@ -186,7 +186,7 @@ public class EventService {
 
         User user = userRepository.findById(userId).orElse(null);
         // Serialize the user-event write to protect the unique interest record under concurrency.
-        Event event = eventRepository.findById(eventId).orElse(null);
+        Event event = eventRepository.findByIdForUpdate(eventId).orElse(null);
 
         if (event == null || user == null || registrationRepository.existsByUserIdAndEventId(userId, eventId)) {
             return false;

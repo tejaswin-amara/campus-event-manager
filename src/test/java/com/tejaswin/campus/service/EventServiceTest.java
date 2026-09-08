@@ -158,7 +158,7 @@ public class EventServiceTest {
         Long userId = 10L;
 
         when(registrationRepository.existsByUserIdAndEventId(userId, eventId)).thenReturn(false);
-        when(eventRepository.findById(eventId))
+        when(eventRepository.findByIdForUpdate(eventId))
                 .thenReturn(Optional.of(new Event(eventId, "E", "D", LocalDateTime.now(), "V", "T")));
 
         User user = new User();
@@ -184,7 +184,7 @@ public class EventServiceTest {
     @Test
     void testRegisterStudentInvalidEvent() {
         when(registrationRepository.existsByUserIdAndEventId(10L, 999L)).thenReturn(false);
-        when(eventRepository.findById(999L)).thenReturn(Optional.empty());
+        when(eventRepository.findByIdForUpdate(999L)).thenReturn(Optional.empty());
         when(userRepository.findById(10L)).thenReturn(Optional.of(new User()));
 
         boolean result = eventService.registerStudent(999L, 10L);

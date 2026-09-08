@@ -1,0 +1,2 @@
+EXPLAIN
+-> Sort: `events`.date_time  (cost=1.45 rows=12) (actual time=0.0454..0.0457 rows=4 loops=1)\n    -> Filter: ((`events`.category = 'Technical') and (`events`.date_time >= TIMESTAMP'2025-01-01 00:00:00'))  (cost=1.45 rows=12) (actual time=0.0187..0.025 rows=4 loops=1)\n        -> Table scan on events  (cost=1.45 rows=12) (actual time=0.0148..0.0193 rows=12 loops=1)\n

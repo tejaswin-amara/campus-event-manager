@@ -37,6 +37,9 @@ public class Event {
     @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
+    @Column(nullable = false)
+    private String status = "PUBLISHED";
+
     @NotBlank(message = "Venue is required")
     private String venue;
 
@@ -182,6 +185,14 @@ public class Event {
 
     public void setImageMimeType(String imageMimeType) {
         this.imageMimeType = imageMimeType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

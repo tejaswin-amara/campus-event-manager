@@ -18,9 +18,9 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    @Override
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Event> findById(Long id);
+    @Query("SELECT e FROM Event e WHERE e.id = :id")
+    Optional<Event> findByIdForUpdate(@Param("id") Long id);
 
     List<Event> findAllByOrderByDateTimeDesc();
 
@@ -55,4 +55,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT e FROM Event e WHERE (e.endDateTime IS NOT NULL AND e.endDateTime < :now) OR (e.endDateTime IS NULL AND e.dateTime < :now)")
     Page<Event> findPastEventsPage(@Param("now") LocalDateTime now, Pageable pageable);
+
+    Page<Event> findByStatusOrderByDateTimeDesc(String status, Pageable pageable);
+
+    @Query("SELECT e.status, COUNT(e) FROM Event e GROUP BY e.status")
+    List<Object[]> countEventsByStatus();
 }

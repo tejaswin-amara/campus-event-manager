@@ -1,0 +1,2 @@
+EXPLAIN
+-> Index lookup on events using idx_events_status_date_time (status='PUBLISHED')  (cost=1.2 rows=7) (actual time=0.0198..0.0214 rows=7 loops=1)\n

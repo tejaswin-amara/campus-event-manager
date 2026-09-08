@@ -1,0 +1,2 @@
+EXPLAIN
+-> Sort: `events`.date_time  (cost=1.45 rows=12) (actual time=0.0411..0.0415 rows=9 loops=1)\n    -> Filter: (`events`.date_time >= TIMESTAMP'2026-01-01 00:00:00')  (cost=1.45 rows=12) (actual time=0.02..0.0227 rows=9 loops=1)\n        -> Table scan on events  (cost=1.45 rows=12) (actual time=0.0156..0.0201 rows=12 loops=1)\n
