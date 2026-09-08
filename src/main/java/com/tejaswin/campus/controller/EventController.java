@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.CacheControl;
 import java.util.concurrent.TimeUnit;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/student")
@@ -106,10 +105,7 @@ public class EventController {
         }
         // Track interest for analytics
         auditLogger.logSecurityLinkClick(user.getUsername(), "REGISTER_EXTERNAL", eventId);
-        Long studentId = user.getId();
-        if (studentId != null) {
-            eventService.registerStudent(eventId, studentId);
-        }
+        eventService.registerStudent(eventId, user.getId());
 
         Event event = eventService.findEventById(eventId);
         if (event != null && event.getRegistrationLink() != null && !event.getRegistrationLink().isEmpty()) {
@@ -131,8 +127,7 @@ public class EventController {
     }
 
     @GetMapping("/event/{id}")
-    public String eventDetail(@PathVariable Long id, Model model,
-            HttpServletRequest request) {
+    public String eventDetail(@PathVariable Long id, Model model) {
         Event event = eventService.findEventById(id);
         if (event == null) {
             return "redirect:/student/dashboard";
@@ -166,10 +161,6 @@ public class EventController {
         }
 
         byte[] imageData = event.getImageData();
-        if (imageData == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         String etag = Integer.toHexString(java.util.Arrays.hashCode(imageData));
 
         return ResponseEntity.ok()

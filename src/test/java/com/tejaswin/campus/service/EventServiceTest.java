@@ -41,7 +41,6 @@ public class EventServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Manual construction because EventService requires a @Value string parameter
         eventService = new EventService(eventRepository, registrationRepository, userRepository, auditLogger);
     }
 
@@ -84,7 +83,6 @@ public class EventServiceTest {
     @Test
     public void testDeleteEvent() {
         Long eventId = 1L;
-        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
         doNothing().when(registrationRepository).deleteByEventId(eventId);
         doNothing().when(eventRepository).deleteById(eventId);
 

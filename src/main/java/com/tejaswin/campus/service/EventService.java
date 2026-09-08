@@ -11,13 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Value;
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -45,16 +41,12 @@ public class EventService {
     private static final Set<String> ALLOWED_IMAGE_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".webp", ".gif");
 
     /**
-     * Constructs the EventService with required repositories, logger and resolves
-     * the base
-     * upload directory.
+     * Constructs the EventService with required repositories and logger.
      *
      * @param eventRepository        repository for events
      * @param registrationRepository repository for registrations
      * @param userRepository         repository for users
      * @param auditLogger            logger for security events
-     * @param uploadDir              configured upload directory (relative or
-     *                               absolute)
      */
     public EventService(EventRepository eventRepository,
             RegistrationRepository registrationRepository,
@@ -220,14 +212,6 @@ public class EventService {
      */
     @Transactional
     public void deleteEvent(@NonNull Long id) {
-        // 1. Get event to find image path
-        Event event = eventRepository.findById(id).orElse(null);
-        if (event != null && event.getImageUrl() != null) {
-            // No need to delete from filesystem anymore, DB handles it via Cascade if we
-            // used it,
-            // but here we just delete the event record.
-        }
-
         registrationRepository.deleteByEventId(id);
         eventRepository.deleteById(id);
         logger.warn("AUDIT: Event deleted (ID: {})", id);
@@ -251,14 +235,6 @@ public class EventService {
     }
 
     /**
-     * @return list of all registrations
-     */
-    @Transactional(readOnly = true)
-    public List<Registration> getAllRegistrations() {
-        return registrationRepository.findAll();
-    }
-
-    /**
      * Counts events strictly after now.
      *
      * @return number of upcoming events
@@ -276,15 +252,6 @@ public class EventService {
     @Transactional(readOnly = true)
     public long getOngoingEventsCount() {
         return eventRepository.countOngoingEvents(LocalDateTime.now());
-    }
-
-    /**
-     * @param eventId event id
-     * @return number of registrations for the event
-     */
-    @Transactional(readOnly = true)
-    public long getRegistrationCount(Long eventId) {
-        return registrationRepository.countByEventId(eventId);
     }
 
     /**
@@ -430,12 +397,5 @@ public class EventService {
             logger.error("Failed to process uploaded image for user {}: {}", username, e.getMessage(), e);
             return false;
         }
-    }
-
-    /**
-     * Deletes an image. (No-op now as DB handles it when Event is deleted)
-     */
-    public void deleteImageByUrl(String imageUrl) {
-        // No-op for DB storage
     }
 }

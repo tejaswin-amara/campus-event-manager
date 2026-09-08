@@ -16,6 +16,7 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        // ponytail: static single-hash timing mitigation ceiling, generate per-tenant salt if multi-tenant partitioning added
         this.dummyHash = passwordEncoder.encode("dummy_timing_mitigation_hash");
     }
 
